@@ -27,17 +27,10 @@
 @end
 @implementation MainTabBarController
 + (void)initialize {
-    //判断是否有网络
-    BOOL isConnectInternet = [[HttpTool shared] isConnectInternet];
-    if (isConnectInternet) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            /*验证登陆*/
-            [[HttpTool shared] validLogin];
-        });
-    } else {
-        return;
-    }
-    
+    /*验证登陆*/
+    [[HttpTool shared] validLogin];
+    //检查更新
+    [[HttpTool shared] getVersion];
 }
 
 - (void)viewDidLoad {
@@ -93,10 +86,6 @@
     
     self.viewControllers = @[homeNav,medicalRecordNav,doctorNav,mapNav];
             self.selectedViewController = homeNav;
-    
-    //检查更新
-    [[HttpTool shared] getVersion];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -104,25 +93,20 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getVersionSuccessNotification:) name:@"GetVersionSuccessNotification" object:nil];
 }
 
+#pragma mark - 接收到获取版本的通知
 - (void)getVersionSuccessNotification:(NSNotification *)note {
-    int NoNeedUpdate = [[[NSUserDefaults standardUserDefaults] objectForKey:@"NoNeedUpdate"] intValue];
-    if ([[HttpTool shared] isConnectInternet] && NoNeedUpdate==0) {
-        NSString *currentVersion = VERSION;
-        NSDictionary *versionInfoDict = note.userInfo;
-        if ([versionInfoDict[@"status"] isEqual:@0]) {
-            return;
-        } else {
-            NSDictionary *data = [versionInfoDict objectForKey:@"data"];
-            if (![currentVersion isEqualToString:[NSString stringWithFormat:@"%@",data[@"version"]]]) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@",data[@"title"]] message:[NSString stringWithFormat:@"%@",data[@"message"]] delegate:self cancelButtonTitle:nil otherButtonTitles:@"前往更新",@"忽略此次更新", nil];
-                [alertView show];
-            } else {
-                return;
-            }
-        }
-        
-    } else {
+    NSString *currentVersion = VERSION;
+    NSDictionary *versionInfoDict = note.userInfo;
+    if ([versionInfoDict[@"status"] isEqual:@0]) {
         return;
+    } else {
+        NSDictionary *data = [versionInfoDict objectForKey:@"data"];
+        if (![currentVersion isEqualToString:[NSString stringWithFormat:@"%@",data[@"version"]]]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@",data[@"title"]] message:[NSString stringWithFormat:@"%@",data[@"message"]] delegate:self cancelButtonTitle:nil otherButtonTitles:@"前往更新",@"忽略此次更新", nil];
+            [alertView show];
+        } else {
+            return;
+        }
     }
 }
 

@@ -90,5 +90,9 @@
  *	屏幕的宽
  */
 #define kScreen_Width       ([UIScreen mainScreen].bounds.size.width)
+/**
+ *  左右菜单的背景色
+ */
+#define MENU_BACKGROUND_COLOR [UIColor colorWithRed:66/255.0 green:69/255.0 blue:74/255.0 alpha:1.0]
 
 #endif /* Header_h */

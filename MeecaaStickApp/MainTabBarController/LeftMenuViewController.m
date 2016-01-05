@@ -18,28 +18,27 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
-    [self.tableView setBackgroundColor:[UIColor grayColor]];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    [self.tableView setBackgroundColor:MENU_BACKGROUND_COLOR];
     self.tableView.separatorStyle = UITableViewCellSelectionStyleNone;
     
     //设置头部
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 141)];
     UIView *headerLine = [[UIView alloc] initWithFrame:CGRectMake(0, 140, self.view.bounds.size.width, 1)];
-    [headerLine setBackgroundColor:[UIColor whiteColor]];
+    [headerLine setBackgroundColor:[UIColor grayColor]];
     [headerView addSubview:headerLine];
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 40, 160, 60)];
     [imageView setImage:[UIImage imageNamed:@"aboutus_logo_icon"]];
     [headerView addSubview:imageView];
     self.tableView.tableHeaderView = headerView;
-    
+    //设置底部
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 1)];
-    [footerView setBackgroundColor:[UIColor whiteColor]];
+    [footerView setBackgroundColor:[UIColor grayColor]];
     self.tableView.tableFooterView = footerView;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -69,23 +68,23 @@
     }
     
     NSArray *titles = @[@"关于米开",@"体温常识",@"使用指南",@"消息推送"];
-    [cell.contentView setBackgroundColor:[UIColor grayColor]];
+    NSArray *images = @[@"guanyumikai",@"tiwenxiaochangshi",@"synchro",@"set_about_icon"];
+    [cell.contentView setBackgroundColor:MENU_BACKGROUND_COLOR];
     cell.textLabel.text = titles[indexPath.row];
-    [cell.textLabel setTextColor:[UIColor blueColor]];
+    cell.imageView.image = [UIImage imageNamed:images[indexPath.row]];
+    [cell.textLabel setTextColor:[UIColor colorWithRed:22/255.0 green:155/255.0 blue:213/255.0 alpha:1.0]];
     
     if (indexPath.row == 3) {
-        BOOL isAllowedNotification = [[GlobalTool shared] isAllowedNotification];
-        UILabel *label = [[UILabel alloc] init];
-        label.frame = CGRectMake(cell.contentView.bounds.size.width - 50, 0, 50, cell.contentView.bounds.size.height);
-        [label setBackgroundColor:[UIColor grayColor]];
-        [label setTextColor:[UIColor whiteColor]];
+        BOOL isAllowedNotification = [[GlobalTool shared] isAllowedNotification]; //是否开启了推送通知
+        UISwitch *notiSwitch = [[UISwitch alloc] init];
+        [notiSwitch setUserInteractionEnabled:NO];
         if (isAllowedNotification) {
-            label.text = @"开";
+            [notiSwitch setOn:YES];
         } else {
-            label.text = @"关";
+            [notiSwitch setOn:NO];
         }
-        [cell.contentView addSubview:label];
-        
+        notiSwitch.frame = CGRectMake(200 - 60, 10, 0, 0);
+        [cell.contentView addSubview:notiSwitch];
     }
     return cell;
 }

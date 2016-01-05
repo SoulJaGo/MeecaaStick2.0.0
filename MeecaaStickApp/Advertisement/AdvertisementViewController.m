@@ -24,13 +24,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.timercount = 0;
-    // Do any additional setup after loading the view.
     [self.view setBackgroundColor:UIVIEW_BACKGROUND_COLOR];
-    if (self.imageUrl) {
+    /*获取本地存储的广告数据*/
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *adDict = [defaults objectForKey:@"ad"];
+    if ([[adDict objectForKey:@"status"] isEqual:@0] || adDict == nil) { //本地数据为不显示广告页
+        [[HttpTool shared] getAdvertisementDictionary];
+        [UIApplication sharedApplication].keyWindow.rootViewController = self.drawerController;
+    } else { //本地数据为显示广告页
         UIImageView *imageView = [[UIImageView alloc] init];
         imageView.frame = self.view.bounds;
         [self.view addSubview:imageView];
-        
+
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         btn.frame = CGRectMake(self.view.bounds.size.width - 80, self.view.bounds.size.height - 60, 50, 30);
         [btn setTitle:@"跳过" forState:UIControlStateNormal];
@@ -38,14 +43,10 @@
         [btn addTarget:self action:@selector(onClickJump) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:btn];
         
-        [imageView sd_setImageWithURL:[NSURL URLWithString:self.imageUrl] placeholderImage:[UIImage imageNamed:@"ad_background"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                    }];
+        NSString *imageUrlStr = [[adDict objectForKey:@"data"] objectForKey:@"img"];
+        [imageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr] placeholderImage:[UIImage imageNamed:@"ad_background"]];
         self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
-        [[NSRunLoop alloc] addTimer:self.timer forMode:NSRunLoopCommonModes];
-    } else {
-        [self presentViewController:self.drawerController animated:NO completion:^{
-            [[HttpTool shared] getAdvertisementDictionary];
-        }];
+        [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
     }
 }
 
@@ -54,6 +55,7 @@
     if (self.timercount==3) {
         if (self.timer) {
             [self.timer invalidate];
+            self.timer = nil;
         }
         [self presentViewController:self.drawerController animated:NO completion:^{
             [[HttpTool shared] getAdvertisementDictionary];
@@ -63,7 +65,10 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [self.timer invalidate];
+    if (self.timer) {
+        [self.timer invalidate];
+        self.timer = nil;
+    }
 }
 
 - (MMDrawerController *)drawerController {

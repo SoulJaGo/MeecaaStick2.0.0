@@ -100,7 +100,6 @@ typedef enum
         [defaults synchronize];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"%@",error);
-        [SVProgressHUD showErrorWithStatus:@"网络不给力哦!"];
     }];
 }
 
@@ -413,6 +412,7 @@ typedef enum
             return;
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"%@",error);
         return;
     }];
     
@@ -482,6 +482,7 @@ typedef enum
             return;
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"%@",error);
         return;
     }];
 }

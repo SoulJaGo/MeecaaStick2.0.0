@@ -286,13 +286,13 @@ static  GlobalTool *_singleton = nil;
                  if (UIUserNotificationTypeNone != setting.types) {
                          return YES;
                 }
-             } else {//iOS7
-                 UIRemoteNotificationType type = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
-                 if(UIRemoteNotificationTypeNone != type)
-                         return YES;
-            }
+         } else {//iOS7
+             UIRemoteNotificationType type = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+             if(UIRemoteNotificationTypeNone != type)
+                     return YES;
+        }
     
-         return NO;
+        return NO;
 }
 
 - (BOOL)isHaveIllegalChar:(NSString *)str{

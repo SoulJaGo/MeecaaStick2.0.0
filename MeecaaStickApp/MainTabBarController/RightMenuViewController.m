@@ -21,8 +21,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor grayColor]];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    [self.tableView setBackgroundColor:MENU_BACKGROUND_COLOR];
+    self.tableView.separatorStyle = UITableViewCellSelectionStyleNone;
+    
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
     
     //设置头部
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 140)];
@@ -31,6 +35,9 @@
     imageView.layer.cornerRadius = 30.0f;
     imageView.clipsToBounds = YES;
         [headerView addSubview:imageView];
+    [imageView setUserInteractionEnabled:YES];
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImageView)];
+    [imageView addGestureRecognizer:recognizer];
     self.iconImageView = imageView;
     //昵称
     UILabel *label = [[UILabel alloc] init];
@@ -44,7 +51,11 @@
     //尾部
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 140)];
     UIButton *logoutBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    logoutBtn.frame = CGRectMake(20, 50, 110, 40);
+    logoutBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    logoutBtn.frame = CGRectMake(10, 50, 180, 40);
+    logoutBtn.layer.borderWidth = 1.0f;
+    logoutBtn.layer.borderColor = [UIColor whiteColor].CGColor;
+    logoutBtn.layer.cornerRadius = 8.0f;
     [logoutBtn setTitle:@"退出登录" forState:UIControlStateNormal];
     [logoutBtn addTarget:self action:@selector(onClickLogout) forControlEvents:UIControlEventTouchUpInside];
     [footerView addSubview:logoutBtn];
@@ -91,11 +102,11 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 4;
+    return 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -103,63 +114,111 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identity];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identity];
+        [cell.contentView setBackgroundColor:MENU_BACKGROUND_COLOR];
+        [cell.textLabel setTextColor:[UIColor colorWithRed:22/255.0 green:155/255.0 blue:213/255.0 alpha:1.0]];
     }
     
-    NSArray *titles = @[@"我的信息",@"家庭成员",@"问题反馈",@"我的消息"];
-    cell.textLabel.text = titles[indexPath.row];
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            cell.textLabel.text = @"我的信息";
+            cell.imageView.image = [UIImage imageNamed:@"guanyumikai"];
+        } else if (indexPath.row == 1) {
+            cell.textLabel.text = @"家庭成员";
+            cell.imageView.image = [UIImage imageNamed:@"tiwenxiaochangshi"];
+        }
+    } else {
+        if (indexPath.row == 0) {
+            cell.textLabel.text = @"问题反馈";
+            cell.imageView.image = [UIImage imageNamed:@"synchro"];
+        } else if (indexPath.row == 1) {
+            cell.textLabel.text = @"我的消息";
+            cell.imageView.image = [UIImage imageNamed:@"set_about_icon"];
+        }
+    }
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 1.0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (section == 1) {
+        return 1.0;
+    } else {
+        return 0.0;
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Third" bundle:nil];
-    if (indexPath.row == 0) {
-        if (![[DatabaseTool shared] getDefaultMember]) {
-            UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
-            UIViewController *loginVc = [board instantiateViewControllerWithIdentifier:@"LoginViewController"];
-            [self presentViewController:loginVc animated:NO completion:^{
-                [SVProgressHUD showErrorWithStatus:@"请您先登录!"];
-            }];
-        } else {
-            UserUpdateViewController *userUpdateVc = [storyboard instantiateViewControllerWithIdentifier:@"UserUpdateViewController"];
-            userUpdateVc.memberInfoDict = [[DatabaseTool shared] getDefaultMember];
-            userUpdateVc.isFromMain = YES;
-            UserNavigationController *userNav = [[UserNavigationController alloc] initWithRootViewController:userUpdateVc];
-            [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-            [self presentViewController:userNav animated:NO completion:nil];
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            if (![[DatabaseTool shared] getDefaultMember]) {
+                UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
+                UIViewController *loginVc = [board instantiateViewControllerWithIdentifier:@"LoginViewController"];
+                [self presentViewController:loginVc animated:NO completion:^{
+                    [SVProgressHUD showErrorWithStatus:@"请您先登录!"];
+                }];
+            } else {
+                UserUpdateViewController *userUpdateVc = [storyboard instantiateViewControllerWithIdentifier:@"UserUpdateViewController"];
+                userUpdateVc.memberInfoDict = [[DatabaseTool shared] getDefaultMember];
+                userUpdateVc.isFromMain = YES;
+                UserNavigationController *userNav = [[UserNavigationController alloc] initWithRootViewController:userUpdateVc];
+                [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+                [self presentViewController:userNav animated:NO completion:nil];
+            }
+            
+        } else if (indexPath.row == 1) {
+            if (![[DatabaseTool shared] getDefaultMember]) {
+                UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
+                UIViewController *loginVc = [board instantiateViewControllerWithIdentifier:@"LoginViewController"];
+                [self presentViewController:loginVc animated:NO completion:^{
+                    [SVProgressHUD showErrorWithStatus:@"请您先登录!"];
+                }];
+            } else {
+                UserNavigationController *userNav = [storyboard instantiateViewControllerWithIdentifier:@"UserNavigationController"];
+                [self presentViewController:userNav animated:NO completion:nil];
+            }
         }
-        
-    } else if (indexPath.row == 1) {
-        if (![[DatabaseTool shared] getDefaultMember]) {
+    } else if (indexPath.section == 1){
+        if (indexPath.row == 0) {
             UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
-            UIViewController *loginVc = [board instantiateViewControllerWithIdentifier:@"LoginViewController"];
-            [self presentViewController:loginVc animated:NO completion:^{
-                [SVProgressHUD showErrorWithStatus:@"请您先登录!"];
-            }];
-        } else {
-            UserNavigationController *userNav = [storyboard instantiateViewControllerWithIdentifier:@"UserNavigationController"];
-            [self presentViewController:userNav animated:NO completion:nil];
+            UIViewController *vc = [board instantiateViewControllerWithIdentifier:@"ProblemNavigationController"];
+            [self presentViewController:vc animated:NO completion:nil];
+        } else if (indexPath.row == 1) {
+            if (![[DatabaseTool shared] getDefaultMember]) {
+                UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
+                UIViewController *loginVc = [board instantiateViewControllerWithIdentifier:@"LoginViewController"];
+                [self presentViewController:loginVc animated:NO completion:^{
+                    [SVProgressHUD showErrorWithStatus:@"请您先登录!"];
+                }];
+            } else {
+                MessageViewController *messageVc = [[MessageViewController alloc] init];
+                MessageNavigationController *nav = [[MessageNavigationController alloc] initWithRootViewController:messageVc];
+                [self presentViewController:nav animated:NO completion:nil];
+            }
         }
-    } else if (indexPath.row == 2) {
-        UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
-        UIViewController *vc = [board instantiateViewControllerWithIdentifier:@"ProblemNavigationController"];
-        [self presentViewController:vc animated:NO completion:nil];
-    } else if (indexPath.row == 3) {
-        if (![[DatabaseTool shared] getDefaultMember]) {
-            UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
-            UIViewController *loginVc = [board instantiateViewControllerWithIdentifier:@"LoginViewController"];
-            [self presentViewController:loginVc animated:NO completion:^{
-                [SVProgressHUD showErrorWithStatus:@"请您先登录!"];
-            }];
-        } else {
-            MessageViewController *messageVc = [[MessageViewController alloc] init];
-            MessageNavigationController *nav = [[MessageNavigationController alloc] initWithRootViewController:messageVc];
-            [self presentViewController:nav animated:NO completion:nil];
-        }
+
     }
-    
 }
 
+#pragma mark - 点击头像按钮
+- (void)tapImageView {
+    [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+    if (![[DatabaseTool shared] getDefaultMember]) {
+        UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
+        UIViewController *loginVc = [board instantiateViewControllerWithIdentifier:@"LoginViewController"];
+        [self presentViewController:loginVc animated:NO completion:^{
+            [SVProgressHUD showErrorWithStatus:@"请您先登录!"];
+        }];
+    } else {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Third" bundle:nil];
+        UserNavigationController *userNav = [storyboard instantiateViewControllerWithIdentifier:@"UserNavigationController"];
+        [self presentViewController:userNav animated:NO completion:nil];
+    }
+}
 @end

@@ -68,61 +68,12 @@
     } else {
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];
     }
-
-    
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window makeKeyAndVisible];
-    
-    BOOL isConnectInternet = [[HttpTool shared] isConnectInternet];
-    if (isConnectInternet) { //连接的上网络
-        //查看是否拥有广告位图片
-        NSDictionary *adDict = [[NSUserDefaults standardUserDefaults] objectForKey:@"ad"];
-        if (adDict == nil) //第一次打开
-        {
-            /* 异步写入广告页信息 */
-            [[HttpTool shared] getAdvertisementDictionary];
-            /*跳转到主页面*/
-            MainTabBarController *mainTabBarC = [[MainTabBarController alloc] init];
-            LeftMenuViewController *leftMenuVc = [[LeftMenuViewController alloc] init];
-            RightMenuViewController *rightMenuVc = [[RightMenuViewController alloc] init];
-            self.drawerController = [[MMDrawerController alloc] initWithCenterViewController:mainTabBarC leftDrawerViewController:leftMenuVc rightDrawerViewController:rightMenuVc];
-            [self.drawerController setShowsShadow:NO];
-            [self.drawerController setMaximumRightDrawerWidth:200];
-            [self.drawerController setMaximumLeftDrawerWidth:200];
-            self.window.rootViewController = self.drawerController;
-        } else { //有广告页信息
-            if ([[adDict objectForKey:@"status"] isEqual:@1])
-            {
-                /* 显示广告页信息 */
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
-                AdvertisementViewController *adVc = [storyboard instantiateViewControllerWithIdentifier:@"AdvertisementViewController"];
-                adVc.imageUrl = [[adDict objectForKey:@"data"] objectForKey:@"img"];
-                self.window.rootViewController = adVc;
-            } else { //不显示广告页信息
-                /* 异步写入广告页信息 */
-                [[HttpTool shared] getAdvertisementDictionary];
-                /*跳转到主页面*/
-                MainTabBarController *mainTabBarC = [[MainTabBarController alloc] init];
-                LeftMenuViewController *leftMenuVc = [[LeftMenuViewController alloc] init];
-                RightMenuViewController *rightMenuVc = [[RightMenuViewController alloc] init];
-                self.drawerController = [[MMDrawerController alloc] initWithCenterViewController:mainTabBarC leftDrawerViewController:leftMenuVc rightDrawerViewController:rightMenuVc];
-                [self.drawerController setShowsShadow:NO];
-                [self.drawerController setMaximumRightDrawerWidth:200];
-                [self.drawerController setMaximumLeftDrawerWidth:200];
-                self.window.rootViewController = self.drawerController;
-            }
-        }
-    } else { //连接的不上网络
-        MainTabBarController *mainTabBarC = [[MainTabBarController alloc] init];
-        LeftMenuViewController *leftMenuVc = [[LeftMenuViewController alloc] init];
-        RightMenuViewController *rightMenuVc = [[RightMenuViewController alloc] init];
-        
-        self.drawerController = [[MMDrawerController alloc] initWithCenterViewController:mainTabBarC leftDrawerViewController:leftMenuVc rightDrawerViewController:rightMenuVc];
-        [self.drawerController setShowsShadow:NO];
-        [self.drawerController setMaximumRightDrawerWidth:200];
-        [self.drawerController setMaximumLeftDrawerWidth:200];
-        self.window.rootViewController = self.drawerController;
-    }
+    /*进入广告页*/
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
+    AdvertisementViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"AdvertisementViewController"];
+    self.window.rootViewController = vc;
     return YES;
 }
 
