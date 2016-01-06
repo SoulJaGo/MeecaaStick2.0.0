@@ -60,32 +60,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor colorWithRed:245/255.0 green:245/255.0 blue:245/255.0 alpha:1.0]];
+    [self.view setBackgroundColor:UIVIEW_BACKGROUND_COLOR];
     //设置Nav
     [self setupNav];
-    
-//    UseStickCheckViewController *useStickVC = [[UseStickCheckViewController alloc] init];
-//    useStickVC.homeVC = self;
-    
-    if ([[HttpTool shared] isConnectInternet]) {
-        //监测版本升级
-        [self checkLastVersion];
-    }
-    
-    //设置头像
-    [self setupIcon];
 
-    
-    /**
-     *	12 / 3 开始在首页添加scrollView
-     *
-     *	@return
-     */
     self.NavItemView.backgroundColor = NAVIGATIONBAR_BACKGROUND_COLOR;
     userDefaults = [NSUserDefaults standardUserDefaults];
     NSInteger myStyle = [userDefaults integerForKey:@"myInteger"];
-    NSLog(@"%ld",(long)myStyle);
-    
     if (myStyle == 1) {
         [self setUpStickScrollView];
     }else if (myStyle == 2){
@@ -100,7 +81,6 @@
     
     self.deviceListTV = [[UITableView alloc] initWithFrame:CGRectMake(self.view.center.x - 100, -240, 200, 158) style:UITableViewStylePlain];
     self.deviceListTV.scrollEnabled = NO;
-//    [self.deviceListTV setSeparatorInset:UIEdgeInsetsMake(0, -40, 0, 0)];
     self.deviceListTV.delegate = self;
     self.deviceListTV.dataSource = self;
     [self.view addSubview:self.deviceListTV];
@@ -128,11 +108,9 @@
 }
 
 - (void)setUpStickScrollView{
-    NSLog(@"设备设置为棒子");
     int myInteger = 1;
     userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setInteger:myInteger forKey:@"myInteger"];
-    
     [userDefaults synchronize];
     self.NavItemView.backgroundColor = [UIColor clearColor];
 
@@ -234,39 +212,6 @@
     UIStoryboard *board = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
     AddMedicalRecordViewController *vc = [board instantiateViewControllerWithIdentifier:@"AddMedicalRecordViewController"];
     [self presentViewController:vc animated:YES completion:nil];
-}
-/**
- *  监测版本升级
- */
-- (void)checkLastVersion {
-#warning -- ToDo
-    //获取版本信息数据
-//    NSMutableDictionary *versionDict = [[HttpTool shared] getLastVersion];
-//    
-//    NSNumber *status = [versionDict objectForKey:@"status"];
-//    
-//    if ([status isEqualToNumber:@0]) { //状态码为0表示不更新
-//        return;
-//    } else {
-//        
-//    }
-    
-}
-
-/**
- *  设置头像
- */
-- (void)setupIcon {
-    self.iconImageView.layer.borderColor = NAVIGATIONBAR_BACKGROUND_COLOR.CGColor;
-    self.iconImageView.layer.borderWidth = 5.0f;
-    NSMutableDictionary *memberInfoDict = [[DatabaseTool shared] getDefaultMember];
-    if (memberInfoDict != nil) {
-        if ([memberInfoDict[@"avatar"] isEqualToString:@""] || memberInfoDict == nil) {
-            [self.iconImageView setImage:[UIImage imageNamed:@"home_member_icon"]];
-        } else {
-            [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:memberInfoDict[@"avatar"]] placeholderImage:[UIImage imageNamed:@"home_member_icon"]];
-        }
-    }
 }
 
 /**

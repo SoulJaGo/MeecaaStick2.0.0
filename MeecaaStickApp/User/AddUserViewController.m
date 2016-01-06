@@ -88,10 +88,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    //监测当前网络状态
-    [[HttpTool shared] isConnectInternet];
-    
     self.navigationItem.title = @"添加家庭成员";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"login_back_icon"] style:UIBarButtonItemStyleDone target:self action:@selector(goBack)];
     [self setupChooseBtn];

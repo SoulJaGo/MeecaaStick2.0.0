@@ -39,6 +39,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,7 +57,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 4;
+    return 3;
 }
 
 
@@ -67,14 +68,14 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identify];
     }
     
-    NSArray *titles = @[@"关于米开",@"体温常识",@"使用指南",@"消息推送"];
-    NSArray *images = @[@"guanyumikai",@"tiwenxiaochangshi",@"synchro",@"set_about_icon"];
+    NSArray *titles = @[@"关于米开",@"体温常识",@"消息推送"];
+    NSArray *images = @[@"guanyumikai",@"tiwenxiaochangshi",@"set_about_icon"];
     [cell.contentView setBackgroundColor:MENU_BACKGROUND_COLOR];
     cell.textLabel.text = titles[indexPath.row];
     cell.imageView.image = [UIImage imageNamed:images[indexPath.row]];
     [cell.textLabel setTextColor:[UIColor colorWithRed:22/255.0 green:155/255.0 blue:213/255.0 alpha:1.0]];
     
-    if (indexPath.row == 3) {
+    if (indexPath.row == 2) {
         BOOL isAllowedNotification = [[GlobalTool shared] isAllowedNotification]; //是否开启了推送通知
         UISwitch *notiSwitch = [[UISwitch alloc] init];
         [notiSwitch setUserInteractionEnabled:NO];
@@ -92,7 +93,6 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
     if (indexPath.row == 0) { //关于米开
         AboutUsNavigationController *aboutUsNav = [storyboard instantiateViewControllerWithIdentifier:@"AboutUsNavigationController"];
@@ -100,7 +100,7 @@
     } else if (indexPath.row == 1) { //体温小常识
         KnowledgeNavigationController *knowledgeNav = [storyboard instantiateViewControllerWithIdentifier:@"KnowledgeNavigationController"];
         [self presentViewController:knowledgeNav animated:NO completion:nil];
-    } else if (indexPath.row == 3) { //跳转到设置
+    } else if (indexPath.row == 2) { //跳转到设置
         NSURL *url = [NSURL URLWithString:@"prefs:root=prefs:root=NOTIFICATIONS_ID"];
         if ([[UIApplication sharedApplication] canOpenURL:url]) {
             [[UIApplication sharedApplication] openURL:url];

@@ -11,6 +11,8 @@
 @interface ProblemViewController () <UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (nonatomic,strong) UILabel *placeholderLabel;
+@property (weak, nonatomic) IBOutlet UIButton *submitBtn;
+- (IBAction)onClickSubmit;
 @end
 
 @implementation ProblemViewController
@@ -31,8 +33,11 @@
     UILabel *placeholderLabel = [[UILabel alloc] init];
     placeholderLabel.frame = CGRectMake(0, 0, self.textView.bounds.size.width, 40);
     placeholderLabel.text = @"请输入你的问题，谢谢!";
+    [placeholderLabel setTextColor:[UIColor grayColor]];
     self.placeholderLabel = placeholderLabel;
     [self.textView addSubview:placeholderLabel];
+    
+    self.submitBtn.layer.cornerRadius = 8.0f;
 }
 
 /**
@@ -75,5 +80,24 @@
     // Pass the selected object to the new view controller.
 }
 */
+#pragma mark - 提交反馈问题
+- (IBAction)onClickSubmit {
+    //退出键盘
+    [self.view endEditing:YES];
+    if (self.textView.text.length > 200) { //判断输入字数
+        [SVProgressHUD showErrorWithStatus:@"请输入少于200个字符!"];
+        return;
+    } else if (self.textView.text.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请输入内容!"];
+        return;
+    } else {
+        [SVProgressHUD show];
+        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+        [[HttpTool shared] submitProblemWithText:self.textView.text];
+    }
+}
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
+}
 @end

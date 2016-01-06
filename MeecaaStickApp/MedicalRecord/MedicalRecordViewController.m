@@ -58,10 +58,6 @@
     self.diaryList = [NSMutableArray array];
     self.beanDiaryList = [NSMutableArray array];
     self.beanHistoryList = [NSMutableArray array];
-    //监测网络状态
-    if (![[HttpTool shared] isConnectInternet]) {
-        [SVProgressHUD showErrorWithStatus:@"网络不给力哦!"];
-    }
     //设置Nav
     [self setupNav];
     self.view.backgroundColor = UIVIEW_BACKGROUND_COLOR;
@@ -74,9 +70,7 @@
     if ([[DatabaseTool shared] getDefaultMember]) { //登陆状态
         if (![[DatabaseTool shared] getDefaultMemberLastDiary]) { //没有数据的时候（t_dairy 棒子）
             //请求网络读取数据
-            if ([[HttpTool shared] isConnectInternet]) {
-                [[HttpTool shared] getDefaultMemberDiaryInfoByPage:1];//手动写了一个0类型传进去，把所有棒子的记录传回来
-            }
+            [[HttpTool shared] getDefaultMemberDiaryInfoByPage:1];//手动写了一个0类型传进去，把所有棒子的记录传回来
         } else { //数据库有数据的时候
             self.diaryList = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:1];
             NSLog(@"diaryList %@",self.diaryList);
@@ -127,27 +121,13 @@
     self.page++;
     [self.tableView performClose:nil];
     
-    if ([[HttpTool shared] isConnectInternet]) {
-        NSMutableArray *array = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:self.page];
-        if (array == nil || array.count == 0) { //本地没有更多的数据了
-            [[HttpTool shared] getDefaultMemberDiaryInfoByPage:self.page];
-        } else { //本地有更多的数据
-            [self.diaryList addObjectsFromArray:array];
-            [self.tableView reloadData];
-            [self.tableView.footer endRefreshing];
-        }
-    } else {
-        NSMutableArray *array = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:self.page];
-        if (array != nil) {
-            [self.diaryList addObjectsFromArray:array];
-            [self.tableView reloadData];
-            [self.tableView.footer endRefreshing];
-        } else {
-            [self.tableView.footer endRefreshing];
-        }
-        
-        [SVProgressHUD showErrorWithStatus:@"网络不给力哦!"];
-        
+    NSMutableArray *array = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:self.page];
+    if (array == nil || array.count == 0) { //本地没有更多的数据了
+        [[HttpTool shared] getDefaultMemberDiaryInfoByPage:self.page];
+    } else { //本地有更多的数据
+        [self.diaryList addObjectsFromArray:array];
+        [self.tableView reloadData];
+        [self.tableView.footer endRefreshing];
     }
 }
 //棒子数据刷新页面
@@ -225,11 +205,7 @@
         if ([[DatabaseTool shared] getDefaultMember]) { //登陆状态
             if (![[DatabaseTool shared] getDefaultMemberLastBeanDiary]) { //没有数据的时候（豆子）
                 //请求网络读取数据
-                if ([[HttpTool shared] isConnectInternet]) {
-                    [[HttpTool shared] getDefaultMemberBeanDiaryInfoByPage:1];//手动写了一个1类型传进去，把所有豆子的记录传回来
-                }
-            } else { //数据库有数据的时候
-                self.beanDiaryList = [[DatabaseTool shared] getDefaultMemberBeanDiaryFromPage:1];
+                [[HttpTool shared] getDefaultMemberBeanDiaryInfoByPage:1];//手动写了一个1类型传进去，把所有豆子的记录传回来
             }
         }
 //        self.dataSource = self.beanDiaryList;

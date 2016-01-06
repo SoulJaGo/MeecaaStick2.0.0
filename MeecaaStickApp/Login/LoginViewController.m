@@ -151,67 +151,48 @@
         return;
     }
     
-    //检查网络状态
-    if (![[HttpTool shared] isConnectInternet]) {
-        [SVProgressHUD showErrorWithStatus:@"网络不给力哦!"];
-        return;
-    } else {
-        [SVProgressHUD show];
-        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
-        [[HttpTool shared] LoginWithPhoneNumber:self.phoneTextField.text Password:self.pwdTextField.text];
-    }
-
+    [SVProgressHUD show];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    [[HttpTool shared] LoginWithPhoneNumber:self.phoneTextField.text Password:self.pwdTextField.text];
 }
 
 - (IBAction)onClickLoginQQ {
-    if (![[HttpTool shared] isConnectInternet]) {
-        [SVProgressHUD showErrorWithStatus:@"网络不给力哦!"];
-    } else {
-        [SVProgressHUD show];
-        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
-        id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES allowCallback:YES authViewStyle:SSAuthViewStyleFullScreenPopup viewDelegate:nil authManagerViewDelegate:nil];
-        [ShareSDK getUserInfoWithType:ShareTypeQQSpace authOptions:authOptions result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
-            if (result) {
-                [[HttpTool shared] loginThirdPartyWithOpenId:[userInfo uid] NickName:[userInfo nickname] PlatForm:@"2" Avatar:[userInfo profileImage]];
-            } else {
-                [SVProgressHUD showErrorWithStatus:@"QQ授权失败!"];
-            }
-        }];
-    }
+    [SVProgressHUD show];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES allowCallback:YES authViewStyle:SSAuthViewStyleFullScreenPopup viewDelegate:nil authManagerViewDelegate:nil];
+    [ShareSDK getUserInfoWithType:ShareTypeQQSpace authOptions:authOptions result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
+        if (result) {
+            [[HttpTool shared] loginThirdPartyWithOpenId:[userInfo uid] NickName:[userInfo nickname] PlatForm:@"2" Avatar:[userInfo profileImage]];
+        } else {
+            [SVProgressHUD showErrorWithStatus:@"QQ授权失败!"];
+        }
+    }];
 }
 
 - (IBAction)onClickLoginWeiBo {
-    if (![[HttpTool shared] isConnectInternet]) {
-        [SVProgressHUD showErrorWithStatus:@"网络不给力哦!"];
-    } else {
-        [SVProgressHUD show];
-        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
-        id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES allowCallback:YES authViewStyle:SSAuthViewStyleFullScreenPopup viewDelegate:nil authManagerViewDelegate:nil];
-        [ShareSDK getUserInfoWithType:ShareTypeSinaWeibo authOptions:authOptions result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
-            if (result) {
-                [[HttpTool shared] loginThirdPartyWithOpenId:[userInfo uid] NickName:[userInfo nickname] PlatForm:@"1" Avatar:[userInfo profileImage]];
-            } else {
-                [SVProgressHUD showErrorWithStatus:@"新浪微博授权失败!"];
-            }
-        }];
-    }
+    [SVProgressHUD show];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES allowCallback:YES authViewStyle:SSAuthViewStyleFullScreenPopup viewDelegate:nil authManagerViewDelegate:nil];
+    [ShareSDK getUserInfoWithType:ShareTypeSinaWeibo authOptions:authOptions result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
+        if (result) {
+            [[HttpTool shared] loginThirdPartyWithOpenId:[userInfo uid] NickName:[userInfo nickname] PlatForm:@"1" Avatar:[userInfo profileImage]];
+        } else {
+            [SVProgressHUD showErrorWithStatus:@"新浪微博授权失败!"];
+        }
+    }];
 }
 
 - (IBAction)onClickLoginWeiXin {
-    if (![[HttpTool shared] isConnectInternet]) {
-        [SVProgressHUD showErrorWithStatus:@"网络不给力哦！"];
-    }else{
-        [SVProgressHUD show];
-        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
-        id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES allowCallback:YES authViewStyle:SSAuthViewStyleFullScreenPopup viewDelegate:nil authManagerViewDelegate:nil];
-        [ShareSDK getUserInfoWithType:ShareTypeWeixiTimeline authOptions:authOptions result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
-            if (result) {
-                [[HttpTool shared] loginThirdPartyWithOpenId:[userInfo uid] NickName:[userInfo nickname] PlatForm:@"3" Avatar:[userInfo profileImage]];
-            }else{
-                [SVProgressHUD showErrorWithStatus:@"微信授权失败！"];
-            }
-        }];
-    }
+    [SVProgressHUD show];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES allowCallback:YES authViewStyle:SSAuthViewStyleFullScreenPopup viewDelegate:nil authManagerViewDelegate:nil];
+    [ShareSDK getUserInfoWithType:ShareTypeWeixiTimeline authOptions:authOptions result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
+        if (result) {
+            [[HttpTool shared] loginThirdPartyWithOpenId:[userInfo uid] NickName:[userInfo nickname] PlatForm:@"3" Avatar:[userInfo profileImage]];
+        }else{
+            [SVProgressHUD showErrorWithStatus:@"微信授权失败！"];
+        }
+    }];
 }
 
 

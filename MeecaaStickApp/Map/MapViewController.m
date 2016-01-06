@@ -23,11 +23,6 @@
     // Do any additional setup after loading the view.
     //设置Nav
     [self setupNav];
-    
-    if (![[HttpTool shared] isConnectInternet]) {
-        [SVProgressHUD showErrorWithStatus:@"网络不给力哦!"];
-    }
-    
     if (![CLLocationManager locationServicesEnabled]) { //不允许地理定位
         [SVProgressHUD showErrorWithStatus:@"请开启地理位置!"];
     }

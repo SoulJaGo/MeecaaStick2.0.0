@@ -18,17 +18,9 @@
  */
 - (void)getVersion;
 /**
- *  监测是否连上网络
- */
-- (BOOL)isConnectInternet;
-/**
  *  获取广告页的数据
  */
 - (void)getAdvertisementDictionary;
-/**
- *  监测最新的版本
- */
-- (NSMutableDictionary *)getLastVersion;
 /**
  *  手机号码以及密码登陆
  */
@@ -133,4 +125,6 @@
  */
 - (void)removeBeanDiary:(NSString *)diaryId;
 
+#pragma mark - 提交问题反馈
+- (void)submitProblemWithText:(NSString *)text;
 @end

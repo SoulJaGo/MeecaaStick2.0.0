@@ -290,10 +290,17 @@
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PC8-FZ-Bcd">
                                 <rect key="frame" x="51" y="294" width="273" height="40"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.80000000000000004" blue="0.85490196080000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="aE7-jg-k1h"/>
                                 </constraints>
-                                <state key="normal" title="提交"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="提交">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onClickSubmit" destination="oDd-3r-cUQ" eventType="touchUpInside" id="Ji8-d3-0Rc"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -309,6 +316,7 @@
                     <navigationItem key="navigationItem" id="EHn-Am-cRr"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="submitBtn" destination="PC8-FZ-Bcd" id="kiP-hF-Cmm"/>
                         <outlet property="textView" destination="LEf-0D-tfY" id="WFx-MM-Ueu"/>
                     </connections>
                 </viewController>

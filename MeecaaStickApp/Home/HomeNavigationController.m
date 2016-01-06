@@ -12,9 +12,7 @@
 @implementation HomeNavigationController
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.tabBarController.tabBar setHidden:NO];
     [self.tabBarController setSelectedViewController:self];
-    
     self.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"首页" image:nil selectedImage:nil];
     [self.navigationBar setBackgroundImage:[[GlobalTool shared] createImageWithColor:NAVIGATIONBAR_BACKGROUND_COLOR]  forBarMetrics:UIBarMetricsDefault];
     

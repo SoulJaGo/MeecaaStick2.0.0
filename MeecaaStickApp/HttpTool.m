@@ -34,6 +34,7 @@ typedef enum
 - (AFHTTPRequestOperationManager *)manager {
     if (_manager == nil) {
         _manager = [AFHTTPRequestOperationManager manager];
+        _manager.requestSerializer.timeoutInterval = 5.0;
     }
     return _manager;
 }
@@ -58,21 +59,6 @@ typedef enum
 - (id)init {
     self = [super init];
     return self;
-}
-
-/**
- *  监测是否连上网络
- */
-- (BOOL)isConnectInternet
-{
-    BOOL isConnectInternet;
-//    Reachability *reach = [Reachability reachabilityWithHostName:HOST];
-//    if (reach.isReachable == YES) {
-//        isConnectInternet = YES;
-//    } else {
-//        isConnectInternet = NO;
-//    }
-    return YES;
 }
 
 /**
@@ -1126,6 +1112,32 @@ typedef enum
         NSLog(@"%@",error);
         [SVProgressHUD dismiss];
         [SVProgressHUD showErrorWithStatus:@"网络不给力哦！"];
+    }];
+}
+
+#pragma mark - 提交问题反馈
+- (void)submitProblemWithText:(NSString *)text {
+    //发送请求数据
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    NSMutableDictionary *memberDict = [[DatabaseTool shared] getDefaultMember];
+    params[@"member_id"] = [NSString stringWithFormat:@"%@",[memberDict objectForKey:@"id"]];
+    params[@"messages"] = text;
+    params[@"version"] = VERSION;
+    params[@"device_brand"] = @"apple";
+    params[@"device_model"] = [[GlobalTool shared] deviceString];
+    params[@"device_system"] = @"ios";
+    params[@"device_version"] = [NSString stringWithFormat:@"%.1f",[[UIDevice currentDevice].systemVersion floatValue]];
+    NSString *urlStr = [HOST stringByAppendingString:@"api.php?m=open&c=meecaa&a=messageAdd"];
+    [self.manager POST:urlStr parameters:params success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSLog(@"%@",responseObject);
+        if ([responseObject[@"status"] isEqual:@0]) {
+            [SVProgressHUD showErrorWithStatus:[responseObject objectForKey:@"msg"]];
+        } else {
+            [SVProgressHUD showSuccessWithStatus:@"提交成功!"];
+        }
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+        [SVProgressHUD showErrorWithStatus:@"网络不给力哦!"];
     }];
 }
 

@@ -149,32 +149,26 @@
  *  提交
  */
 - (IBAction)onClickSubmit {
-    if (![[HttpTool shared] isConnectInternet]) {
-        [SVProgressHUD showErrorWithStatus:@"网络不给力哦!"];
+    if ([self.phoneTextField.text isEqualToString:@""]) {
+        [SVProgressHUD showErrorWithStatus:@"此号码还没有注册!"];
         return;
+    } else if (![[GlobalTool shared] isMobileNumberClassification:self.phoneTextField.text]) {
+        [SVProgressHUD showErrorWithStatus:@"此号码还没有注册!"];
+        return;
+    } else if ([self.codeTextField.text isEqualToString:@""]) {
+        [SVProgressHUD showErrorWithStatus:@"请填写验证码！"];
+        return;
+    } else if ([self.pwdTextField.text isEqualToString:@""]) {
+        [SVProgressHUD showErrorWithStatus:@"请填写密码！"];
+    } else if (self.pwdTextField.text.length <= 1) {
+        [SVProgressHUD showErrorWithStatus:@"请填写不少于1位的密码！"];
+        return;
+    } else if (self.pwdTextField.text.length > 10) {
+        [SVProgressHUD showErrorWithStatus:@"请填写少于10位的密码！"];
     } else {
-        if ([self.phoneTextField.text isEqualToString:@""]) {
-            [SVProgressHUD showErrorWithStatus:@"此号码还没有注册!"];
-            return;
-        } else if (![[GlobalTool shared] isMobileNumberClassification:self.phoneTextField.text]) {
-            [SVProgressHUD showErrorWithStatus:@"此号码还没有注册!"];
-            return;
-        } else if ([self.codeTextField.text isEqualToString:@""]) {
-            [SVProgressHUD showErrorWithStatus:@"请填写验证码！"];
-            return;
-        } else if ([self.pwdTextField.text isEqualToString:@""]) {
-            [SVProgressHUD showErrorWithStatus:@"请填写密码！"];
-        } else if (self.pwdTextField.text.length <= 1) {
-            [SVProgressHUD showErrorWithStatus:@"请填写不少于1位的密码！"];
-            return;
-        } else if (self.pwdTextField.text.length > 10) {
-            [SVProgressHUD showErrorWithStatus:@"请填写少于10位的密码！"];
-        } else {
-            [SVProgressHUD show];
-            [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
-            [[HttpTool shared] resetAccountPasswordByPhoneNumber:self.phoneTextField.text NewPwd:self.pwdTextField.text Code:self.codeTextField.text];
-            
-        }
+        [SVProgressHUD show];
+        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+        [[HttpTool shared] resetAccountPasswordByPhoneNumber:self.phoneTextField.text NewPwd:self.pwdTextField.text Code:self.codeTextField.text];
     }
 }
 

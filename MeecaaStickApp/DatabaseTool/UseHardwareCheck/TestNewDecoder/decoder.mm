@@ -556,8 +556,8 @@ void Decoder::XcorrSymbol(INT32* xcorrResult, INT16* a, char* b, INT32 aSize, IN
 
 void Decoder::FindSyncPeak(INT32* maxOrigIndex, INT32* minOrigIndex)
 {
-    INT32 maxXcorrIndex;
-    INT32 minXcorrIndex;
+    INT32 maxXcorrIndex = 0;
+    INT32 minXcorrIndex = 0;
     
     INT32 maxValue;
     INT32 minValue;

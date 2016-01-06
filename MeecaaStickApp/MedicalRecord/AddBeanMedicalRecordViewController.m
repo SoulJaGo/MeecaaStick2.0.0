@@ -91,11 +91,6 @@
  *  保存
  */
 - (void)onClickSave {
-    if (![[HttpTool shared] isConnectInternet]) {
-        [SVProgressHUD showErrorWithStatus:@"网络不给力哦!"];
-        return;
-    }
-    
     //取出默认用户
     NSDictionary *defaultMember = [[DatabaseTool shared]  getDefaultMember];
     if (defaultMember == nil) {

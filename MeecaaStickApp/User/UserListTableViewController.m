@@ -17,11 +17,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //监测当前网络状态
-    BOOL isConnectInternet = [[HttpTool shared] isConnectInternet];
-    if (!isConnectInternet) {
-        [SVProgressHUD showErrorWithStatus:@"网络不给力哦！"];
-    }
     [self setupNav];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     

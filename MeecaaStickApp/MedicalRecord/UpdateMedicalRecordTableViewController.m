@@ -91,10 +91,6 @@
  *  保存
  */
 - (void)onClickSave {
-    if (![[HttpTool shared] isConnectInternet]) {
-        [SVProgressHUD showErrorWithStatus:@"网络不给力哦!"];
-        return;
-    }
     //取出默认用户的测温的id ！！！
     NSString *tid = [NSString stringWithFormat:@"%@",self.detailMedicalRecordInfo[@"tid"]];
     //获取填写的时间

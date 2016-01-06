@@ -8,17 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		6E2AFB961C0D5A63005BD33A /* UpdateMedicalRecordTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2AFB951C0D5A63005BD33A /* UpdateMedicalRecordTableViewController.m */; };
-		6E51EABD1C1179C400975D95 /* UseBeanCheckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E51EABC1C1179C400975D95 /* UseBeanCheckViewController.m */; };
-		6E51EAC01C1179F500975D95 /* UseBeanCheckNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E51EABF1C1179F500975D95 /* UseBeanCheckNavigationController.m */; };
 		6E539BC71C0C651A000F34DA /* Address.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E539BC61C0C651A000F34DA /* Address.plist */; };
 		6E5D74BC1C0C4B430099A486 /* MedicalRecordDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5D74BB1C0C4B430099A486 /* MedicalRecordDetailViewController.m */; };
-		6E6ACDA01C16860300B2BB4D /* ZX.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6ACD9C1C16860300B2BB4D /* ZX.m */; };
-		6E6ACDA11C16860300B2BB4D /* ZHPickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6ACD9E1C16860300B2BB4D /* ZHPickView.m */; };
-		6E6ACDA41C16A11300B2BB4D /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6ACDA31C16A11300B2BB4D /* DACircularProgressView.m */; };
 		6E6ACDAB1C16DE7600B2BB4D /* 多组数据.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E6ACDA91C16DE7600B2BB4D /* 多组数据.plist */; };
 		6E6ACDAC1C16DE7600B2BB4D /* TemperatureRecord.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E6ACDAA1C16DE7600B2BB4D /* TemperatureRecord.plist */; };
-		6E6ACDAF1C18057300B2BB4D /* UseStickCheckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6ACDAE1C18057300B2BB4D /* UseStickCheckViewController.m */; };
-		6E93F2B91C195BCC00B0E4E5 /* LargerCircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E93F2B81C195BCC00B0E4E5 /* LargerCircularProgressView.m */; };
 		6E9E64B01C06E96F002AF88A /* Third.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E9E64AF1C06E96F002AF88A /* Third.storyboard */; };
 		6E9E64B41C06EB77002AF88A /* UserNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9E64B31C06EB77002AF88A /* UserNavigationController.m */; };
 		6E9E64B71C06EBA3002AF88A /* UserListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9E64B61C06EBA3002AF88A /* UserListTableViewController.m */; };
@@ -65,6 +58,17 @@
 		9628BD6F1C1986DE006A53D0 /* UIScrollView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 9628BD5A1C1986DE006A53D0 /* UIScrollView+MJExtension.m */; };
 		9628BD701C1986DE006A53D0 /* UIScrollView+MJRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 9628BD5C1C1986DE006A53D0 /* UIScrollView+MJRefresh.m */; };
 		9628BD711C1986DE006A53D0 /* UIView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 9628BD5E1C1986DE006A53D0 /* UIView+MJExtension.m */; };
+		96314BD91C3CF31F009C53AD /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96314BBF1C3CF31F009C53AD /* DACircularProgressView.m */; };
+		96314BDB1C3CF31F009C53AD /* LargerCircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96314BC51C3CF31F009C53AD /* LargerCircularProgressView.m */; };
+		96314BDF1C3CF31F009C53AD /* UseBeanCheckNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96314BCC1C3CF31F009C53AD /* UseBeanCheckNavigationController.m */; };
+		96314BE01C3CF31F009C53AD /* UseBeanCheckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96314BCE1C3CF31F009C53AD /* UseBeanCheckViewController.m */; };
+		96314BE31C3CF31F009C53AD /* UseStickCheckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96314BD41C3CF31F009C53AD /* UseStickCheckViewController.m */; };
+		96314BE41C3CF31F009C53AD /* ZHPickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96314BD61C3CF31F009C53AD /* ZHPickView.m */; };
+		96314BE51C3CF31F009C53AD /* ZX.m in Sources */ = {isa = PBXBuildFile; fileRef = 96314BD81C3CF31F009C53AD /* ZX.m */; };
+		96314BEC1C3CF515009C53AD /* decoder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96314BE91C3CF515009C53AD /* decoder.mm */; };
+		96314BF21C3CF51C009C53AD /* symbol.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96314BEF1C3CF51C009C53AD /* symbol.mm */; };
+		96314BF31C3CF51C009C53AD /* TestDecoder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96314BF11C3CF51C009C53AD /* TestDecoder.mm */; };
+		96314BF61C3CFD4C009C53AD /* templib_ios_v531_151214.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96314BF41C3CFD4C009C53AD /* templib_ios_v531_151214.a */; };
 		9635C4301C0D2E1100D3C976 /* SymptomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9635C42F1C0D2E1100D3C976 /* SymptomCell.m */; };
 		9635C4331C0D510100D3C976 /* DescriptionLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9635C4321C0D510100D3C976 /* DescriptionLabelCell.m */; };
 		9635C4361C0D589100D3C976 /* PhotosCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9635C4351C0D589100D3C976 /* PhotosCell.m */; };
@@ -98,13 +102,7 @@
 		968D65771C11293800B67D7A /* CXTapDetectingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 968D656D1C11293800B67D7A /* CXTapDetectingImageView.m */; };
 		968D65781C11293800B67D7A /* CXTapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 968D656F1C11293800B67D7A /* CXTapDetectingView.m */; };
 		968D65791C11293800B67D7A /* CXZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 968D65711C11293800B67D7A /* CXZoomingScrollView.m */; };
-		969860A91C07019C00B4AE16 /* UseHardwareCheckNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 969860A81C07019C00B4AE16 /* UseHardwareCheckNavigationController.m */; };
 		969860AD1C070E5900B4AE16 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 969860AC1C070E5900B4AE16 /* MessageViewController.m */; };
-		969D63671C06B37200B70B36 /* UseHardwareCheckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 969D63661C06B37200B70B36 /* UseHardwareCheckViewController.m */; };
-		969D636A1C06B38000B70B36 /* libFunction.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 969D63691C06B38000B70B36 /* libFunction.a */; };
-		969D63881C06B95000B70B36 /* decoder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 969D63821C06B95000B70B36 /* decoder.mm */; };
-		969D63891C06B95000B70B36 /* symbol.mm in Sources */ = {isa = PBXBuildFile; fileRef = 969D63841C06B95000B70B36 /* symbol.mm */; };
-		969D638A1C06B95000B70B36 /* TestDecoder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 969D63871C06B95000B70B36 /* TestDecoder.mm */; };
 		969D638C1C06BC7B00B70B36 /* once_100ms_on_100ms_off.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 969D638B1C06BC7B00B70B36 /* once_100ms_on_100ms_off.mp3 */; };
 		96A9946E1C03027100AA1A82 /* CopyConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96A994411C03027100AA1A82 /* CopyConnection.framework */; };
 		96A9946F1C03027100AA1A82 /* FacebookConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96A994421C03027100AA1A82 /* FacebookConnection.framework */; };
@@ -209,25 +207,11 @@
 /* Begin PBXFileReference section */
 		6E2AFB941C0D5A63005BD33A /* UpdateMedicalRecordTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateMedicalRecordTableViewController.h; sourceTree = "<group>"; };
 		6E2AFB951C0D5A63005BD33A /* UpdateMedicalRecordTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateMedicalRecordTableViewController.m; sourceTree = "<group>"; };
-		6E51EABB1C1179C400975D95 /* UseBeanCheckViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UseBeanCheckViewController.h; sourceTree = "<group>"; };
-		6E51EABC1C1179C400975D95 /* UseBeanCheckViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UseBeanCheckViewController.m; sourceTree = "<group>"; };
-		6E51EABE1C1179F500975D95 /* UseBeanCheckNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UseBeanCheckNavigationController.h; sourceTree = "<group>"; };
-		6E51EABF1C1179F500975D95 /* UseBeanCheckNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UseBeanCheckNavigationController.m; sourceTree = "<group>"; };
 		6E539BC61C0C651A000F34DA /* Address.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Address.plist; sourceTree = "<group>"; };
 		6E5D74BA1C0C4B430099A486 /* MedicalRecordDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MedicalRecordDetailViewController.h; sourceTree = "<group>"; };
 		6E5D74BB1C0C4B430099A486 /* MedicalRecordDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MedicalRecordDetailViewController.m; sourceTree = "<group>"; };
-		6E6ACD9C1C16860300B2BB4D /* ZX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZX.m; sourceTree = "<group>"; };
-		6E6ACD9D1C16860300B2BB4D /* ZHPickView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZHPickView.h; sourceTree = "<group>"; };
-		6E6ACD9E1C16860300B2BB4D /* ZHPickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZHPickView.m; sourceTree = "<group>"; };
-		6E6ACD9F1C16860300B2BB4D /* ZX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZX.h; sourceTree = "<group>"; };
-		6E6ACDA21C16A11300B2BB4D /* DACircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DACircularProgressView.h; sourceTree = "<group>"; };
-		6E6ACDA31C16A11300B2BB4D /* DACircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DACircularProgressView.m; sourceTree = "<group>"; };
 		6E6ACDA91C16DE7600B2BB4D /* 多组数据.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "多组数据.plist"; sourceTree = "<group>"; };
 		6E6ACDAA1C16DE7600B2BB4D /* TemperatureRecord.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TemperatureRecord.plist; sourceTree = "<group>"; };
-		6E6ACDAD1C18057300B2BB4D /* UseStickCheckViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UseStickCheckViewController.h; sourceTree = "<group>"; };
-		6E6ACDAE1C18057300B2BB4D /* UseStickCheckViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UseStickCheckViewController.m; sourceTree = "<group>"; };
-		6E93F2B71C195BCC00B0E4E5 /* LargerCircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LargerCircularProgressView.h; sourceTree = "<group>"; };
-		6E93F2B81C195BCC00B0E4E5 /* LargerCircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LargerCircularProgressView.m; sourceTree = "<group>"; };
 		6E9E64AF1C06E96F002AF88A /* Third.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Third.storyboard; sourceTree = "<group>"; };
 		6E9E64B21C06EB77002AF88A /* UserNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNavigationController.h; sourceTree = "<group>"; };
 		6E9E64B31C06EB77002AF88A /* UserNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserNavigationController.m; sourceTree = "<group>"; };
@@ -321,6 +305,29 @@
 		9628BD5C1C1986DE006A53D0 /* UIScrollView+MJRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MJRefresh.m"; sourceTree = "<group>"; };
 		9628BD5D1C1986DE006A53D0 /* UIView+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MJExtension.h"; sourceTree = "<group>"; };
 		9628BD5E1C1986DE006A53D0 /* UIView+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MJExtension.m"; sourceTree = "<group>"; };
+		96314BBE1C3CF31F009C53AD /* DACircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DACircularProgressView.h; sourceTree = "<group>"; };
+		96314BBF1C3CF31F009C53AD /* DACircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DACircularProgressView.m; sourceTree = "<group>"; };
+		96314BC41C3CF31F009C53AD /* LargerCircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LargerCircularProgressView.h; sourceTree = "<group>"; };
+		96314BC51C3CF31F009C53AD /* LargerCircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LargerCircularProgressView.m; sourceTree = "<group>"; };
+		96314BCB1C3CF31F009C53AD /* UseBeanCheckNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UseBeanCheckNavigationController.h; sourceTree = "<group>"; };
+		96314BCC1C3CF31F009C53AD /* UseBeanCheckNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UseBeanCheckNavigationController.m; sourceTree = "<group>"; };
+		96314BCD1C3CF31F009C53AD /* UseBeanCheckViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UseBeanCheckViewController.h; sourceTree = "<group>"; };
+		96314BCE1C3CF31F009C53AD /* UseBeanCheckViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UseBeanCheckViewController.m; sourceTree = "<group>"; };
+		96314BD31C3CF31F009C53AD /* UseStickCheckViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UseStickCheckViewController.h; sourceTree = "<group>"; };
+		96314BD41C3CF31F009C53AD /* UseStickCheckViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UseStickCheckViewController.m; sourceTree = "<group>"; };
+		96314BD51C3CF31F009C53AD /* ZHPickView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZHPickView.h; sourceTree = "<group>"; };
+		96314BD61C3CF31F009C53AD /* ZHPickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZHPickView.m; sourceTree = "<group>"; };
+		96314BD71C3CF31F009C53AD /* ZX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZX.h; sourceTree = "<group>"; };
+		96314BD81C3CF31F009C53AD /* ZX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZX.m; sourceTree = "<group>"; };
+		96314BE71C3CF515009C53AD /* decoder_def.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = decoder_def.h; sourceTree = "<group>"; };
+		96314BE81C3CF515009C53AD /* decoder.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = decoder.hpp; sourceTree = "<group>"; };
+		96314BE91C3CF515009C53AD /* decoder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = decoder.mm; sourceTree = "<group>"; };
+		96314BEE1C3CF51C009C53AD /* symbol.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = symbol.hpp; sourceTree = "<group>"; };
+		96314BEF1C3CF51C009C53AD /* symbol.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = symbol.mm; sourceTree = "<group>"; };
+		96314BF01C3CF51C009C53AD /* TestDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestDecoder.h; sourceTree = "<group>"; };
+		96314BF11C3CF51C009C53AD /* TestDecoder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TestDecoder.mm; sourceTree = "<group>"; };
+		96314BF41C3CFD4C009C53AD /* templib_ios_v531_151214.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = templib_ios_v531_151214.a; sourceTree = "<group>"; };
+		96314BF51C3CFD4C009C53AD /* templib_ios_v531_151214.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = templib_ios_v531_151214.h; sourceTree = "<group>"; };
 		9635C42E1C0D2E1100D3C976 /* SymptomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SymptomCell.h; sourceTree = "<group>"; };
 		9635C42F1C0D2E1100D3C976 /* SymptomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SymptomCell.m; sourceTree = "<group>"; };
 		9635C4311C0D510100D3C976 /* DescriptionLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DescriptionLabelCell.h; sourceTree = "<group>"; };
@@ -390,21 +397,8 @@
 		968D656F1C11293800B67D7A /* CXTapDetectingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXTapDetectingView.m; sourceTree = "<group>"; };
 		968D65701C11293800B67D7A /* CXZoomingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXZoomingScrollView.h; sourceTree = "<group>"; };
 		968D65711C11293800B67D7A /* CXZoomingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXZoomingScrollView.m; sourceTree = "<group>"; };
-		969860A71C07019C00B4AE16 /* UseHardwareCheckNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UseHardwareCheckNavigationController.h; sourceTree = "<group>"; };
-		969860A81C07019C00B4AE16 /* UseHardwareCheckNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UseHardwareCheckNavigationController.m; sourceTree = "<group>"; };
 		969860AB1C070E5900B4AE16 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		969860AC1C070E5900B4AE16 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
-		969D63651C06B37200B70B36 /* UseHardwareCheckViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UseHardwareCheckViewController.h; sourceTree = "<group>"; };
-		969D63661C06B37200B70B36 /* UseHardwareCheckViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UseHardwareCheckViewController.m; sourceTree = "<group>"; };
-		969D63681C06B38000B70B36 /* Function.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Function.h; sourceTree = "<group>"; };
-		969D63691C06B38000B70B36 /* libFunction.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFunction.a; sourceTree = "<group>"; };
-		969D63811C06B95000B70B36 /* decoder_def.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = decoder_def.h; sourceTree = "<group>"; };
-		969D63821C06B95000B70B36 /* decoder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = decoder.mm; sourceTree = "<group>"; };
-		969D63831C06B95000B70B36 /* decoder.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = decoder.hpp; sourceTree = "<group>"; };
-		969D63841C06B95000B70B36 /* symbol.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = symbol.mm; sourceTree = "<group>"; };
-		969D63851C06B95000B70B36 /* symbol.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = symbol.hpp; sourceTree = "<group>"; };
-		969D63861C06B95000B70B36 /* TestDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestDecoder.h; sourceTree = "<group>"; };
-		969D63871C06B95000B70B36 /* TestDecoder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TestDecoder.mm; sourceTree = "<group>"; };
 		969D638B1C06BC7B00B70B36 /* once_100ms_on_100ms_off.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = once_100ms_on_100ms_off.mp3; sourceTree = "<group>"; };
 		96A994411C03027100AA1A82 /* CopyConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CopyConnection.framework; sourceTree = "<group>"; };
 		96A994421C03027100AA1A82 /* FacebookConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookConnection.framework; sourceTree = "<group>"; };
@@ -585,7 +579,6 @@
 				96A994991C0303C600AA1A82 /* ImageIO.framework in Frameworks */,
 				96A994971C0303B600AA1A82 /* CoreText.framework in Frameworks */,
 				96A994951C0303AB00AA1A82 /* libstdc++.tbd in Frameworks */,
-				969D636A1C06B38000B70B36 /* libFunction.a in Frameworks */,
 				96A994931C03039500AA1A82 /* JavaScriptCore.framework in Frameworks */,
 				96A994911C03038900AA1A82 /* Security.framework in Frameworks */,
 				96A9948F1C03037E00AA1A82 /* libz.1.2.5.tbd in Frameworks */,
@@ -607,6 +600,7 @@
 				96A994751C03027100AA1A82 /* TencentWeiboConnection.framework in Frameworks */,
 				96A994811C03027100AA1A82 /* libWeChatSDK.a in Frameworks */,
 				96A994851C03027100AA1A82 /* ShareSDKShareActionSheet.framework in Frameworks */,
+				96314BF61C3CFD4C009C53AD /* templib_ios_v531_151214.a in Frameworks */,
 				96A9947F1C03027100AA1A82 /* libWeiboSDK.a in Frameworks */,
 				96A994821C03027100AA1A82 /* ShareSDK.framework in Frameworks */,
 				96A994771C03027100AA1A82 /* WeChatConnection.framework in Frameworks */,
@@ -792,6 +786,45 @@
 			path = Header;
 			sourceTree = "<group>";
 		};
+		96314BBD1C3CF31F009C53AD /* UseHardwareCheck */ = {
+			isa = PBXGroup;
+			children = (
+				96314BE61C3CF3C3009C53AD /* TestNewDecoder */,
+				96314BBE1C3CF31F009C53AD /* DACircularProgressView.h */,
+				96314BBF1C3CF31F009C53AD /* DACircularProgressView.m */,
+				96314BC41C3CF31F009C53AD /* LargerCircularProgressView.h */,
+				96314BC51C3CF31F009C53AD /* LargerCircularProgressView.m */,
+				96314BCB1C3CF31F009C53AD /* UseBeanCheckNavigationController.h */,
+				96314BCC1C3CF31F009C53AD /* UseBeanCheckNavigationController.m */,
+				96314BCD1C3CF31F009C53AD /* UseBeanCheckViewController.h */,
+				96314BCE1C3CF31F009C53AD /* UseBeanCheckViewController.m */,
+				96314BD31C3CF31F009C53AD /* UseStickCheckViewController.h */,
+				96314BD41C3CF31F009C53AD /* UseStickCheckViewController.m */,
+				96314BD51C3CF31F009C53AD /* ZHPickView.h */,
+				96314BD61C3CF31F009C53AD /* ZHPickView.m */,
+				96314BD71C3CF31F009C53AD /* ZX.h */,
+				96314BD81C3CF31F009C53AD /* ZX.m */,
+			);
+			name = UseHardwareCheck;
+			path = DatabaseTool/UseHardwareCheck;
+			sourceTree = "<group>";
+		};
+		96314BE61C3CF3C3009C53AD /* TestNewDecoder */ = {
+			isa = PBXGroup;
+			children = (
+				96314BF41C3CFD4C009C53AD /* templib_ios_v531_151214.a */,
+				96314BF51C3CFD4C009C53AD /* templib_ios_v531_151214.h */,
+				96314BEE1C3CF51C009C53AD /* symbol.hpp */,
+				96314BEF1C3CF51C009C53AD /* symbol.mm */,
+				96314BF01C3CF51C009C53AD /* TestDecoder.h */,
+				96314BF11C3CF51C009C53AD /* TestDecoder.mm */,
+				96314BE71C3CF515009C53AD /* decoder_def.h */,
+				96314BE81C3CF515009C53AD /* decoder.hpp */,
+				96314BE91C3CF515009C53AD /* decoder.mm */,
+			);
+			path = TestNewDecoder;
+			sourceTree = "<group>";
+		};
 		963E59E41C03FEF0004A6377 /* SVProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -854,34 +887,6 @@
 			path = GlobalTool;
 			sourceTree = "<group>";
 		};
-		9650FA9D1C06A56B001AA8FE /* UseHardwareCheck */ = {
-			isa = PBXGroup;
-			children = (
-				969D63801C06B92800B70B36 /* TestDecoder */,
-				969D63681C06B38000B70B36 /* Function.h */,
-				969D63691C06B38000B70B36 /* libFunction.a */,
-				969860A71C07019C00B4AE16 /* UseHardwareCheckNavigationController.h */,
-				969860A81C07019C00B4AE16 /* UseHardwareCheckNavigationController.m */,
-				969D63651C06B37200B70B36 /* UseHardwareCheckViewController.h */,
-				969D63661C06B37200B70B36 /* UseHardwareCheckViewController.m */,
-				6E6ACDAD1C18057300B2BB4D /* UseStickCheckViewController.h */,
-				6E6ACDAE1C18057300B2BB4D /* UseStickCheckViewController.m */,
-				6E51EABE1C1179F500975D95 /* UseBeanCheckNavigationController.h */,
-				6E51EABF1C1179F500975D95 /* UseBeanCheckNavigationController.m */,
-				6E51EABB1C1179C400975D95 /* UseBeanCheckViewController.h */,
-				6E51EABC1C1179C400975D95 /* UseBeanCheckViewController.m */,
-				6E6ACD9F1C16860300B2BB4D /* ZX.h */,
-				6E6ACD9C1C16860300B2BB4D /* ZX.m */,
-				6E6ACD9D1C16860300B2BB4D /* ZHPickView.h */,
-				6E6ACD9E1C16860300B2BB4D /* ZHPickView.m */,
-				6E6ACDA21C16A11300B2BB4D /* DACircularProgressView.h */,
-				6E6ACDA31C16A11300B2BB4D /* DACircularProgressView.m */,
-				6E93F2B71C195BCC00B0E4E5 /* LargerCircularProgressView.h */,
-				6E93F2B81C195BCC00B0E4E5 /* LargerCircularProgressView.m */,
-			);
-			path = UseHardwareCheck;
-			sourceTree = "<group>";
-		};
 		966ACF411C166D150023E7C7 /* Advertisement */ = {
 			isa = PBXGroup;
 			children = (
@@ -936,20 +941,6 @@
 				967F356F1C0FE57400589B8B /* MessageNavigationController.m */,
 			);
 			path = Message;
-			sourceTree = "<group>";
-		};
-		969D63801C06B92800B70B36 /* TestDecoder */ = {
-			isa = PBXGroup;
-			children = (
-				969D63811C06B95000B70B36 /* decoder_def.h */,
-				969D63821C06B95000B70B36 /* decoder.mm */,
-				969D63831C06B95000B70B36 /* decoder.hpp */,
-				969D63841C06B95000B70B36 /* symbol.mm */,
-				969D63851C06B95000B70B36 /* symbol.hpp */,
-				969D63861C06B95000B70B36 /* TestDecoder.h */,
-				969D63871C06B95000B70B36 /* TestDecoder.mm */,
-			);
-			name = TestDecoder;
 			sourceTree = "<group>";
 		};
 		96A9943F1C03027100AA1A82 /* ShareSDK */ = {
@@ -1294,10 +1285,10 @@
 		96F117201BFC5AF800C51B32 /* MeecaaStickApp */ = {
 			isa = PBXGroup;
 			children = (
+				96314BBD1C3CF31F009C53AD /* UseHardwareCheck */,
 				966ACF411C166D150023E7C7 /* Advertisement */,
 				967F35711C0FE77C00589B8B /* Problem */,
 				969860AA1C070E2D00B4AE16 /* Message */,
-				9650FA9D1C06A56B001AA8FE /* UseHardwareCheck */,
 				96AA3CFC1C059D2000908F23 /* Map */,
 				96AA3CF51C05915C00908F23 /* Doctor */,
 				96AA3CE61C058CD900908F23 /* Knowledge */,
@@ -1488,13 +1479,12 @@
 				96F117261BFC5AF800C51B32 /* AppDelegate.m in Sources */,
 				96175A9A1BFC710200650761 /* AFSecurityPolicy.m in Sources */,
 				6E2AFB961C0D5A63005BD33A /* UpdateMedicalRecordTableViewController.m in Sources */,
-				6E51EABD1C1179C400975D95 /* UseBeanCheckViewController.m in Sources */,
+				96314BE01C3CF31F009C53AD /* UseBeanCheckViewController.m in Sources */,
 				96F117591BFC681400C51B32 /* Reachability.m in Sources */,
 				96AA3CEC1C058D2E00908F23 /* KnowledgeViewController.m in Sources */,
 				96AA3CE91C058D1C00908F23 /* KnowledgeNavigationController.m in Sources */,
 				96CBAC751C0458A4002CBE69 /* REFrostedViewController.m in Sources */,
 				96D8596C1C05B79D00C99070 /* SDWebImageDownloaderOperation.m in Sources */,
-				6E93F2B91C195BCC00B0E4E5 /* LargerCircularProgressView.m in Sources */,
 				96D859751C05B79D00C99070 /* UIView+WebCacheOperation.m in Sources */,
 				96D8596F1C05B79D00C99070 /* UIButton+WebCache.m in Sources */,
 				96CBAC651C04556B002CBE69 /* Account.m in Sources */,
@@ -1516,17 +1506,15 @@
 				96B681A01BFCD88200A7D6DE /* MedicalRecordViewController.m in Sources */,
 				96C595931C0AB41100CB93BB /* FolderCoverView.m in Sources */,
 				96AA3CFB1C0591C800908F23 /* DoctorNavigationController.m in Sources */,
-				6E6ACDA11C16860300B2BB4D /* ZHPickView.m in Sources */,
 				96A994B11C03050F00AA1A82 /* ForgetPwdNavigationController.m in Sources */,
 				966DB9401C0C51F200A8859F /* TimeLabelCell.m in Sources */,
 				96B681A31BFCD89C00A7D6DE /* MedicalRecordNavigationController.m in Sources */,
-				969D63671C06B37200B70B36 /* UseHardwareCheckViewController.m in Sources */,
 				96C595951C0AB41100CB93BB /* UIView+screenshot.m in Sources */,
 				96D859731C05B79D00C99070 /* UIImageView+HighlightedWebCache.m in Sources */,
 				6E9F0CA41C240A5D0060F81B /* AddBeanRecordViewController.m in Sources */,
 				6E9E64C11C082605002AF88A /* AddUserViewController.m in Sources */,
+				96314BE51C3CF31F009C53AD /* ZX.m in Sources */,
 				966DB93D1C0C4D1700A8859F /* AddMedicalRecordViewController.m in Sources */,
-				969D638A1C06B95000B70B36 /* TestDecoder.mm in Sources */,
 				96175A961BFC710200650761 /* AFHTTPRequestOperation.m in Sources */,
 				968D65731C11293800B67D7A /* CXBrowserToolBarView.m in Sources */,
 				963E5A0E1C044EE5004A6377 /* FMDatabase.m in Sources */,
@@ -1537,24 +1525,25 @@
 				96F67BAC1C02BA8500734007 /* LoginViewController.m in Sources */,
 				96D859661C05B79D00C99070 /* MKAnnotationView+WebCache.m in Sources */,
 				968D65771C11293800B67D7A /* CXTapDetectingImageView.m in Sources */,
+				96314BF31C3CF51C009C53AD /* TestDecoder.mm in Sources */,
 				96AA3CFF1C059D4100908F23 /* MapNavigationController.m in Sources */,
 				96CBAC771C0458A4002CBE69 /* UIView+REFrostedViewController.m in Sources */,
-				6E6ACDA01C16860300B2BB4D /* ZX.m in Sources */,
+				96314BE41C3CF31F009C53AD /* ZHPickView.m in Sources */,
 				96D8596A1C05B79D00C99070 /* SDWebImageDecoder.m in Sources */,
 				9628BD671C1986DE006A53D0 /* MJRefreshBackGifFooter.m in Sources */,
 				96D8596D1C05B79D00C99070 /* SDWebImageManager.m in Sources */,
 				96F117231BFC5AF800C51B32 /* main.m in Sources */,
 				969860AD1C070E5900B4AE16 /* MessageViewController.m in Sources */,
+				96314BEC1C3CF515009C53AD /* decoder.mm in Sources */,
 				96175AAB1BFC8B0200650761 /* HomeViewController.m in Sources */,
 				9635C4301C0D2E1100D3C976 /* SymptomCell.m in Sources */,
+				96314BDB1C3CF31F009C53AD /* LargerCircularProgressView.m in Sources */,
 				96A994AE1C0304F700AA1A82 /* ForgetPwdViewController.m in Sources */,
 				963E59F71C0408B1004A6377 /* RegisterViewController.m in Sources */,
 				96175A9C1BFC710200650761 /* AFURLRequestSerialization.m in Sources */,
-				6E51EAC01C1179F500975D95 /* UseBeanCheckNavigationController.m in Sources */,
 				96C3F0061BFDFEB5007EC012 /* RECommonFunctions.m in Sources */,
 				9628BD5F1C1986DE006A53D0 /* MJRefreshAutoFooter.m in Sources */,
 				9628BD701C1986DE006A53D0 /* UIScrollView+MJRefresh.m in Sources */,
-				6E6ACDAF1C18057300B2BB4D /* UseStickCheckViewController.m in Sources */,
 				963E5A121C044EE5004A6377 /* FMResultSet.m in Sources */,
 				9635C4361C0D589100D3C976 /* PhotosCell.m in Sources */,
 				966DB9431C0C5F0300A8859F /* TemperatureLabelCell.m in Sources */,
@@ -1562,7 +1551,6 @@
 				9628BD651C1986DE006A53D0 /* MJRefreshAutoNormalFooter.m in Sources */,
 				6E9E64B71C06EBA3002AF88A /* UserListTableViewController.m in Sources */,
 				9628BD711C1986DE006A53D0 /* UIView+MJExtension.m in Sources */,
-				969860A91C07019C00B4AE16 /* UseHardwareCheckNavigationController.m in Sources */,
 				967F357A1C0FE7D000589B8B /* ProblemNavigationController.m in Sources */,
 				967F35771C0FE7B500589B8B /* ProblemViewController.m in Sources */,
 				9628BD691C1986DE006A53D0 /* MJRefreshBackStateFooter.m in Sources */,
@@ -1573,7 +1561,6 @@
 				6EBB71BC1C224C4000B353B3 /* LineChartCell.m in Sources */,
 				96C3F0071BFDFEB5007EC012 /* RESideMenu.m in Sources */,
 				96D859741C05B79D00C99070 /* UIImageView+WebCache.m in Sources */,
-				969D63891C06B95000B70B36 /* symbol.mm in Sources */,
 				963E59EF1C03FEF0004A6377 /* SVProgressHUD.m in Sources */,
 				96175A981BFC710200650761 /* AFHTTPSessionManager.m in Sources */,
 				963E5A0F1C044EE5004A6377 /* FMDatabaseAdditions.m in Sources */,
@@ -1589,10 +1576,9 @@
 				9628BD6C1C1986DE006A53D0 /* MJRefreshStateHeader.m in Sources */,
 				963E59ED1C03FEF0004A6377 /* SVIndefiniteAnimatedView.m in Sources */,
 				96CBAC731C0458A4002CBE69 /* RECommonFunctions.m in Sources */,
+				96314BDF1C3CF31F009C53AD /* UseBeanCheckNavigationController.m in Sources */,
 				9628BD621C1986DE006A53D0 /* MJRefreshFooter.m in Sources */,
-				6E6ACDA41C16A11300B2BB4D /* DACircularProgressView.m in Sources */,
 				9628BD601C1986DE006A53D0 /* MJRefreshBackFooter.m in Sources */,
-				969D63881C06B95000B70B36 /* decoder.mm in Sources */,
 				962423191C0ED1B9002FFB4F /* UIViewController+MMDrawerController.m in Sources */,
 				962423171C0ED1B9002FFB4F /* MMDrawerController.m in Sources */,
 				96175A9D1BFC710200650761 /* AFURLResponseSerialization.m in Sources */,
@@ -1600,6 +1586,7 @@
 				96175A9E1BFC710200650761 /* AFURLSessionManager.m in Sources */,
 				96CBAC861C0482C7002CBE69 /* AboutUsViewController.m in Sources */,
 				968D65791C11293800B67D7A /* CXZoomingScrollView.m in Sources */,
+				96314BD91C3CF31F009C53AD /* DACircularProgressView.m in Sources */,
 				966ACF441C166D560023E7C7 /* AdvertisementViewController.m in Sources */,
 				963E59F41C04089C004A6377 /* RegisterNavigationController.m in Sources */,
 				96D7D81E1C0494E100ADC940 /* AboutUsNavigationController.m in Sources */,
@@ -1613,11 +1600,13 @@
 				9628BD6A1C1986DE006A53D0 /* MJRefreshGifHeader.m in Sources */,
 				963E59F01C03FEF0004A6377 /* SVRadialGradientLayer.m in Sources */,
 				96B819A11BFC689E000E1289 /* HttpTool.m in Sources */,
+				96314BF21C3CF51C009C53AD /* symbol.mm in Sources */,
 				963E5A011C044AB8004A6377 /* DatabaseTool.m in Sources */,
 				96AA3CF81C0591AD00908F23 /* DoctorViewController.m in Sources */,
 				96D8596E1C05B79D00C99070 /* SDWebImagePrefetcher.m in Sources */,
 				96CBAC761C0458A4002CBE69 /* UIImage+REFrostedViewController.m in Sources */,
 				6E5D74BC1C0C4B430099A486 /* MedicalRecordDetailViewController.m in Sources */,
+				96314BE31C3CF31F009C53AD /* UseStickCheckViewController.m in Sources */,
 				9640EC9F1BFDCE1400C620D4 /* GlobalTool.m in Sources */,
 				963E5A101C044EE5004A6377 /* FMDatabasePool.m in Sources */,
 				96C3F0081BFDFEB5007EC012 /* UIViewController+RESideMenu.m in Sources */,
@@ -1764,6 +1753,10 @@
 					"$(PROJECT_DIR)/MeecaaStickApp/Lib/ShareSDK/Extend/WeChatSDK",
 					"$(PROJECT_DIR)/MeecaaStickApp",
 					"$(PROJECT_DIR)/MeecaaStickApp/UseHardwareCheck",
+					"$(PROJECT_DIR)/MeecaaStickApp/UseHardwareCheck/TestDecoder",
+					"$(PROJECT_DIR)/MeecaaStickApp/Message/TestDecoder",
+					"$(PROJECT_DIR)/MeecaaStickApp/DatabaseTool/UseHardwareCheck",
+					"$(PROJECT_DIR)/MeecaaStickApp/DatabaseTool/UseHardwareCheck/TestNewDecoder",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.meecaa.stick;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1797,6 +1790,10 @@
 					"$(PROJECT_DIR)/MeecaaStickApp/Lib/ShareSDK/Extend/WeChatSDK",
 					"$(PROJECT_DIR)/MeecaaStickApp",
 					"$(PROJECT_DIR)/MeecaaStickApp/UseHardwareCheck",
+					"$(PROJECT_DIR)/MeecaaStickApp/UseHardwareCheck/TestDecoder",
+					"$(PROJECT_DIR)/MeecaaStickApp/Message/TestDecoder",
+					"$(PROJECT_DIR)/MeecaaStickApp/DatabaseTool/UseHardwareCheck",
+					"$(PROJECT_DIR)/MeecaaStickApp/DatabaseTool/UseHardwareCheck/TestNewDecoder",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.meecaa.stick;
 				PRODUCT_NAME = "$(TARGET_NAME)";

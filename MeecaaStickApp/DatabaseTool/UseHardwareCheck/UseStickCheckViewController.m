@@ -18,7 +18,7 @@
  */
 #import <MediaPlayer/MPVolumeView.h>
 #import "TestDecoder.h"
-#import "Function.h"
+#import "templib_ios_v531_151214.h"
 
 #import "AddMedicalRecordViewController.h"
 
@@ -45,9 +45,6 @@
     
     UIView           *maskViewOne;          //测温时段内的透明层，用于隔绝用户点击其他控件
     UIView           *maskViewTwo;
-    /**
-     *	12 / 10 周四
-     */
     //录音器
     AVAudioRecorder *recorder;
     //播放器
@@ -83,15 +80,7 @@
     NSString *strStoreTemp;
     
     //初始化的温度值，用于给新算法记录温度
-    double temperature[20];
-    
-    NSTimer *animTimer;
-    
-    double shakeX;
-    
-    int bcheck_count;
-    BOOL bcheck_flag;
-    float dT1;
+    double temperature[11];
     
     BOOL press; //用于标记开始测温按钮是否被按下
     int flag;   //用于标记是哪种类型的测温，以便相应的控件去显示数据
@@ -102,8 +91,6 @@
 @property (nonatomic,strong) MMDrawerController * drawerController;
 
 @property (nonatomic,strong) AddMedicalRecordViewController *addMedicalVC;
-
-@property (nonatomic,assign) int quickTimeCount;//计数次数
 
 @property (nonatomic,assign) int normalErrorCount;//常规测温错误次数
 @end
@@ -116,17 +103,9 @@
     
     [self setUpView];
     press = NO;
-    /**
-     *	12 / 10
-     */
     //计数次数
     progressView = [[LargerCircularProgressView alloc] initWithFrame:CGRectMake(8, 8, 184, 184)];
-//    [circularImageViewOne addSubview:progressView];
-//    [circularImageViewTwo addSubview:progressView];
-//    [circularImageViewThree addSubview:progressView];
     [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(progressChanged) userInfo:nil repeats:NO];
-    
-    self.quickTimeCount = 0;
     
     /*保持屏幕常亮*/
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
@@ -175,9 +154,6 @@
     avAudioPlayer.numberOfLoops = 1;//设置循环次数
     [avAudioPlayer prepareToPlay];//准备播放
     
-    bcheck_count = 0;
-    bcheck_flag = false;
-    
     if ([[[GlobalTool shared] deviceString] isEqualToString:@"iPhone 4S"]) { //如果是4S并且系统版本小于8.0调整音量为85%
         if ([[UIDevice currentDevice].systemVersion floatValue] < 8.0) {
             [self setPhoneVolume:0.85f];
@@ -188,12 +164,7 @@
         [self setPhoneVolume:1.0f];
     }
     
-    
-    /**
-     *	12 / 11
-     *
-     *	@return
-     */
+
     AVAudioSession *avSession = [AVAudioSession sharedInstance];
     if ([avSession respondsToSelector:@selector(requestRecordPermission:)]) {
         [avSession requestRecordPermission:^(BOOL available) {
@@ -213,16 +184,6 @@
     if (progressView.progress > 1.0f){
         progressView.progress = 0.0f;
     }
-}
-
-- (void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-
-    //监听调节音量
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(volumeChanged:) name:@"AVSystemController_SystemVolumeDidChangeNotification" object:nil];
-//    
-//    /*监听拔出耳机*/
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(routeChange:) name:AVAudioSessionRouteChangeNotification object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -266,7 +227,7 @@
     timeLabelTwo = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width + (self.view.frame.size.width - 100) / 2 + 130, 0, 100, 30)];
     timeLabelThree = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width * 2 + (self.view.frame.size.width - 100) / 2 + 130, 0, 100, 30)];
     timeLabelOne.textColor = timeLabelTwo.textColor = timeLabelThree.textColor = NAVIGATIONBAR_BACKGROUND_COLOR;
-    timeLabelOne.text = timeLabelTwo.text = timeLabelThree.text = @"00.00";
+    timeLabelOne.text = timeLabelTwo.text = timeLabelThree.text = @"00:00";
     timeLabelOne.font = timeLabelTwo.font = timeLabelThree.font = [UIFont systemFontOfSize:30];
     [_scrollView addSubview:timeLabelThree];
     [_scrollView addSubview:timeLabelTwo];
@@ -295,8 +256,8 @@
     startViewTwo.frame = CGRectMake(kScreen_Width + (kScreen_Width - 120) / 2, 260, 120, 120);
     startViewThree.frame = CGRectMake(kScreen_Width * 2 + (kScreen_Width - 120) / 2, 260, 120, 120);
     startViewOne.userInteractionEnabled = startViewTwo.userInteractionEnabled = startViewThree.userInteractionEnabled = YES;
-    [startViewOne addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickToOnceCheck)]];
-    [startViewTwo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickToNormalCheck)]];
+    [startViewOne addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickToNormalCheck)]];
+    [startViewTwo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickToQuickCheck)]];
     [startViewThree addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickToQuickCheck)]];
     [_scrollView addSubview:startViewOne];
     [_scrollView addSubview:startViewTwo];
@@ -331,10 +292,23 @@
 }
 
 
-#pragma mark -0-0 下面是体温棒测温的方法
-- (void)clickToOnceCheck{
+#pragma mark - 下面是体温棒测温的方法
+- (void)clickToNormalCheck{
     //常规测温错误次数
     self.normalErrorCount = 0;
+    AVAudioSession *avSession = [AVAudioSession sharedInstance];
+    if ([avSession respondsToSelector:@selector(requestRecordPermission:)]) {
+        [avSession requestRecordPermission:^(BOOL available) {
+            if(!available) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self stopCheck];
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                    [SVProgressHUD showInfoWithStatus:@"请在“设置-隐私-麦克风”选项中允许体温棒访问您的麦克风"];
+                });
+                return;
+            }
+        }];
+    }
     if (press == NO) {
         progressView.progress = 0;
     }
@@ -356,24 +330,72 @@
             [self presentViewController:alertVC animated:YES completion:nil];
             
         }else{
-            
             [self onClickCheck];
             [circularImageViewOne addSubview:progressView];
             progressTimer = [NSTimer scheduledTimerWithTimeInterval:0.1818181818 target:self selector:@selector(progressChanged) userInfo:nil repeats:YES];
-            timeLabelOne.text = @"00.00";
+            timeLabelOne.text = @"00:00";
             self.scrollView.scrollEnabled = NO;
             
             press = YES;
             flag = 1;
-            
             [self addMaskView];
         }
-        
-        
     } else {
         [SVProgressHUD showErrorWithStatus:@"请将体温棒连接手机！"];
     }
 }
+
+#pragma mark - 点击快速测温按钮
+- (void)clickToQuickCheck {
+    for (int i = 0; i < 11; i++) {
+        temperature[i] = -55.0f;
+    }
+    AVAudioSession *avSession = [AVAudioSession sharedInstance];
+    if ([avSession respondsToSelector:@selector(requestRecordPermission:)]) {
+        [avSession requestRecordPermission:^(BOOL available) {
+            if(!available) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self stopCheck];
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                    [SVProgressHUD showInfoWithStatus:@"请在“设置-隐私-麦克风”选项中允许体温棒访问您的麦克风"];
+                });
+                return;
+            }
+        }];
+    }
+    
+    if ([self isHeadsetPluggedIn]) {
+        if (press == YES) {
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提醒" message:@"是否结束测温？" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self stopCheck];
+                    press = NO;
+                    self.scrollView.scrollEnabled = YES;
+                });
+            }];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            [alertVC addAction:okAction];
+            [alertVC addAction:cancelAction];
+            [self presentViewController:alertVC animated:YES completion:nil];
+            
+        }else{
+            [self onClickCheck];
+            [circularImageViewOne addSubview:progressView];
+            progressTimer = [NSTimer scheduledTimerWithTimeInterval:0.1818181818 target:self selector:@selector(progressChanged) userInfo:nil repeats:YES];
+            timeLabelOne.text = @"00:00";
+            self.scrollView.scrollEnabled = NO;
+            press = YES;
+            flag = 2;
+            [self addMaskView];
+        }
+    } else {
+        [SVProgressHUD showErrorWithStatus:@"请将体温棒连接手机！"];
+    }
+}
+
 /**
  *  判断耳机是否插入
  */
@@ -428,8 +450,6 @@
                                             userInfo: nil
                                              repeats: YES];
     
-//    [[NSRunLoop currentRunLoop] addTimer:timer3 forMode:NSRunLoopCommonModes];
-    
     NSString *docDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     playName = [NSString stringWithFormat:@"%@/play_%lli.raw", docDir,date];//创建录音文件
     [self play];
@@ -448,7 +468,6 @@
     
     /*每0.1秒执行一次*/
     timer2 = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(playTimer:) userInfo:nil repeats:YES];
-//    [[NSRunLoop currentRunLoop] addTimer:timer2 forMode:NSRunLoopCommonModes];
     /*播放音乐*/
     [avAudioPlayer play];
 }
@@ -459,11 +478,6 @@
     /*计数两次之后停止播放音乐开始录音*/
     if (playCount>=2) {   //这个是播放时间的 先不要改动
         playCount = 0;
-        /**
-         * 2015-09-24 SoulJa
-         *  不停止音频播放
-         */
-        //[avAudioPlayer stop];
         [timer2 invalidate];//移除定时器timer2
         timer2 = nil;
         [self downAction];
@@ -492,7 +506,6 @@
             [recorder record];
             //启动定时器
             timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(levelTimer:) userInfo:nil repeats:YES];
-//            [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
             
         } else
         {
@@ -583,70 +596,53 @@
         } else {
             if (itemp == 9999 || itemp == - 9999) {
                 [self stopCheck];
-//                [self presentViewController:self.drawerController animated:NO completion:^{
-//                    [SVProgressHUD showErrorWithStatus:@"超出测温范围!"];
-//                }];
+                [SVProgressHUD showErrorWithStatus:@"超出测温范围!"];
                 return;
             } else if (itemp == 7777) {
                 [self stopCheck];
-//                [self presentViewController:[[MainTabBarController alloc] init] animated:NO completion:^{
-//                    [SVProgressHUD showErrorWithStatus:@"请联系客服!"];
-//                }];
-//                [self presentViewController:self.drawerController animated:YES completion:^{
-//                    [SVProgressHUD showErrorWithStatus:@"请联系客服!"];
-//                }];
-                return;
-            } else if (itemp == -8888) {
-                [self stopCheck];
-//                [self presentViewController:self.drawerController animated:NO completion:^{
-//                    [SVProgressHUD showErrorWithStatus:@"请重新测温!"];
-//                }];
-                return;
-            } else if (itemp == -6666) {
-                [self stopCheck];
-//                [self presentViewController:self.drawerController animated:NO completion:^{
-//                    [SVProgressHUD showErrorWithStatus:@"请重新测温!"];
-//                }];
+                [SVProgressHUD showErrorWithStatus:@"请联系客服!"];
                 return;
             } else {
                 if (flag == 1) {
                     temperatureLabelOne.text = [NSString stringWithFormat:@"%.1f℃", ftemp];
                 }else if (flag == 2){
                     temperatureLabelTwo.text = [NSString stringWithFormat:@"%.1f℃", ftemp];
+                    for (int i = 0; i<10; i++) {
+                        temperature[i] = temperature[i+1];
+                    }
+                    temperature[10] = ftemp;
+                    if (timercount3 >= 40) {
+                        [self stopCheck];
+                        [SVProgressHUD showErrorWithStatus:@"体温棒放好了吗？请重新测温!"];
+                    }
+                    double resultTemp = judge(temperature);
+                    NSLog(@"%f",resultTemp);
+                    if (resultTemp == -66) {
+                        return;
+                    } else {
+                        [self stopCheck];
+                        timercount3 = 0;
+                        double finalTemperature = resultTemp;
+                        NSString *temperatureStr = [NSString stringWithFormat:@"%.1lf", finalTemperature];
+                        [GlobalTool sharedSingleton].receivedTempStr = temperatureStr;
+                        UIStoryboard *board = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
+                        AddMedicalRecordViewController *vc = [board instantiateViewControllerWithIdentifier:@"AddMedicalRecordViewController"];
+                        MedicalRecordNavigationController *nav = [[MedicalRecordNavigationController alloc] initWithRootViewController:vc];
+                        [GlobalTool sharedSingleton].presentView = YES;//标记是体温棒测温页面跳转过去的
+                        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:nav animated:YES completion:nil];
+                    }
                 }else if (flag == 3){
                     temperatureLabelThree.text = [NSString stringWithFormat:@"%.1f℃", ftemp];
                 }
-//                temperatureLabel.text = [NSString stringWithFormat:@"%.1f℃", ftemp];
-//                //快速测温预测部分start
-//                if (!self.forecastTemperature && self.quickTimeCount <=20) {
-//                    temperature[self.quickTimeCount] = ftemp;
-//                    self.quickTimeCount++;
-//                    double resultTemp = judge(temperature);
-//                    NSLog(@"quickTimeCount:%d-resultTemp:%f",self.quickTimeCount - 1,resultTemp);
-//                    if (resultTemp == -1) { //返回结果如果为-1表示继续传入温度值
-//                        return;
-//                    } else if (resultTemp == -2 ) { //返回结果-2或者timercount3大于20表示溢出
-//                        return;
-//                    } else if (resultTemp > 0 ) { //返回结果大于0时表示监测出来温度
-//                        //设置预测温度
-//                        self.forecastTemperature = resultTemp;
-//                        [self.forecastBtn setHidden:NO];
-//                        return;
-//                    }
-//                }
-                //快速测温预测部分end
                 return;
             }
         }
     } else { //解码错误
         self.normalErrorCount++;
-        if (self.normalErrorCount < 3) {
-            return;
-        } else {
+        if (self.normalErrorCount > 3) {
             [self stopCheck];
-//            [self presentViewController:self.drawerController animated:NO completion:^{
-//                [SVProgressHUD showErrorWithStatus:@"请重新连接耳机孔，再次测温。"];
-//            }];
+            [SVProgressHUD showErrorWithStatus:@"请重新连接耳机孔，再次测温。"];
+            return;
         }
     }
 }
@@ -699,6 +695,11 @@
     }
     //结束测温把按钮状态置为no
     press = NO;
+    [progressView setProgress:0.0f];
+    [temperatureLabelOne setText:@"--.-"];
+    [timeLabelOne setText:@"00:00"];
+    [temperatureLabelTwo setText:@"--.-"];
+    [timeLabelTwo setText:@"00:00"];
     [GlobalTool sharedSingleton].receivedEndTime = [[NSDate date] timeIntervalSince1970];
     [self removeMaskView];
 }
@@ -709,23 +710,16 @@
 - (void) handleTimer3: (NSTimer *) timer3
 {
     timercount3++;//时间计数自增
-    
-    if (timercount3 >= 180) {
+    if (timercount3 >= 180 && flag == 1) {
         UIStoryboard *board = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
         AddMedicalRecordViewController *vc = [board instantiateViewControllerWithIdentifier:@"AddMedicalRecordViewController"];
         MedicalRecordNavigationController *nav = [[MedicalRecordNavigationController alloc] initWithRootViewController:vc];
         //开始传值
         if (flag == 1) {
-//            [GlobalTool sharedSingleton].receivedTempStr = temperatureLabelOne.text;
             [GlobalTool sharedSingleton].receivedTempStr = [temperatureLabelOne.text substringToIndex:4];
-        }else if (flag == 2){
-            [GlobalTool sharedSingleton].receivedTempStr = temperatureLabelTwo.text;
-        }else if (flag == 3) {
-            [GlobalTool sharedSingleton].receivedTempStr = temperatureLabelThree.text;
         }
         [GlobalTool sharedSingleton].presentView = YES;//标记是体温棒测温页面跳转过去的
-        
-        [self presentViewController:nav animated:YES completion:nil];
+        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:nav animated:YES completion:nil];
     }
     /*开始播放*/
     [self play];
@@ -739,7 +733,6 @@
     }else if (flag == 3){
         timeLabelThree.text = [NSString stringWithFormat:@"%@:%@",[self getTimeStr:sec], [self getTimeStr:min]];
     }
-//    timeLabel.text = [NSString stringWithFormat:@"%@:%@",[self getTimeStr:sec], [self getTimeStr:min]];
 }
 
 - (NSString *)getTimeStr:(int)value
@@ -771,13 +764,6 @@
  *  判断耳机是否被拔出
  */
 -(void)routeChange:(NSNotification *)notification{
-//    NSString *temperatureType = @"";
-//    if (checkType == 1) {
-//        temperatureType = @"1";
-//    } else if(checkType == 2 ) {
-//        temperatureType = @"0";
-//    }
-    
     NSDictionary *dic=notification.userInfo;
     int changeReason= [dic[AVAudioSessionRouteChangeReasonKey] intValue];
     //等于AVAudioSessionRouteChangeReasonOldDeviceUnavailable表示旧输出不可用
@@ -787,12 +773,7 @@
         //原设备为耳机则暂停
         if ([portDescription.portType isEqualToString:@"Headphones"]) {
             [self stopCheck];
-//            [self presentViewController:[[MainTabBarController alloc] init] animated:NO completion:^{
-//                [SVProgressHUD showInfoWithStatus:@"体温棒已拔出，请重新测温。"];
-//            }];
-            [self presentViewController:self.drawerController animated:YES completion:^{
-                [SVProgressHUD showErrorWithStatus:@"体温棒已拔出，请重新测温！"];
-            }];
+            [SVProgressHUD showErrorWithStatus:@"体温棒已拔出，请重新测温！"];
             return;
         }
     }
@@ -810,12 +791,7 @@
     
     if (volume < 1.0) {
         [self stopCheck];
-//        [self presentViewController:[[MainTabBarController alloc] init] animated:NO completion:^{
-//            [SVProgressHUD showErrorWithStatus:@"请将音量调到最大"];
-//        }];
-        [self presentViewController:self.drawerController animated:YES completion:^{
-            [SVProgressHUD showErrorWithStatus:@"请将音量调到最大！"];
-        }];
+        [SVProgressHUD showErrorWithStatus:@"请将音量调到最大！"];
     }
 }
 

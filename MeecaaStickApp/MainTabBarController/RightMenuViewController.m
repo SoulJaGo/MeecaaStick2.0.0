@@ -153,7 +153,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Third" bundle:nil];
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
@@ -186,9 +185,17 @@
         }
     } else if (indexPath.section == 1){
         if (indexPath.row == 0) {
-            UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
-            UIViewController *vc = [board instantiateViewControllerWithIdentifier:@"ProblemNavigationController"];
-            [self presentViewController:vc animated:NO completion:nil];
+            if (![[DatabaseTool shared] getDefaultMember]) {
+                UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
+                UIViewController *loginVc = [board instantiateViewControllerWithIdentifier:@"LoginViewController"];
+                [self presentViewController:loginVc animated:NO completion:^{
+                    [SVProgressHUD showErrorWithStatus:@"请您先登录!"];
+                }];
+            } else {
+                UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
+                UIViewController *vc = [board instantiateViewControllerWithIdentifier:@"ProblemNavigationController"];
+                [self presentViewController:vc animated:NO completion:nil];
+            }
         } else if (indexPath.row == 1) {
             if (![[DatabaseTool shared] getDefaultMember]) {
                 UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
@@ -208,7 +215,6 @@
 
 #pragma mark - 点击头像按钮
 - (void)tapImageView {
-    [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
     if (![[DatabaseTool shared] getDefaultMember]) {
         UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
         UIViewController *loginVc = [board instantiateViewControllerWithIdentifier:@"LoginViewController"];
@@ -217,7 +223,11 @@
         }];
     } else {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Third" bundle:nil];
-        UserNavigationController *userNav = [storyboard instantiateViewControllerWithIdentifier:@"UserNavigationController"];
+        UserUpdateViewController *userUpdateVc = [storyboard instantiateViewControllerWithIdentifier:@"UserUpdateViewController"];
+        userUpdateVc.memberInfoDict = [[DatabaseTool shared] getDefaultMember];
+        userUpdateVc.isFromMain = YES;
+        UserNavigationController *userNav = [[UserNavigationController alloc] initWithRootViewController:userUpdateVc];
+        [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
         [self presentViewController:userNav animated:NO completion:nil];
     }
 }
