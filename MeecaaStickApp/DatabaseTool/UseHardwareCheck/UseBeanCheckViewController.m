@@ -317,7 +317,7 @@
     UIStoryboard *board = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
     AddBeanRecordViewController *vc = [board instantiateViewControllerWithIdentifier:@"AddBeanRecordViewController"];
     MedicalRecordNavigationController *nav = [[MedicalRecordNavigationController alloc] initWithRootViewController:vc];
-    [self presentViewController:nav animated:YES completion:nil];
+    [UIApplication sharedApplication].keyWindow.rootViewController = nav;
 }
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];

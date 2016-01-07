@@ -968,15 +968,12 @@ typedef enum
  */
 - (void)uploadPicture:(UIImage *)image {
     NSString *urlStr = [HOST stringByAppendingString:@"api.php?m=open&c=member&a=uploadPicture"];
-//    self.manager.requestSerializer.timeoutInterval = 10;
     [self.manager POST:urlStr parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         [SVProgressHUD showWithStatus:@"图片上传中..."];
         [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.5) name:@"img" fileName:@"img.jpg" mimeType:@"image/jpeg"];
     } success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         [SVProgressHUD dismiss];
         if (responseObject[@"status"] == [NSNumber numberWithInteger:1]) {
-//            NSString *IDString = [NSString stringWithFormat:[responseObject[@""]]
-            NSLog(@"AddPictureSuccessNotification %@",responseObject);
             [[NSNotificationCenter defaultCenter] postNotificationName:@"AddPictureSuccessNotification" object:responseObject[@"data"]];
         }else {
             [SVProgressHUD showErrorWithStatus:@"上传图片失败!"];

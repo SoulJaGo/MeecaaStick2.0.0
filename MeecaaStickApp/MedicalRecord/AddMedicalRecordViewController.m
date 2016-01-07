@@ -18,7 +18,7 @@
 #import "MMDrawerController.h"
 #import "UseStickCheckViewController.h"
 
-@interface AddMedicalRecordViewController () <UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
+@interface AddMedicalRecordViewController () <UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UITextViewDelegate>
 @property (nonatomic,strong) TimeLabelCell *timeLabelCell;
 @property (nonatomic,strong) UIDatePicker *datePicker;
 @property (nonatomic,strong) UIView *datePickerHeaderView;
@@ -272,7 +272,8 @@
  */
 - (UITextView *)descriptionTextView {
     if (_descriptionTextView == nil) {
-        _descriptionTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 216, self.view.bounds.size.width, 216)];
+        _descriptionTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 216 - 216, self.view.bounds.size.width, 216)];
+        _descriptionTextView.delegate = self;
     }
     return _descriptionTextView;
 }
@@ -282,7 +283,7 @@
 */
 - (UIView *)descriptionHeaderView {
     if (_descriptionHeaderView == nil) {
-        self.descriptionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 260, self.view.bounds.size.width, 44)];
+        self.descriptionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 260 - 216, self.view.bounds.size.width, 44)];
         [self.descriptionHeaderView setBackgroundColor:NAVIGATIONBAR_BACKGROUND_COLOR];
         UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         cancelBtn.frame = CGRectMake(0, 0, 100, 44);
@@ -537,8 +538,8 @@
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
 
     //0 -- 棒子
-    NSString *pic_ids;
-    if (self.picturesIDArray.count > 1) {
+    NSString *pic_ids = @"";
+    if (self.picturesIDArray.count > 0) {
         pic_ids = [self.picturesIDArray componentsJoinedByString:@","];
     }
     [[HttpTool shared] addMedicalRecordWithType:0 Member_id:defaultMemberId Temperture:self.temperatureLabelCell.temperatureTextField.text Date:timeStr StartTime:[GlobalTool sharedSingleton].receivedStartTime EndTime:[GlobalTool sharedSingleton].receivedEndTime Symptoms:[NSString stringWithFormat:@"%d",symptomInt] Description:desc Longitude:[NSString stringWithFormat:@"%f",[[GlobalTool shared] longitude]] Latitude:[NSString stringWithFormat:@"%f",[[GlobalTool shared] latitude]] Pic_ids:pic_ids];
@@ -656,7 +657,6 @@
         [self.photosView removeFromSuperview];
         [self.photosHeaderView removeFromSuperview];
         [self.descriptionTextView becomeFirstResponder];
-        [self.tableView setContentOffset:CGPointMake(0, 200) animated:NO];
         [self.view addSubview:self.descriptionTextView];
         [self.view addSubview:self.descriptionHeaderView];
     } else if (indexPath.section == 4) {
@@ -711,7 +711,11 @@
     return res;
 }
 
-
+#pragma mark - UITextViewDelegate
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    [self.descriptionHeaderView removeFromSuperview];
+    [self.descriptionTextView removeFromSuperview];
+}
 
 /*
 // Override to support conditional editing of the table view.

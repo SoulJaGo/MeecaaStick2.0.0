@@ -18,7 +18,6 @@
 		6E9E64C11C082605002AF88A /* AddUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9E64C01C082605002AF88A /* AddUserViewController.m */; };
 		6E9E64C41C082621002AF88A /* UserUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9E64C31C082621002AF88A /* UserUpdateViewController.m */; };
 		6E9F0CA41C240A5D0060F81B /* AddBeanRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E9F0CA31C240A5D0060F81B /* AddBeanRecordViewController.m */; };
-		6EBB71B91C224BF500B353B3 /* AddBeanMedicalRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBB71B81C224BF500B353B3 /* AddBeanMedicalRecordViewController.m */; };
 		6EBB71BC1C224C4000B353B3 /* LineChartCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EBB71BB1C224C4000B353B3 /* LineChartCell.m */; };
 		6EBB71BE1C22B63C00B353B3 /* alarm.wav in Resources */ = {isa = PBXBuildFile; fileRef = 6EBB71BD1C22B63C00B353B3 /* alarm.wav */; };
 		96175A961BFC710200650761 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 96175A841BFC710200650761 /* AFHTTPRequestOperation.m */; };
@@ -223,8 +222,6 @@
 		6E9E64C31C082621002AF88A /* UserUpdateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserUpdateViewController.m; sourceTree = "<group>"; };
 		6E9F0CA21C240A5D0060F81B /* AddBeanRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddBeanRecordViewController.h; sourceTree = "<group>"; };
 		6E9F0CA31C240A5D0060F81B /* AddBeanRecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddBeanRecordViewController.m; sourceTree = "<group>"; };
-		6EBB71B71C224BF500B353B3 /* AddBeanMedicalRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddBeanMedicalRecordViewController.h; sourceTree = "<group>"; };
-		6EBB71B81C224BF500B353B3 /* AddBeanMedicalRecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddBeanMedicalRecordViewController.m; sourceTree = "<group>"; };
 		6EBB71BA1C224C4000B353B3 /* LineChartCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineChartCell.h; sourceTree = "<group>"; };
 		6EBB71BB1C224C4000B353B3 /* LineChartCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineChartCell.m; sourceTree = "<group>"; };
 		6EBB71BD1C22B63C00B353B3 /* alarm.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = alarm.wav; sourceTree = "<group>"; };
@@ -1127,8 +1124,6 @@
 				6E5D74BB1C0C4B430099A486 /* MedicalRecordDetailViewController.m */,
 				966DB93B1C0C4D1700A8859F /* AddMedicalRecordViewController.h */,
 				966DB93C1C0C4D1700A8859F /* AddMedicalRecordViewController.m */,
-				6EBB71B71C224BF500B353B3 /* AddBeanMedicalRecordViewController.h */,
-				6EBB71B81C224BF500B353B3 /* AddBeanMedicalRecordViewController.m */,
 				6E9F0CA21C240A5D0060F81B /* AddBeanRecordViewController.h */,
 				6E9F0CA31C240A5D0060F81B /* AddBeanRecordViewController.m */,
 				6E2AFB941C0D5A63005BD33A /* UpdateMedicalRecordTableViewController.h */,
@@ -1405,7 +1400,7 @@
 				TargetAttributes = {
 					96F1171D1BFC5AF800C51B32 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = 65X9H3YJSK;
+						DevelopmentTeam = XSS9LC5Z4W;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -1582,7 +1577,6 @@
 				962423191C0ED1B9002FFB4F /* UIViewController+MMDrawerController.m in Sources */,
 				962423171C0ED1B9002FFB4F /* MMDrawerController.m in Sources */,
 				96175A9D1BFC710200650761 /* AFURLResponseSerialization.m in Sources */,
-				6EBB71B91C224BF500B353B3 /* AddBeanMedicalRecordViewController.m in Sources */,
 				96175A9E1BFC710200650761 /* AFURLSessionManager.m in Sources */,
 				96CBAC861C0482C7002CBE69 /* AboutUsViewController.m in Sources */,
 				968D65791C11293800B67D7A /* CXZoomingScrollView.m in Sources */,
@@ -1731,7 +1725,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: chaoyi lu (S4H92Y9555)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: chaoyi lu (S4H92Y9555)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1745,7 +1739,7 @@
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Header.h";
 				INFOPLIST_FILE = MeecaaStickApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1768,7 +1762,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: chaoyi lu (S4H92Y9555)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: chaoyi lu (S4H92Y9555)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1782,7 +1776,7 @@
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Header.h";
 				INFOPLIST_FILE = MeecaaStickApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

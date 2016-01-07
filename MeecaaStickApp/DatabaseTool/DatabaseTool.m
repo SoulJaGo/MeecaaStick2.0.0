@@ -633,6 +633,20 @@
  *  添加一个温豆温度记录到数据库
  */
 - (BOOL)addBeanDiary:(NSMutableDictionary *)diary{
+    NSMutableArray *tempPics = [diary objectForKey:@"pics"];
+    NSString *picsStr = @"";
+    if (tempPics.count > 0) {
+        NSMutableArray *tempArray = [NSMutableArray array];
+        for (NSMutableDictionary *picDict in tempPics) {
+            NSString *picUrl = picDict[@"img"];
+            [tempArray addObject:picUrl];
+        }
+        NSMutableArray *pics = tempArray;
+        picsStr = [pics componentsJoinedByString:@","];
+    } else {
+        picsStr = @"";
+    }
+    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [paths lastObject];
     NSString *dbPath = [path stringByAppendingPathComponent:@"meecaa.db"];

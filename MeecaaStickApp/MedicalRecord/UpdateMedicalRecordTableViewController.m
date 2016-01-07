@@ -14,7 +14,7 @@
 #import "PhotosCell.h"
 #import "AddMedicalRecordViewController.h"
 #import "CollectionViewCell.h"
-@interface UpdateMedicalRecordTableViewController ()<UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
+@interface UpdateMedicalRecordTableViewController ()<UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UITextViewDelegate>
 @property (nonatomic,strong) TimeLabelCell *timeLabelCell;
 @property (nonatomic,strong) UIDatePicker *datePicker;
 @property (nonatomic,strong) UIView *datePickerHeaderView;
@@ -40,7 +40,7 @@
 
 @property (nonatomic,strong) UIImagePickerController *ipc;
 @property (nonatomic,strong)UICollectionView *collectionView;
-
+@property (nonatomic,strong) MMDrawerController * drawerController;
 @end
 
 @implementation UpdateMedicalRecordTableViewController
@@ -73,6 +73,22 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(UpdateDiarySuccessNotification) name:@"UpdateDiarySuccessNotification" object:nil];
 }
 
+- (MMDrawerController *)drawerController {
+    if (_drawerController == nil) {
+        MainTabBarController *mainTabBarC = [[MainTabBarController alloc] init];
+        [mainTabBarC setSelectedIndex:1];
+        LeftMenuViewController *leftMenuVc = [[LeftMenuViewController alloc] init];
+        RightMenuViewController *rightMenuVc = [[RightMenuViewController alloc] init];
+        
+        self.drawerController = [[MMDrawerController alloc] initWithCenterViewController:mainTabBarC leftDrawerViewController:leftMenuVc rightDrawerViewController:rightMenuVc];
+        [self.drawerController setShowsShadow:NO];
+        [self.drawerController setMaximumRightDrawerWidth:200];
+        [self.drawerController setMaximumLeftDrawerWidth:200];
+    }
+    return _drawerController;
+}
+
+
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UpdateDiarySuccessNotification" object:nil];
@@ -80,7 +96,7 @@
 
 - (void)UpdateDiarySuccessNotification {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateNewDiarySuccessNotification" object:nil];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [UIApplication sharedApplication].keyWindow.rootViewController = self.drawerController;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -308,7 +324,8 @@
  */
 - (UITextView *)descriptionTextView {
     if (_descriptionTextView == nil) {
-        _descriptionTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 216, self.view.bounds.size.width, 216)];
+        _descriptionTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 216 - 216, self.view.bounds.size.width, 216)];
+        _descriptionTextView.delegate = self;
     }
     return _descriptionTextView;
 }
@@ -318,7 +335,7 @@
  */
 - (UIView *)descriptionHeaderView {
     if (_descriptionHeaderView == nil) {
-        self.descriptionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 260, self.view.bounds.size.width, 44)];
+        self.descriptionHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 260 - 216, self.view.bounds.size.width, 44)];
         [self.descriptionHeaderView setBackgroundColor:NAVIGATIONBAR_BACKGROUND_COLOR];
         UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         cancelBtn.frame = CGRectMake(0, 0, 100, 44);
@@ -642,13 +659,15 @@
     [self.photosView removeFromSuperview];
 }
 
-
-
-
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
     return true;
+}
+
+#pragma mark - UITextViewDelegate
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    [self.descriptionHeaderView removeFromSuperview];
+    [self.descriptionTextView removeFromSuperview];
 }
 /*
 // Override to support conditional editing of the table view.

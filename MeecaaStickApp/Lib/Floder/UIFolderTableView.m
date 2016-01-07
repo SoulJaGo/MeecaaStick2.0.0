@@ -12,7 +12,7 @@
 
 #define COVERALPHA 0.6
 
-@interface UIFolderTableView ()
+@interface UIFolderTableView () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) FolderCoverView *top, *bottom;
 @property (nonatomic) CGPoint oldTopPoint, oldBottomPoint;
@@ -178,7 +178,7 @@
 
 - (void)performClose:(id)sender {
     if (self.closing) {
-        //return;
+        return;
     }else {
         self.closing = YES;
     }
@@ -222,6 +222,54 @@
     [self.top.layer setPosition:self.oldTopPoint];
     [self.bottom.layer setPosition:self.oldBottomPoint];
 }
+
+- (void)didClose:(id)sender {
+    if (self.closing) {
+        return;
+    }else {
+        self.closing = YES;
+    }
+    
+    // 配置关闭动画
+    CFTimeInterval duration = 0.3f;
+    CAMediaTimingFunction *timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    
+    CABasicAnimation *moveTop = [CABasicAnimation animationWithKeyPath:@"position"];
+    [moveTop setValue:@"close" forKey:@"animationType"];
+    [moveTop setDelegate:self];
+    [moveTop setTimingFunction:timingFunction];
+    moveTop.fromValue = [NSValue valueWithCGPoint:[[self.top.layer presentationLayer] position]];
+    moveTop.toValue = [NSValue valueWithCGPoint:self.oldTopPoint];
+    moveTop.duration = duration;
+    
+    
+    CABasicAnimation *moveBottom = [CABasicAnimation animationWithKeyPath:@"position"];
+    [moveBottom setValue:@"close" forKey:@"animationType"];
+    [moveBottom setDelegate:self];
+    [moveBottom setTimingFunction:timingFunction];
+    moveBottom.fromValue = [NSValue valueWithCGPoint:[[self.bottom.layer presentationLayer] position]];
+    moveBottom.toValue = [NSValue valueWithCGPoint:self.oldBottomPoint];
+    moveBottom.duration = duration;
+    
+    // 关闭动画
+    [self.top.layer addAnimation:moveTop forKey:@"b1"];
+    [self.bottom.layer addAnimation:moveBottom forKey:@"b2"];
+    
+    // 半透明变透明
+    [UIView animateWithDuration:duration animations:^{
+        
+        self.contentOffset = self.oldContentOffset;
+        self.top.cover.alpha = 0;
+        self.bottom.cover.alpha = 0;
+        
+    }];
+    
+    if (self.closeBlock) self.closeBlock(self.subClassContentView, duration, timingFunction);
+    
+    [self.top.layer setPosition:self.oldTopPoint];
+    [self.bottom.layer setPosition:self.oldBottomPoint];
+}
+
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
     
@@ -277,4 +325,8 @@
     return button;
 }
 
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self performClose:nil];
+}
 @end

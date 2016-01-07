@@ -292,7 +292,7 @@
         MedicalRecordDetailViewController *medicalRecordDetailVc = [[MedicalRecordDetailViewController alloc] init];
         medicalRecordDetailVc.medicalRecordVc = self;
         //图片
-        if ([[[dayDetailInfo objectForKey:@"pics"] objectAtIndex:0] isEqualToString:@""]) {
+        if (![[[dayDetailInfo objectForKey:@"pics"] objectAtIndex:0] isEqualToString:@""]) {
             medicalRecordDetailVc.picsArray = [dayDetailInfo objectForKey:@"pics"];
             self.picsArray = [NSMutableArray arrayWithArray:[dayDetailInfo objectForKey:@"pics"]];
         }else {
@@ -619,6 +619,6 @@
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    [self.tableView performClose:nil];
+    [self.tableView performClose:nil];
 }
 @end

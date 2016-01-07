@@ -69,6 +69,27 @@
     [super viewWillAppear:animated];
     [GlobalTool sharedSingleton].endTime = [[NSDate date] timeIntervalSince1970];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(AddPictureSuccessNotification:) name:@"AddPictureSuccessNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addBeanDiarySuccessNotification) name:@"AddBeanDiarySuccessNotification" object:nil];
+}
+
+- (void)addBeanDiarySuccessNotification {
+    [GlobalTool sharedSingleton].presentView = NO;
+    [UIApplication sharedApplication].keyWindow.rootViewController = self.drawerController;
+}
+
+- (MMDrawerController *)drawerController {
+    if (_drawerController == nil) {
+        MainTabBarController *mainTabBarC = [[MainTabBarController alloc] init];
+        [mainTabBarC setSelectedIndex:1];
+        LeftMenuViewController *leftMenuVc = [[LeftMenuViewController alloc] init];
+        RightMenuViewController *rightMenuVc = [[RightMenuViewController alloc] init];
+        
+        self.drawerController = [[MMDrawerController alloc] initWithCenterViewController:mainTabBarC leftDrawerViewController:leftMenuVc rightDrawerViewController:rightMenuVc];
+        [self.drawerController setShowsShadow:NO];
+        [self.drawerController setMaximumRightDrawerWidth:200];
+        [self.drawerController setMaximumLeftDrawerWidth:200];
+    }
+    return _drawerController;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -146,7 +167,7 @@
      *	切换到新接口
      */
     NSString *pic_ids;
-    if (self.picturesIDArray.count > 1) {
+    if (self.picturesIDArray.count > 0) {
         pic_ids = [self.picturesIDArray componentsJoinedByString:@","];
     }
     [[HttpTool shared] addMedicalRecordWithType:1 Member_id:defaultMemberId Temperture:[[GlobalTool sharedSingleton].lineChartArray componentsJoinedByString:@","] Date:timeStr StartTime:[GlobalTool sharedSingleton].startTime EndTime:[GlobalTool sharedSingleton].endTime Symptoms:[NSString stringWithFormat:@"%d",symptomInt] Description:desc Longitude:[NSString stringWithFormat:@"%f",[[GlobalTool shared] longitude]] Latitude:[NSString stringWithFormat:@"%f",[[GlobalTool shared] latitude]] Pic_ids:pic_ids];
@@ -276,7 +297,6 @@
         [self.scrollView setContentSize:CGSizeMake(2000, 230)];
         
         self.lineChart = [[ZX alloc]initWithFrame:CGRectMake(0, 0, self.scrollView.contentSize.width,230)];
-        //[lineChart setBackgroundColor:GETColor(255, 111, 132, 1)];
         [self.lineChart setBackgroundColor:[UIColor clearColor]];
         [self.scrollView addSubview:self.lineChart];
     }
@@ -305,7 +325,6 @@
         [self.photosView removeFromSuperview];
         [self.photosHeaderView removeFromSuperview];
         [self.view addSubview:self.datePickerHeaderView];
-        
         self.datePicker.frame = CGRectMake(0, self.view.frame.size.height - 216, self.view.frame.size.width, 216);
         [self.view addSubview:self.datePicker];
     } else if (indexPath.section == 3) {
@@ -325,7 +344,6 @@
         [self.photosView removeFromSuperview];
         [self.photosHeaderView removeFromSuperview];
         [self.descriptionTextView becomeFirstResponder];
-        [self.tableView setContentOffset:CGPointMake(0, 200) animated:NO];
         [self.view addSubview:self.descriptionTextView];
         [self.view addSubview:self.descriptionHeaderView];
     } else if (indexPath.section == 5) {
