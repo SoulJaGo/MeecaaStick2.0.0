@@ -20,7 +20,6 @@
 @interface MedicalRecordViewController () <UITableViewDataSource,UITableViewDelegate,UIFolderTableViewDelegate,UIAlertViewDelegate,CXPhotoBrowserDataSource,CXPhotoBrowserDelegate>
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segment;
 @property (weak, nonatomic) IBOutlet UIFolderTableView *tableView;
-@property (nonatomic,strong) NSMutableArray *dataSource;
 @property (nonatomic,strong) NSMutableArray *diaryList;
 @property (nonatomic,strong) NSMutableArray *beanDiaryList;
 /**
@@ -54,7 +53,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.page = 1;
-//    self.dataSource = [NSMutableArray array];
     self.diaryList = [NSMutableArray array];
     self.beanDiaryList = [NSMutableArray array];
     self.beanHistoryList = [NSMutableArray array];
@@ -70,14 +68,13 @@
     if ([[DatabaseTool shared] getDefaultMember]) { //登陆状态
         if (![[DatabaseTool shared] getDefaultMemberLastDiary]) { //没有数据的时候（t_dairy 棒子）
             //请求网络读取数据
+            [SVProgressHUD show];
             [[HttpTool shared] getDefaultMemberDiaryInfoByPage:1];//手动写了一个0类型传进去，把所有棒子的记录传回来
         } else { //数据库有数据的时候
             self.diaryList = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:1];
-            NSLog(@"diaryList %@",self.diaryList);
         }
     }
     [self.segment addTarget:self action:@selector(switchTableView) forControlEvents:UIControlEventValueChanged];
-    [self switchTableView];
     //上拉加载
     MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreOldData)];
     footer.stateLabel.textColor = [UIColor colorWithRed:194/255.0 green:194/255.0 blue:194/255.0 alpha:1.0];
@@ -89,6 +86,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.tableView performClose:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeDiarySuccessNotification) name:@"RemoveDiarySuccessNotification" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeBeanDiarySuccessNotification) name:@"RemoveBeanDiarySuccessNotification" object:nil];
@@ -97,8 +95,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initBeanDiaryDataSuccessNotification) name:@"InitBeanDiaryDataSuccessNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initBeanDiaryDataEndSuccessNotification) name:@"InitBeanDiaryDataEndSuccessNotification" object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewDiarySuccessNotification) name:@"AddNewDiarySuccessNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNewDiarySuccessNotification) name:@"UpdateNewDiarySuccessNotification" object:nil];
 }
 
@@ -110,7 +106,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"InitBeanDiaryDataSuccessNotification" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"InitDiaryDataEndSuccessNotification" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"InitBeanDiaryDataEndSuccessNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AddNewDiarySuccessNotification" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UpdateNewDiarySuccessNotification" object:nil];
 }
 
@@ -120,16 +115,27 @@
 - (void)loadMoreOldData {
     self.page++;
     [self.tableView performClose:nil];
-    
-    NSMutableArray *array = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:self.page];
-    if (array == nil || array.count == 0) { //本地没有更多的数据了
-        [[HttpTool shared] getDefaultMemberDiaryInfoByPage:self.page];
-    } else { //本地有更多的数据
-        [self.diaryList addObjectsFromArray:array];
-        [self.tableView reloadData];
-        [self.tableView.footer endRefreshing];
+    if (self.segment.selectedSegmentIndex == 0) {
+        NSMutableArray *array = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:self.page];
+        if (array == nil || array.count == 0) { //本地没有更多的数据了
+            [[HttpTool shared] getDefaultMemberDiaryInfoByPage:self.page];
+        } else { //本地有更多的数据
+            [self.diaryList addObjectsFromArray:array];
+            [self.tableView reloadData];
+            [self.tableView.footer endRefreshing];
+        }
+    } else {
+        NSMutableArray *array = [[DatabaseTool shared] getDefaultMemberBeanDiaryFromPage:self.page];
+        if (array == nil || array.count == 0) { //本地没有更多的数据了
+            [[HttpTool shared] getDefaultMemberBeanDiaryInfoByPage:self.page];
+        } else { //本地有更多的数据
+            [self.beanDiaryList addObjectsFromArray:array];
+            [self.tableView reloadData];
+            [self.tableView.footer endRefreshing];
+        }
     }
 }
+
 //棒子数据刷新页面
 - (void)initDiaryDataSuccessNotification {
     NSMutableArray *array = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:self.page];
@@ -173,12 +179,6 @@
     [SVProgressHUD showSuccessWithStatus:@"记录删除成功!"];
 }
 
-- (void)addNewDiarySuccessNotification {
-    self.diaryList = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:1];
-    self.page = 1;
-    [self.tableView performClose:nil];
-    [self.tableView reloadData];
-}
 
 - (void)updateNewDiarySuccessNotification {
     self.diaryList = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:1];
@@ -195,20 +195,31 @@
 }
 
 - (void)switchTableView {
+    self.page = 1;
+    [self.folderTableView performClose:nil];
     if (self.segment.selectedSegmentIndex == 0) {
-//        self.dataSource = self.diaryList;
-        [self.folderTableView performClose:nil];
+        //异步加载数据
+        if ([[DatabaseTool shared] getDefaultMember]) { //登陆状态
+            if (![[DatabaseTool shared] getDefaultMemberLastDiary]) { //没有数据的时候（t_dairy 棒子）
+                //请求网络读取数据
+                [SVProgressHUD show];
+                [[HttpTool shared] getDefaultMemberDiaryInfoByPage:1];//手动写了一个0类型传进去，把所有棒子的记录传回来
+            } else { //数据库有数据的时候
+                self.diaryList = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:1];
+            }
+        }
         [self.tableView reloadData];
     } else {
-        [self.folderTableView performClose:nil];
         //异步加载数据
         if ([[DatabaseTool shared] getDefaultMember]) { //登陆状态
             if (![[DatabaseTool shared] getDefaultMemberLastBeanDiary]) { //没有数据的时候（豆子）
+                [SVProgressHUD show];
                 //请求网络读取数据
                 [[HttpTool shared] getDefaultMemberBeanDiaryInfoByPage:1];//手动写了一个1类型传进去，把所有豆子的记录传回来
+            } else {
+                self.beanDiaryList = [[DatabaseTool shared] getDefaultMemberBeanDiaryFromPage:1];
             }
         }
-//        self.dataSource = self.beanDiaryList;
         [self.tableView reloadData];
     }
 }
@@ -608,6 +619,6 @@
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [self.tableView performClose:nil];
+//    [self.tableView performClose:nil];
 }
 @end

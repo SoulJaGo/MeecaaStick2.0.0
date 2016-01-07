@@ -879,7 +879,6 @@ typedef enum
     [self.manager POST:urlStr parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (responseObject[@"status"] == [NSNumber numberWithInteger:1]) {
             NSArray *diaryArray = responseObject[@"data"];
-            NSLog(@"  diawgdhsjhfjs  %@",diaryArray);
             if (diaryArray != nil || diaryArray.count != 0) {
                 BOOL result = [[DatabaseTool shared] addDiaryWithArray:diaryArray];
                 if (!result) {
@@ -890,7 +889,7 @@ typedef enum
             } else {
                 return;
             }
-            
+            [SVProgressHUD dismiss];
         } else {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"InitDiaryDataEndSuccessNotification" object:nil];
             return;
@@ -1013,20 +1012,28 @@ typedef enum
     [self.manager POST:urlStr parameters:params success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
         if (responseObject[@"status"]==[NSNumber numberWithInteger:1]) {
             //存储到数据库中
-            BOOL result = [[DatabaseTool shared] addBeanDiary:responseObject[@"data"]];
-            if (!result) {
-                NSLog(@"插入数据失败!");
-                [SVProgressHUD showErrorWithStatus:@"添加数据失败!"];
-            } else {
-                [SVProgressHUD dismiss];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"AddBeanDiarySuccessNotification" object:nil userInfo:responseObject[@"data"]];
-                NSLog(@"可以跳转界面了");
+            if (type == 0) { //添加体温棒记录
+                BOOL result = [[DatabaseTool shared] addDiary:responseObject[@"data"]];
+                if (!result) {
+                    NSLog(@"插入数据失败!");
+                    [SVProgressHUD showErrorWithStatus:@"添加数据失败!"];
+                } else {
+                    [SVProgressHUD dismiss];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"AddDiarySuccessNotification" object:nil userInfo:responseObject[@"data"]];
+                }
+            } else if (type == 1) { //添加温豆记录
+                BOOL result = [[DatabaseTool shared] addBeanDiary:responseObject[@"data"]];
+                if (!result) {
+                    NSLog(@"插入数据失败!");
+                    [SVProgressHUD showErrorWithStatus:@"添加数据失败!"];
+                } else {
+                    [SVProgressHUD dismiss];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"AddBeanDiarySuccessNotification" object:nil userInfo:responseObject[@"data"]];
+                }
             }
         }else {
-            [SVProgressHUD showErrorWithStatus:@"添加温豆测温记录失败!"];
+            [SVProgressHUD showErrorWithStatus:@"添加测温记录失败!"];
         }
-        
-        NSLog(@"addMedicalRecordWithMember_id %@",responseObject);
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
         [SVProgressHUD dismiss];
         NSLog(@"%@",error);
@@ -1050,21 +1057,18 @@ typedef enum
     [self.manager POST:urlStr parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (responseObject[@"status"] == [NSNumber numberWithInteger:1]) {
             NSArray *diaryArray = responseObject[@"data"];
-            NSLog(@"diaryARRAY  %@",responseObject);
             if (diaryArray != nil || diaryArray.count != 0) {
                 BOOL result = [[DatabaseTool shared] addBeanDiaryWithArray:diaryArray];
                 if (!result) {
                     NSLog(@"插入数据库失败!");
                 }
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"InitBeanDiaryDataSuccessNotification" object:nil];
-//                NSLog(@"可以开始刷新界面了1");
             } else {
                 return;
             }
-            
+            [SVProgressHUD dismiss];
         } else {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"InitBeanDiaryDataEndSuccessNotification" object:nil];
-//            NSLog(@"可以开始刷新界面了2");
             return;
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

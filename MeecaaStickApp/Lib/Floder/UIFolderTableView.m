@@ -178,7 +178,7 @@
 
 - (void)performClose:(id)sender {
     if (self.closing) {
-        return;
+        //return;
     }else {
         self.closing = YES;
     }

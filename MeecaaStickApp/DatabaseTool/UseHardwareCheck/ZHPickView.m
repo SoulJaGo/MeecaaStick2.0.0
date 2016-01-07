@@ -141,7 +141,7 @@
     _pickerView=pickView;
     pickView.delegate=self;
     pickView.dataSource=self;
-    pickView.frame=CGRectMake(0, ZHToobarHeight, pickView.frame.size.width, pickView.frame.size.height);
+    pickView.frame=CGRectMake(0, ZHToobarHeight,kScreen_Width, pickView.frame.size.height);
     _pickeviewHeight=pickView.frame.size.height;
     [self addSubview:pickView];
 }

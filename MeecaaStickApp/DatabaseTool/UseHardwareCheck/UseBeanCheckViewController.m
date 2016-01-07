@@ -318,8 +318,6 @@
     AddBeanRecordViewController *vc = [board instantiateViewControllerWithIdentifier:@"AddBeanRecordViewController"];
     MedicalRecordNavigationController *nav = [[MedicalRecordNavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:nav animated:YES completion:nil];
-
-    
 }
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];

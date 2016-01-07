@@ -75,11 +75,27 @@
 }
 
 - (void)addDiarySuccessNotification {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"AddNewDiarySuccessNotification" object:nil];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self presentViewController:self.drawerController animated:NO completion:^{
+        [GlobalTool sharedSingleton].presentView = NO;
+    }];
 }
+
+- (MMDrawerController *)drawerController {
+    if (_drawerController == nil) {
+        MainTabBarController *mainTabBarC = [[MainTabBarController alloc] init];
+        [mainTabBarC setSelectedIndex:1];
+        LeftMenuViewController *leftMenuVc = [[LeftMenuViewController alloc] init];
+        RightMenuViewController *rightMenuVc = [[RightMenuViewController alloc] init];
+        
+        self.drawerController = [[MMDrawerController alloc] initWithCenterViewController:mainTabBarC leftDrawerViewController:leftMenuVc rightDrawerViewController:rightMenuVc];
+        [self.drawerController setShowsShadow:NO];
+        [self.drawerController setMaximumRightDrawerWidth:200];
+        [self.drawerController setMaximumLeftDrawerWidth:200];
+    }
+    return _drawerController;
+}
+
 - (void)AddPictureSuccessNotification:(NSNotification *)notify {
-    NSLog(@"notify.object %@",notify.object);
     [self.picturesIDArray addObject:notify.object];
 }
 /**
@@ -331,17 +347,6 @@
  *  点击取消
  */
 - (void)cancelSelectSymptom {
-//    self.symptomButtonsArray = nil;
-//    for (UIView *subview in self.SymptomButtonsView.subviews) {
-//        if ([subview isKindOfClass:[UIButton class]]) {
-//            for (UIView *nextSubview in subview.subviews) {
-//                if ([nextSubview isKindOfClass:[UIImageView class]]) {
-//                    [nextSubview setHidden:YES];
-//                }
-//            }
-//        }
-//    }
-    
     [self.SymptomButtonsView removeFromSuperview];
     [self.SymptomButtonsHeaderView removeFromSuperview];
 }
@@ -555,14 +560,6 @@
  */
 - (void)goBack {
     if ([GlobalTool sharedSingleton].presentView == 1) {
-        MainTabBarController *mainTabBarC = [[MainTabBarController alloc] init];
-        [mainTabBarC setSelectedIndex:1];
-        LeftMenuViewController *leftMenuVc = [[LeftMenuViewController alloc] init];
-        RightMenuViewController *rightMenuVc = [[RightMenuViewController alloc] init];
-        self.drawerController = [[MMDrawerController alloc] initWithCenterViewController:mainTabBarC leftDrawerViewController:leftMenuVc rightDrawerViewController:rightMenuVc];
-        [self.drawerController setShowsShadow:NO];
-        [self.drawerController setMaximumRightDrawerWidth:200];
-        [self.drawerController setMaximumLeftDrawerWidth:200];
         [self presentViewController:self.drawerController animated:NO completion:^{
             [GlobalTool sharedSingleton].presentView = NO;
         }];
@@ -601,7 +598,6 @@
         self.temperatureLabelCell = temperatureLabelCell;
         self.temperatureLabelCell.temperatureTextField.text = [GlobalTool sharedSingleton].receivedTempStr;
         if ([GlobalTool sharedSingleton].presentView == 0) {
-            NSLog(@"234");
             self.temperatureLabelCell.temperatureTextField.text = nil;
         }
         return temperatureLabelCell;

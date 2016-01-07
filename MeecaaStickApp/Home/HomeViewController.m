@@ -65,6 +65,8 @@
     [self setupNav];
 
     self.NavItemView.backgroundColor = NAVIGATIONBAR_BACKGROUND_COLOR;
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectDevice)];
+    [self.NavItemView addGestureRecognizer:recognizer];
     userDefaults = [NSUserDefaults standardUserDefaults];
     NSInteger myStyle = [userDefaults integerForKey:@"myInteger"];
     if (myStyle == 1) {
@@ -158,8 +160,6 @@
 }
 
 - (void)SetUpBeanView{
-    NSLog(@"222");
-    
     int myInteger = 2;
     //将数据全部存储到NSUserDefaults中
     userDefaults = [NSUserDefaults standardUserDefaults];

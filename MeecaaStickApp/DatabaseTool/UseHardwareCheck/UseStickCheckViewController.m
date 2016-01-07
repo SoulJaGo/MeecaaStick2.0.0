@@ -179,8 +179,18 @@
         }];
     }
 }
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
 - (void)progressChanged{
-    progressView.progress += 0.001;
+    if (flag == 1) {
+        progressView.progress += 0.001;
+    } else if (flag == 2) {
+        progressView.progress += 0.0025;
+    }
+    
     if (progressView.progress > 1.0f){
         progressView.progress = 0.0f;
     }
@@ -193,9 +203,6 @@
     press = NO;
     self.scrollView.scrollEnabled = YES;
     [self stopCheck];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"AVSystemController_SystemVolumeDidChangeNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVAudioSessionRouteChangeNotification object:nil];
 }
 
 
@@ -383,8 +390,8 @@
             
         }else{
             [self onClickCheck];
-            [circularImageViewOne addSubview:progressView];
-            progressTimer = [NSTimer scheduledTimerWithTimeInterval:0.1818181818 target:self selector:@selector(progressChanged) userInfo:nil repeats:YES];
+            [circularImageViewTwo addSubview:progressView];
+            progressTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(progressChanged) userInfo:nil repeats:YES];
             timeLabelOne.text = @"00:00";
             self.scrollView.scrollEnabled = NO;
             press = YES;
@@ -629,7 +636,7 @@
                         AddMedicalRecordViewController *vc = [board instantiateViewControllerWithIdentifier:@"AddMedicalRecordViewController"];
                         MedicalRecordNavigationController *nav = [[MedicalRecordNavigationController alloc] initWithRootViewController:vc];
                         [GlobalTool sharedSingleton].presentView = YES;//标记是体温棒测温页面跳转过去的
-                        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:nav animated:YES completion:nil];
+                        [UIApplication sharedApplication].keyWindow.rootViewController = nav;
                     }
                 }else if (flag == 3){
                     temperatureLabelThree.text = [NSString stringWithFormat:@"%.1f℃", ftemp];
@@ -638,11 +645,24 @@
             }
         }
     } else { //解码错误
-        self.normalErrorCount++;
-        if (self.normalErrorCount > 3) {
-            [self stopCheck];
-            [SVProgressHUD showErrorWithStatus:@"请重新连接耳机孔，再次测温。"];
-            return;
+        if (flag == 1) { //常规测温
+            self.normalErrorCount++;
+            if (self.normalErrorCount > 3) {
+                [self stopCheck];
+                [SVProgressHUD showErrorWithStatus:@"请重新连接耳机孔，再次测温。"];
+                return;
+            }
+        } else if (flag == 2) {
+            if (timercount3 < 3) {
+                for (int i = 0; i<10; i++) {
+                    temperature[i] = temperature[i+1];
+                }
+                temperature[10] = ftemp;
+                return;
+            } else {
+                [self stopCheck];
+                [SVProgressHUD showErrorWithStatus:@"请重新连接耳机孔，再次测温。"];
+            }
         }
     }
 }
@@ -700,6 +720,7 @@
     [timeLabelOne setText:@"00:00"];
     [temperatureLabelTwo setText:@"--.-"];
     [timeLabelTwo setText:@"00:00"];
+    self.scrollView.scrollEnabled = YES;
     [GlobalTool sharedSingleton].receivedEndTime = [[NSDate date] timeIntervalSince1970];
     [self removeMaskView];
 }
@@ -719,7 +740,7 @@
             [GlobalTool sharedSingleton].receivedTempStr = [temperatureLabelOne.text substringToIndex:4];
         }
         [GlobalTool sharedSingleton].presentView = YES;//标记是体温棒测温页面跳转过去的
-        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:nav animated:YES completion:nil];
+        [UIApplication sharedApplication].keyWindow.rootViewController = nav;
     }
     /*开始播放*/
     [self play];
@@ -760,40 +781,7 @@
     }
 }
 
-/**
- *  判断耳机是否被拔出
- */
--(void)routeChange:(NSNotification *)notification{
-    NSDictionary *dic=notification.userInfo;
-    int changeReason= [dic[AVAudioSessionRouteChangeReasonKey] intValue];
-    //等于AVAudioSessionRouteChangeReasonOldDeviceUnavailable表示旧输出不可用
-    if (changeReason==AVAudioSessionRouteChangeReasonOldDeviceUnavailable) {
-        AVAudioSessionRouteDescription *routeDescription=dic[AVAudioSessionRouteChangePreviousRouteKey];
-        AVAudioSessionPortDescription *portDescription= [routeDescription.outputs firstObject];
-        //原设备为耳机则暂停
-        if ([portDescription.portType isEqualToString:@"Headphones"]) {
-            [self stopCheck];
-            [SVProgressHUD showErrorWithStatus:@"体温棒已拔出，请重新测温！"];
-            return;
-        }
-    }
-    
-}
 
-/**
- *  2015-09-23 SoulJa
- *  监听音量调节
- */
-- (void)volumeChanged:(NSNotification *)notification
-{
-    // service logic here.
-    CGFloat volume = [notification.userInfo[@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
-    
-    if (volume < 1.0) {
-        [self stopCheck];
-        [SVProgressHUD showErrorWithStatus:@"请将音量调到最大！"];
-    }
-}
 
 
 /**
