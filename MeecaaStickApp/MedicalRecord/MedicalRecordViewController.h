@@ -2,8 +2,8 @@
 //  MedicalRecordViewController.h
 //  MeecaaStickApp
 //
-//  Created by SoulJa on 15/11/19.
-//  Copyright © 2015年 SoulJa. All rights reserved.
+//  Created by SoulJa on 16/1/8.
+//  Copyright © 2016年 SoulJa. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

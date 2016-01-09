@@ -389,120 +389,10 @@
                     <view key="view" contentMode="scaleToFill" id="Fpm-62-7V8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="I9L-iL-g69">
-                                <rect key="frame" x="51" y="79" width="273" height="31"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="kMu-E1-xdg"/>
-                                </constraints>
-                                <segments>
-                                    <segment title="体温棒"/>
-                                    <segment title="温豆"/>
-                                </segments>
-                                <color key="tintColor" red="0.31372549020000001" green="0.80392156859999997" blue="0.84705882349999995" alpha="1" colorSpace="calibratedRGB"/>
-                            </segmentedControl>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Lh0-RT-zQM" customClass="UIFolderTableView">
-                                <rect key="frame" x="0.0" y="124" width="375" height="543"/>
-                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="MedicalRecordCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="MedicalRecordCell" rowHeight="103" id="WMW-lU-FyF" customClass="MedicalRecordCell">
-                                        <rect key="frame" x="0.0" y="49.5" width="375" height="103"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WMW-lU-FyF" id="vMy-On-3PQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="102.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="medical_point_icon0" translatesAutoresizingMaskIntoConstraints="NO" id="wRn-2r-bLh">
-                                                    <rect key="frame" x="23" y="46" width="11" height="11"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="11" id="7AC-tL-VXp"/>
-                                                        <constraint firstAttribute="height" constant="11" id="F6h-F2-Ggo"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bJL-qK-6O0">
-                                                    <rect key="frame" x="53" y="18" width="105" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="GX4-mL-Gsn"/>
-                                                        <constraint firstAttribute="width" constant="105" id="JpN-o1-CXa"/>
-                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="dBZ-ov-s7h"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                    <color key="textColor" red="0.72156862749999995" green="0.72156862749999995" blue="0.72156862749999995" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6IL-ch-gIh">
-                                                    <rect key="frame" x="222" y="31" width="130" height="40"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="40" id="CXi-94-26I"/>
-                                                        <constraint firstAttribute="width" constant="130" id="mzR-Ar-NJm"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="33"/>
-                                                    <color key="textColor" red="0.31372549020000001" green="0.80000000000000004" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8cJ-Vo-fXF">
-                                                    <rect key="frame" x="53" y="63" width="169" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="LKC-7B-opQ"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                    <color key="textColor" red="0.72156862749999995" green="0.72156862749999995" blue="0.72156862749999995" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="6IL-ch-gIh" firstAttribute="centerY" secondItem="vMy-On-3PQ" secondAttribute="centerY" id="3EG-wt-Yw7"/>
-                                                <constraint firstItem="wRn-2r-bLh" firstAttribute="leading" secondItem="vMy-On-3PQ" secondAttribute="leadingMargin" constant="15" id="KDz-zq-hWU"/>
-                                                <constraint firstItem="8cJ-Vo-fXF" firstAttribute="leading" secondItem="bJL-qK-6O0" secondAttribute="leading" id="MXp-5x-Daz"/>
-                                                <constraint firstItem="bJL-qK-6O0" firstAttribute="top" secondItem="vMy-On-3PQ" secondAttribute="topMargin" constant="10" id="QYa-cy-Plz"/>
-                                                <constraint firstItem="6IL-ch-gIh" firstAttribute="leading" secondItem="8cJ-Vo-fXF" secondAttribute="trailing" id="X0u-Sy-YmY"/>
-                                                <constraint firstItem="wRn-2r-bLh" firstAttribute="centerY" secondItem="vMy-On-3PQ" secondAttribute="centerY" id="dJQ-pN-iKT"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="6IL-ch-gIh" secondAttribute="trailing" constant="15" id="iDw-OB-jkw"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="8cJ-Vo-fXF" secondAttribute="bottom" constant="10" id="nhI-cK-xRS"/>
-                                                <constraint firstItem="bJL-qK-6O0" firstAttribute="leading" secondItem="wRn-2r-bLh" secondAttribute="trailing" constant="19" id="vxf-0b-Cj5"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="symptonLabel" destination="8cJ-Vo-fXF" id="lmJ-en-xag"/>
-                                            <outlet property="temperatureLabel" destination="6IL-ch-gIh" id="we3-47-wKj"/>
-                                            <outlet property="timeLabel" destination="bJL-qK-6O0" id="FNE-0o-38G"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z8Z-EQ-Gcu">
-                                <rect key="frame" x="137" y="557" width="100" height="100"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="LrV-Pp-0gl"/>
-                                    <constraint firstAttribute="width" constant="100" id="lIR-jU-qWC"/>
-                                </constraints>
-                                <state key="normal" backgroundImage="medical_go_icon"/>
-                                <connections>
-                                    <action selector="onClickAddDiary" destination="gde-6p-OBI" eventType="touchUpInside" id="aII-Kd-PmX"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="Z8Z-EQ-Gcu" firstAttribute="centerX" secondItem="Fpm-62-7V8" secondAttribute="centerX" id="9ZY-hu-t1A"/>
-                            <constraint firstItem="I9L-iL-g69" firstAttribute="leading" secondItem="Fpm-62-7V8" secondAttribute="leadingMargin" constant="35" id="D6r-5L-Sdd"/>
-                            <constraint firstItem="j6b-5h-Ykq" firstAttribute="top" secondItem="Z8Z-EQ-Gcu" secondAttribute="bottom" constant="10" id="ERb-FB-chR"/>
-                            <constraint firstItem="I9L-iL-g69" firstAttribute="top" secondItem="Zt6-pG-xUy" secondAttribute="bottom" constant="15" id="Fiu-sX-30m"/>
-                            <constraint firstItem="I9L-iL-g69" firstAttribute="centerX" secondItem="Fpm-62-7V8" secondAttribute="centerX" id="OWA-nw-HvC"/>
-                            <constraint firstItem="Lh0-RT-zQM" firstAttribute="centerX" secondItem="Fpm-62-7V8" secondAttribute="centerX" id="WEC-et-kTE"/>
-                            <constraint firstItem="Lh0-RT-zQM" firstAttribute="top" secondItem="I9L-iL-g69" secondAttribute="bottom" constant="15" id="eQX-jJ-lmQ"/>
-                            <constraint firstItem="j6b-5h-Ykq" firstAttribute="top" secondItem="Lh0-RT-zQM" secondAttribute="bottom" id="ikv-zF-82q"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="I9L-iL-g69" secondAttribute="trailing" constant="35" id="oKy-wV-ri4"/>
-                            <constraint firstItem="Lh0-RT-zQM" firstAttribute="width" secondItem="Fpm-62-7V8" secondAttribute="width" id="tdf-d4-HED"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="病历" id="ipv-M2-k1g"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-                    <connections>
-                        <outlet property="segment" destination="I9L-iL-g69" id="pEF-RE-0D1"/>
-                        <outlet property="tableView" destination="Lh0-RT-zQM" id="RXm-K8-XgG"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Zq-ci-s0c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1542,7 +1432,5 @@
         <image name="check_house_icon" width="408" height="77"/>
         <image name="home_member_icon" width="43" height="43"/>
         <image name="jiantou" width="10" height="6"/>
-        <image name="medical_go_icon" width="130" height="130"/>
-        <image name="medical_point_icon0" width="11" height="11"/>
     </resources>
 </document>

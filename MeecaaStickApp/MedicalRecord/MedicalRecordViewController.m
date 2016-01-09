@@ -2,40 +2,29 @@
 //  MedicalRecordViewController.m
 //  MeecaaStickApp
 //
-//  Created by SoulJa on 15/11/19.
-//  Copyright © 2015年 SoulJa. All rights reserved.
+//  Created by SoulJa on 16/1/8.
+//  Copyright © 2016年 SoulJa. All rights reserved.
 //
 
 #import "MedicalRecordViewController.h"
+#import "MJRefresh.h"
 #import "MedicalRecordCell.h"
-#import "UIFolderTableView.h"
-#import "MedicalRecordDetailViewController.h"
-#import "AddMedicalRecordViewController.h"
 #import "UpdateMedicalRecordTableViewController.h"
 #import "AddBeanRecordViewController.h"
 #import "CXPhotoBrowser.h"
-#import "MJRefresh.h"
-
-
-@interface MedicalRecordViewController () <UITableViewDataSource,UITableViewDelegate,UIFolderTableViewDelegate,UIAlertViewDelegate,CXPhotoBrowserDataSource,CXPhotoBrowserDelegate>
-@property (weak, nonatomic) IBOutlet UISegmentedControl *segment;
-@property (weak, nonatomic) IBOutlet UIFolderTableView *tableView;
-@property (nonatomic,strong) NSMutableArray *diaryList;
-@property (nonatomic,strong) NSMutableArray *beanDiaryList;
-/**
- *  测温历史记录
- */
-@property (retain, nonatomic) NSMutableArray *historyList;
+@interface MedicalRecordViewController () <UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,CXPhotoBrowserDataSource,CXPhotoBrowserDelegate>
+@property (nonatomic,strong) UISegmentedControl *segmentControl;
+@property (nonatomic,strong) UIScrollView *scorllView;
+@property (nonatomic,strong) UITableView *stickTableView;
+@property (nonatomic,strong) UITableView *beanTableView;
+@property (nonatomic,assign) int stickPage;
+@property (nonatomic,assign) int beanPage;
+@property (nonatomic,strong) NSMutableArray *stickDiaryArray;
+@property (nonatomic,strong) NSMutableArray *beanDiaryArray;
+@property (retain, nonatomic) NSMutableArray *stickHistoryList;
 @property (retain, nonatomic) NSMutableArray *beanHistoryList;
-/**
- *点击的温度记录的信息
- */
+@property (nonatomic,strong) NSIndexPath *selectedIndexPath;
 @property (nonatomic,strong) NSMutableDictionary *dayDetailInfo;
-@property (nonatomic,strong) NSMutableDictionary *beanDayDetailInfo;
-
-@property (nonatomic,strong) NSDictionary *detailInfoDic;
-@property (nonatomic,strong) NSDictionary *detailBeanInfoDic;
-
 /**
  *  图片展示层
  */
@@ -43,26 +32,55 @@
 @property (nonatomic, strong) NSMutableArray *photoDataSource;
 @property (nonatomic,strong) NSMutableArray *picsArray;
 
-@property (nonatomic,strong) UIFolderTableView *folderTableView;
-/**
- *  本地页码数据
- */
-@property (nonatomic,assign) int page;
 @end
 @implementation MedicalRecordViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.page = 1;
-    self.diaryList = [NSMutableArray array];
-    self.beanDiaryList = [NSMutableArray array];
-    self.beanHistoryList = [NSMutableArray array];
+    /*创建segment*/
+    UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"体温棒",@"温豆"]];
+    CGFloat segmentControlW = 250;
+    CGFloat segmentControlH = 30;
+    CGFloat segmentControlX = (kScreen_Width - segmentControlW) / 2;
+    CGFloat segmentControlY = 10;
+    [segmentControl setFrame:CGRectMake(segmentControlX, segmentControlY, segmentControlW, segmentControlH)];
+    [segmentControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]} forState:UIControlStateSelected];
+    [segmentControl setTintColor:NAVIGATIONBAR_BACKGROUND_COLOR];
+    [segmentControl setSelectedSegmentIndex:0];
+    [segmentControl addTarget:self action:@selector(switchTableView) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:segmentControl];
+    self.segmentControl = segmentControl;
+    
+    /*创建scrollView*/
+    UIScrollView *scrollView = [[UIScrollView alloc] init];
+    CGFloat scrollViewX = 0;
+    CGFloat scrollViewY = CGRectGetMaxY(segmentControl.frame) + 10;
+    CGFloat scrollViewW = kScreen_Width;
+    CGFloat scrollViewH = kScreen_Height - scrollViewY - 49;
+    [scrollView setFrame:CGRectMake(scrollViewX, scrollViewY, scrollViewW, scrollViewH)];
+    [scrollView setContentSize:CGSizeMake(2 * kScreen_Width, scrollViewH)];
+    scrollView.showsVerticalScrollIndicator = NO;
+    [scrollView setScrollEnabled:NO];
+    [self.view addSubview:scrollView];
+    self.scorllView = scrollView;
+    
+    /*添加体温棒TableView*/
+    UITableView *stickTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, scrollViewW, scrollViewH - 49) style:UITableViewStyleGrouped];
+    [self.scorllView addSubview:stickTableView];
+    self.stickTableView = stickTableView;
+    
+    self.stickPage = 1;
+    self.stickDiaryArray = [NSMutableArray array];
+    
+    /*添加温豆的TableView*/
+    UITableView *beanTableView = [[UITableView alloc] initWithFrame:CGRectMake(kScreen_Width, 0, scrollViewW, scrollViewH - 49) style:UITableViewStyleGrouped];
+    [self.scorllView addSubview:beanTableView];
+    self.beanTableView = beanTableView;
+    
+    self.beanPage = 1;
+    self.beanDiaryArray = [NSMutableArray array];
+    
     //设置Nav
     [self setupNav];
-    self.view.backgroundColor = UIVIEW_BACKGROUND_COLOR;
-    
-    UIFolderTableView *folderTableView = (UIFolderTableView *)self.tableView;
-    self.folderTableView = folderTableView;
-    
     
     //异步加载数据
     if ([[DatabaseTool shared] getDefaultMember]) { //登陆状态
@@ -71,22 +89,92 @@
             [SVProgressHUD show];
             [[HttpTool shared] getDefaultMemberDiaryInfoByPage:1];//手动写了一个0类型传进去，把所有棒子的记录传回来
         } else { //数据库有数据的时候
-            self.diaryList = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:1];
+            self.stickDiaryArray = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:1];
         }
     }
-    [self.segment addTarget:self action:@selector(switchTableView) forControlEvents:UIControlEventValueChanged];
+    
     //上拉加载
-    MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreOldData)];
-    footer.stateLabel.textColor = [UIColor colorWithRed:194/255.0 green:194/255.0 blue:194/255.0 alpha:1.0];
-    self.tableView.footer = footer;
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
+    MJRefreshAutoNormalFooter *footer1 = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreOldData)];
+    footer1.stateLabel.textColor = [UIColor colorWithRed:194/255.0 green:194/255.0 blue:194/255.0 alpha:1.0];
+    self.stickTableView.footer = footer1;
+    self.stickTableView.dataSource = self;
+    self.stickTableView.delegate = self;
+    
+    MJRefreshAutoNormalFooter *footer2 = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreOldData)];
+    footer2.stateLabel.textColor = [UIColor colorWithRed:194/255.0 green:194/255.0 blue:194/255.0 alpha:1.0];
+    self.beanTableView.footer = footer2;
+    self.beanTableView.dataSource = self;
+    self.beanTableView.delegate = self;
+    
+}
+
+#pragma mark - 设置导航栏
+- (void)setupNav {
+    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_logo"]];
+}
+
+#pragma mark - 改变TableView
+- (void)switchTableView {
+    self.selectedIndexPath = nil;
+    if (self.segmentControl.selectedSegmentIndex == 0) {
+        [self.scorllView setContentOffset:CGPointMake(0, 0) animated:YES];
+        self.stickPage = 1;
+        //异步加载数据
+        if ([[DatabaseTool shared] getDefaultMember]) { //登陆状态
+            if (![[DatabaseTool shared] getDefaultMemberLastDiary]) { //没有数据的时候（t_dairy 棒子）
+                //请求网络读取数据
+                [SVProgressHUD show];
+                [[HttpTool shared] getDefaultMemberDiaryInfoByPage:1];//手动写了一个0类型传进去，把所有棒子的记录传回来
+            } else { //数据库有数据的时候
+                self.stickDiaryArray = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:1];
+                [self.stickTableView reloadData];
+            }
+        }
+    } else if (self.segmentControl.selectedSegmentIndex == 1) {
+        [self.scorllView setContentOffset:CGPointMake(kScreen_Width, 0) animated:YES];
+        //异步加载数据
+        if ([[DatabaseTool shared] getDefaultMember]) { //登陆状态
+            if (![[DatabaseTool shared] getDefaultMemberLastBeanDiary]) { //没有数据的时候（豆子）
+                [SVProgressHUD show];
+                //请求网络读取数据
+                [[HttpTool shared] getDefaultMemberBeanDiaryInfoByPage:1];//手动写了一个1类型传进去，把所有豆子的记录传回来
+            } else {
+                self.beanDiaryArray = [[DatabaseTool shared] getDefaultMemberBeanDiaryFromPage:1];
+                [self.beanTableView reloadData];
+            }
+        }
+    }
+}
+
+#pragma mark - 加载更多的数据
+- (void)loadMoreOldData {
+    if (self.segmentControl.selectedSegmentIndex == 0) {
+        self.stickPage++;
+        NSMutableArray *array = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:self.stickPage];
+        if (array == nil || array.count == 0) { //本地没有更多的数据了
+            [[HttpTool shared] getDefaultMemberDiaryInfoByPage:self.stickPage];
+        } else { //本地有更多的数据
+            [self.stickDiaryArray addObjectsFromArray:array];
+            [self.stickTableView reloadData];
+            [self.stickTableView.footer endRefreshing];
+        }
+    } else if (self.segmentControl.selectedSegmentIndex == 1) {
+        self.beanPage++;
+        NSMutableArray *array = [[DatabaseTool shared] getDefaultMemberBeanDiaryFromPage:self.beanPage];
+        if (array == nil || array.count == 0) { //本地没有更多的数据了
+            [[HttpTool shared] getDefaultMemberBeanDiaryInfoByPage:self.beanPage];
+        } else { //本地有更多的数据
+            [self.beanDiaryArray addObjectsFromArray:array];
+            [self.beanTableView reloadData];
+            [self.beanTableView.footer endRefreshing];
+        }
+
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.tableView performClose:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeDiarySuccessNotification) name:@"RemoveDiarySuccessNotification" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeBeanDiarySuccessNotification) name:@"RemoveBeanDiarySuccessNotification" object:nil];
@@ -109,230 +197,263 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UpdateNewDiarySuccessNotification" object:nil];
 }
 
-/**
- *  加载旧的数据
- */
-- (void)loadMoreOldData {
-    self.page++;
-    [self.tableView performClose:nil];
-    if (self.segment.selectedSegmentIndex == 0) {
-        NSMutableArray *array = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:self.page];
-        if (array == nil || array.count == 0) { //本地没有更多的数据了
-            [[HttpTool shared] getDefaultMemberDiaryInfoByPage:self.page];
-        } else { //本地有更多的数据
-            [self.diaryList addObjectsFromArray:array];
-            [self.tableView reloadData];
-            [self.tableView.footer endRefreshing];
-        }
-    } else {
-        NSMutableArray *array = [[DatabaseTool shared] getDefaultMemberBeanDiaryFromPage:self.page];
-        if (array == nil || array.count == 0) { //本地没有更多的数据了
-            [[HttpTool shared] getDefaultMemberBeanDiaryInfoByPage:self.page];
-        } else { //本地有更多的数据
-            [self.beanDiaryList addObjectsFromArray:array];
-            [self.tableView reloadData];
-            [self.tableView.footer endRefreshing];
-        }
+#pragma mark - 棒子数据刷新页面
+- (void)initDiaryDataSuccessNotification {
+    NSMutableArray *array = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:self.stickPage];
+    if (array != nil || array.count != 0) { //没有数据
+        [self.stickDiaryArray addObjectsFromArray:array];
+        [self.stickTableView reloadData];
     }
+    [self.stickTableView.footer endRefreshing];
 }
 
-//棒子数据刷新页面
-- (void)initDiaryDataSuccessNotification {
-    NSMutableArray *array = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:self.page];
-    if (array != nil || array.count != 0) { //没有数据
-        [self.diaryList addObjectsFromArray:array];
-        [self.tableView reloadData];
+//豆子数据刷新页面
+- (void)initBeanDiaryDataSuccessNotification {
+    NSMutableArray *array = [[DatabaseTool shared] getDefaultMemberBeanDiaryFromPage:self.beanPage];
+    if (array != nil || array.count != 0) {
+        [self.beanDiaryArray addObjectsFromArray:array];
+        [self.beanTableView reloadData];
     }
-    [self.tableView.footer endRefreshing];
+    [self.beanTableView.footer endRefreshing];
 }
 
 - (void)initDiaryDataEndSuccessNotification {
-    [self.tableView.footer endRefreshing];
+    [self.stickTableView.footer endRefreshing];
 }
-//豆子数据刷新页面
-- (void)initBeanDiaryDataSuccessNotification {
-    NSMutableArray *array = [[DatabaseTool shared] getDefaultMemberBeanDiaryFromPage:self.page];
-    if (array != nil || array.count != 0) {
-        [self.beanDiaryList addObjectsFromArray:array];
-        [self.tableView reloadData];
-    }
-    [self.tableView.footer endRefreshing];
-}
+
 - (void)initBeanDiaryDataEndSuccessNotification {
-    [self.tableView.footer endRefreshing];
+    [self.beanTableView.footer endRefreshing];
 }
 
 //删除棒子测温
 - (void)removeDiarySuccessNotification {
-    self.diaryList = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:1];
-    self.page = 1;
-    [self.tableView performClose:nil];
-    [self.tableView reloadData];
+    self.stickDiaryArray = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:1];
+    self.stickPage = 1;
+    self.selectedIndexPath = nil;
+    [self.stickTableView reloadData];
     [SVProgressHUD showSuccessWithStatus:@"记录删除成功!"];
 }
 //删除豆子测温
 - (void)removeBeanDiarySuccessNotification {
-    self.beanDiaryList = [[DatabaseTool shared] getDefaultMemberBeanDiaryFromPage:1];
-    self.page = 1;
-    [self.tableView performClose:nil];
-    [self.tableView reloadData];
+    self.beanDiaryArray = [[DatabaseTool shared] getDefaultMemberBeanDiaryFromPage:1];
+    self.beanPage = 1;
+    self.selectedIndexPath = nil;
+    [self.beanTableView reloadData];
     [SVProgressHUD showSuccessWithStatus:@"记录删除成功!"];
 }
 
-
 - (void)updateNewDiarySuccessNotification {
-    self.diaryList = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:1];
-    self.page = 1;
-    [self.tableView performClose:nil];
-    [self.tableView reloadData];
-}
-
-/**
- *  设置Nav
- */
-- (void)setupNav {
-    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_logo"]];
-}
-
-- (void)switchTableView {
-    self.page = 1;
-    [self.folderTableView performClose:nil];
-    if (self.segment.selectedSegmentIndex == 0) {
-        //异步加载数据
-        if ([[DatabaseTool shared] getDefaultMember]) { //登陆状态
-            if (![[DatabaseTool shared] getDefaultMemberLastDiary]) { //没有数据的时候（t_dairy 棒子）
-                //请求网络读取数据
-                [SVProgressHUD show];
-                [[HttpTool shared] getDefaultMemberDiaryInfoByPage:1];//手动写了一个0类型传进去，把所有棒子的记录传回来
-            } else { //数据库有数据的时候
-                self.diaryList = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:1];
-            }
-        }
-        [self.tableView reloadData];
-    } else {
-        //异步加载数据
-        if ([[DatabaseTool shared] getDefaultMember]) { //登陆状态
-            if (![[DatabaseTool shared] getDefaultMemberLastBeanDiary]) { //没有数据的时候（豆子）
-                [SVProgressHUD show];
-                //请求网络读取数据
-                [[HttpTool shared] getDefaultMemberBeanDiaryInfoByPage:1];//手动写了一个1类型传进去，把所有豆子的记录传回来
-            } else {
-                self.beanDiaryList = [[DatabaseTool shared] getDefaultMemberBeanDiaryFromPage:1];
-            }
-        }
-        [self.tableView reloadData];
-    }
+    self.stickDiaryArray = [[DatabaseTool shared] getDefaultMemberDiaryFromPage:1];
+    self.stickPage = 1;
+    self.selectedIndexPath = nil;
+    [self.stickTableView reloadData];
 }
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (self.segment.selectedSegmentIndex == 1) {
+    if (self.segmentControl.selectedSegmentIndex == 0) {
+        return self.stickHistoryList.count;
+    } else {
         return self.beanHistoryList.count;
     }
-    return self.historyList.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (self.segment.selectedSegmentIndex == 1) {
+    if (self.segmentControl.selectedSegmentIndex == 0) {
+        NSDictionary *detailInfo = [self.stickHistoryList objectAtIndex:section];
+        NSArray *infoList = [detailInfo objectForKey:@"detail"];
+        return infoList.count;
+    } else {
         NSDictionary *detailInfo = [self.beanHistoryList objectAtIndex:section];
         NSArray *infoList = [detailInfo objectForKey:@"detail"];
         return infoList.count;
     }
-    NSDictionary *detailInfo = [self.historyList objectAtIndex:section];
-    NSArray *infoList = [detailInfo objectForKey:@"detail"];
-    return infoList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.segment.selectedSegmentIndex == 1) {
+    NSUInteger section = [indexPath section];
+    NSInteger row = [indexPath row];
+    if (self.segmentControl.selectedSegmentIndex == 0) {
+        NSDictionary *detailInfo = [self.stickHistoryList objectAtIndex:section];
+        NSArray *infoList = [detailInfo objectForKey:@"detail"];
+        NSMutableDictionary *dayDetailInfo = [infoList objectAtIndex:(row)];
+        MedicalRecordCell *cell = [[MedicalRecordCell alloc] initWithInfoDict:dayDetailInfo];
+        return cell;
+    } else {
+        NSDictionary *detailInfo = [self.beanHistoryList objectAtIndex:section];
+        NSArray *infoList = [detailInfo objectForKey:@"detail"];
+        NSMutableDictionary *dayDetailInfo = [infoList objectAtIndex:(row)];
+        MedicalRecordCell *cell = [[MedicalRecordCell alloc] initWithInfoDict:dayDetailInfo];
+        return cell;
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (self.segmentControl.selectedSegmentIndex == 0) {
+        NSDictionary *detailInfo = [self.stickHistoryList objectAtIndex:section];
+        NSString *dayInfo = [detailInfo objectForKey:@"day"];
+        return dayInfo;
+    } else {
+        NSDictionary *detailInfo = [self.beanHistoryList objectAtIndex:section];
+        NSString *dayInfo = [detailInfo objectForKey:@"day"];
+        return dayInfo;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {
+    if (indexPath == self.selectedIndexPath) {
+        return 263;
+    } else {
+        return 103;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView beginUpdates];
+    if (self.segmentControl.selectedSegmentIndex == 0) {
+        NSUInteger section = [indexPath section];
+        NSInteger row = [indexPath row];
+        NSDictionary *detailInfo = [self.stickHistoryList objectAtIndex:section];
+        NSArray *infoList = [detailInfo objectForKey:@"detail"];
+        NSMutableDictionary *dayDetailInfo = [infoList objectAtIndex:(row)];
+        self.dayDetailInfo = dayDetailInfo;
+        self.picsArray = dayDetailInfo[@"pics"];
+    } else {
         NSUInteger section = [indexPath section];
         NSInteger row = [indexPath row];
         NSDictionary *detailInfo = [self.beanHistoryList objectAtIndex:section];
         NSArray *infoList = [detailInfo objectForKey:@"detail"];
-        NSDictionary *dayDetailInfo = [infoList objectAtIndex:(row)];
-        static NSString *MedicalRecordCellID = @"MedicalRecordCell";
-        MedicalRecordCell *cell = (MedicalRecordCell *)[tableView dequeueReusableCellWithIdentifier:MedicalRecordCellID];
-        if (cell == nil) {
-            cell = [[MedicalRecordCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MedicalRecordCellID];
-        }
-        cell.timeLabel.text = [dayDetailInfo objectForKey:@"time"];
-        cell.symptonLabel.text = [dayDetailInfo objectForKey:@"symbton"];
-        cell.temperatureLabel.text = [[dayDetailInfo objectForKey:@"value"] stringByAppendingString:@"℃"];
-        return cell;
+        NSMutableDictionary *dayDetailInfo = [infoList objectAtIndex:(row)];
+        self.dayDetailInfo = dayDetailInfo;
+        self.picsArray = dayDetailInfo[@"pics"];
     }
     
-    NSUInteger section = [indexPath section];
-    NSInteger row = [indexPath row];
-    NSDictionary *detailInfo = [self.historyList objectAtIndex:section];
-    NSArray *infoList = [detailInfo objectForKey:@"detail"];
-    NSDictionary *dayDetailInfo = [infoList objectAtIndex:(row)];
-    static NSString *MedicalRecordCellID = @"MedicalRecordCell";
-    MedicalRecordCell *cell = (MedicalRecordCell *)[tableView dequeueReusableCellWithIdentifier:MedicalRecordCellID];
-    if (cell == nil) {
-        cell = [[MedicalRecordCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MedicalRecordCellID];
+    MedicalRecordCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    MedicalRecordCell *selectedCell = [tableView cellForRowAtIndexPath:self.selectedIndexPath];
+    if (indexPath == self.selectedIndexPath) {
+        if (selectedCell != nil) {
+            for (UIView *subview in selectedCell.contentView.subviews) {
+                if (subview.frame.origin.y == 103) {
+                    [subview removeFromSuperview];
+                    break;
+                }
+            }
+        }
+        self.selectedIndexPath = nil;
+    } else {
+        self.selectedIndexPath = indexPath;
+        if (selectedCell != nil) {
+            for (UIView *subview in selectedCell.contentView.subviews) {
+                if (subview.frame.origin.y == 103) {
+                    [subview removeFromSuperview];
+                    break;
+                }
+            }
+        }
+        [self createDetailViewWithInfoDict:self.dayDetailInfo Cell:cell];
     }
-    cell.timeLabel.text = [dayDetailInfo objectForKey:@"time"];
-    cell.symptonLabel.text = [dayDetailInfo objectForKey:@"symbton"];
-    cell.temperatureLabel.text = [[dayDetailInfo objectForKey:@"value"] stringByAppendingString:@"℃"];
-    return cell;
+    
+    [tableView endUpdates];
 }
 
-
-#pragma mark - UITableViewDelegate
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSUInteger section = [indexPath section];
-    NSInteger row = [indexPath row];
+#pragma mark - 详细信息
+- (void)createDetailViewWithInfoDict:(NSMutableDictionary *)infoDict Cell:(MedicalRecordCell *)cell{
+    UIView *detailView = [[UIView alloc] initWithFrame:CGRectMake(0, 103, kScreen_Width, 160)];
     
-    if (self.segment.selectedSegmentIndex == 1) {       //温豆的数据
-        self.detailBeanInfoDic = [self.beanHistoryList objectAtIndex:section];
-        NSArray *infoList = [self.detailBeanInfoDic objectForKey:@"detail"];
-        NSDictionary *dayDetailInfo = [infoList objectAtIndex:(row)];
-        self.beanDayDetailInfo = [NSMutableDictionary dictionaryWithDictionary:dayDetailInfo];
-        MedicalRecordDetailViewController *medicalRecordDetailVc = [[MedicalRecordDetailViewController alloc] init];
-        medicalRecordDetailVc.medicalRecordVc = self;
-        //图片
-        if (![[[dayDetailInfo objectForKey:@"pics"] objectAtIndex:0] isEqualToString:@""]) {
-            medicalRecordDetailVc.picsArray = [dayDetailInfo objectForKey:@"pics"];
-            self.picsArray = [NSMutableArray arrayWithArray:[dayDetailInfo objectForKey:@"pics"]];
-        }else {
-            medicalRecordDetailVc.picsArray = nil;
+    UILabel *descLabel = [[UILabel alloc] init];
+    CGFloat descLabelX = 10;
+    CGFloat descLabelY = 10;
+    CGFloat descLabelW = kScreen_Width;
+    CGFloat descLabelH = 30;
+    [descLabel setFrame:CGRectMake(descLabelX, descLabelY, descLabelW, descLabelH)];
+    [descLabel setText:[infoDict objectForKey:@"desc"]];
+    [descLabel setTextColor:[UIColor lightGrayColor]];
+    [descLabel setFont:[UIFont boldSystemFontOfSize:17]];
+    [detailView addSubview:descLabel];
+    
+    if ([[infoDict objectForKey:@"pics"] count] > 0 && ![[[infoDict objectForKey:@"pics"] objectAtIndex:0]  isEqual: @""]) {
+        for (int i = 0; i < [[infoDict objectForKey:@"pics"] count]; i++) {
+            UIImageView *imageView = [[UIImageView alloc] init];
+            CGFloat imageViewW = 60;
+            CGFloat imageViewH = 60;
+            CGFloat imageViewX = 10 * (i+1) + imageViewW * i;
+            CGFloat imageViewY = CGRectGetMaxY(descLabel.frame) + 10;
+            [imageView setFrame:CGRectMake(imageViewX, imageViewY, imageViewW, imageViewH)];
+            [imageView sd_setImageWithURL:[NSURL URLWithString:[[infoDict objectForKey:@"pics"] objectAtIndex:i]]];
+            imageView.userInteractionEnabled = YES;
+            [imageView setTag:i];
+            UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImageView:)];
+            [imageView addGestureRecognizer:recognizer];
+            [detailView addSubview:imageView];
         }
-        //描述
-        medicalRecordDetailVc.desc = [dayDetailInfo objectForKey:@"desc"];
+    }
+    
+    UIButton *updateBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    CGFloat updateBtnX = 10;
+    CGFloat updateBtnY = 120;
+    CGFloat updateBtnW = 50;
+    CGFloat updateBtnH = 30;
+    [updateBtn setFrame:CGRectMake(updateBtnX, updateBtnY, updateBtnW, updateBtnH)];
+    [updateBtn setTitleColor:NAVIGATIONBAR_BACKGROUND_COLOR forState:UIControlStateNormal];
+    [updateBtn setTitle:@"修改" forState:UIControlStateNormal];
+    [updateBtn addTarget:self action:@selector(onClickUpdateBtn) forControlEvents:UIControlEventTouchUpInside];
+    [detailView addSubview:updateBtn];
+    
+    UIButton *deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    CGFloat deleteBtnW = 50;
+    CGFloat deleteBtnH = 30;
+    CGFloat deleteBtnX = kScreen_Width - deleteBtnW - 10;
+    CGFloat deleteBtnY = 120;
+    [deleteBtn setFrame:CGRectMake(deleteBtnX, deleteBtnY, deleteBtnW, deleteBtnH)];
+    [deleteBtn setTitleColor:NAVIGATIONBAR_BACKGROUND_COLOR forState:UIControlStateNormal];
+    [deleteBtn setTitle:@"删除" forState:UIControlStateNormal];
+    [deleteBtn addTarget:self action:@selector(onClickDeleteBtn) forControlEvents:UIControlEventTouchUpInside];
+    [detailView addSubview:deleteBtn];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [cell.contentView addSubview:detailView];
+    });
+}
+
+/**
+ *  点击修改按钮
+ */
+- (void)onClickUpdateBtn {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+    if (self.segmentControl.selectedSegmentIndex == 0) {
+        UIStoryboard *board = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
+        UpdateMedicalRecordTableViewController *vc = [board instantiateViewControllerWithIdentifier:@"UpdateMedicalRecordTableViewController"];
+        [vc setHidesBottomBarWhenPushed:YES];
         
-        [self.folderTableView openFolderAtIndexPath:indexPath WithContentView:medicalRecordDetailVc.view openBlock:^(UIView *subClassView, CFTimeInterval duration, CAMediaTimingFunction *timingFunction) {
-            
-        } closeBlock:^(UIView *subClassView, CFTimeInterval duration, CAMediaTimingFunction *timingFunction) {
-            
-        } completionBlock:^{
-            
-        }];
-    }else if (self.segment.selectedSegmentIndex == 0) {     //棒子的数据
-        self.detailInfoDic = [self.historyList objectAtIndex:section];
-        NSArray *infoList = [self.detailInfoDic objectForKey:@"detail"];
-        NSDictionary *dayDetailInfo = [infoList objectAtIndex:(row)];
-        self.dayDetailInfo = [NSMutableDictionary dictionaryWithDictionary:dayDetailInfo];
-        MedicalRecordDetailViewController *medicalRecordDetailVc = [[MedicalRecordDetailViewController alloc] init];
-        medicalRecordDetailVc.medicalRecordVc = self;
-        //图片
-        if (![[[dayDetailInfo objectForKey:@"pics"] objectAtIndex:0] isEqualToString:@""]) {
-            medicalRecordDetailVc.picsArray = [dayDetailInfo objectForKey:@"pics"];
-            self.picsArray = [NSMutableArray arrayWithArray:[dayDetailInfo objectForKey:@"pics"]];
-        } else {
-            medicalRecordDetailVc.picsArray = nil;
-        }
-        //描述
-        medicalRecordDetailVc.desc = [dayDetailInfo objectForKey:@"desc"];
-//        UIFolderTableView *folderTableView = (UIFolderTableView *)tableView;
-//        self.folderTableView = folderTableView;
-        [self.folderTableView openFolderAtIndexPath:indexPath WithContentView:medicalRecordDetailVc.view openBlock:^(UIView *subClassView, CFTimeInterval duration, CAMediaTimingFunction *timingFunction) {
-            
-        } closeBlock:^(UIView *subClassView, CFTimeInterval duration, CAMediaTimingFunction *timingFunction) {
-            
-        } completionBlock:^{
-            
-        }];
+        NSString *string = [self.dayDetailInfo objectForKey:@"date"];
+        NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+        [formatter setTimeZone:timeZone];
+        NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:[string intValue] + 28800];
+        NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
+        vc.receivedTimeStr = confromTimespStr;
+        vc.receivedTempStr = [self.dayDetailInfo objectForKey:@"value"];
+        vc.receivedSymptomStr = [self.dayDetailInfo objectForKey:@"symbton"];
+        vc.receivedDescriptStr = [self.dayDetailInfo objectForKey:@"desc"];
+        vc.detailMedicalRecordInfo = self.dayDetailInfo;
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if ( self.segmentControl.selectedSegmentIndex == 1) {
+        UIStoryboard *board = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
+        AddBeanRecordViewController *vc = [board instantiateViewControllerWithIdentifier:@"AddBeanRecordViewController"];
+        [vc setHidesBottomBarWhenPushed:YES];
+        
+        NSString *string = [self.dayDetailInfo objectForKey:@"date"];
+        NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+        [formatter setTimeZone:timeZone];
+        NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:[string intValue] + 28800];
+        NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
+        vc.receivedTimeStr = confromTimespStr;
+        vc.receivedTempStr = [self.dayDetailInfo objectForKey:@"value"];
+        vc.receivedSymptomStr = [self.dayDetailInfo objectForKey:@"symbton"];
+        vc.receivedDescriptStr = [self.dayDetailInfo objectForKey:@"desc"];
+        vc.isFromUpdateBtn = YES;
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -349,80 +470,20 @@
     if (buttonIndex == 0) {
         return;
     } else {
-        if (self.segment.selectedSegmentIndex == 0) {
+        if (self.segmentControl.selectedSegmentIndex == 0) {
             [SVProgressHUD show];
             [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
             NSString *diaryId = [NSString stringWithFormat:@"%@",[self.dayDetailInfo objectForKey:@"tid"]];
             [[HttpTool shared] removeDiary:diaryId];
-        }else if (self.segment.selectedSegmentIndex == 1) {
+        }else if (self.segmentControl.selectedSegmentIndex == 1) {
             [SVProgressHUD show];
             [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
-            NSString *diaryId = [NSString stringWithFormat:@"%@",[self.beanDayDetailInfo objectForKey:@"tid"]];
+            NSString *diaryId = [NSString stringWithFormat:@"%@",[self.dayDetailInfo objectForKey:@"tid"]];
             [[HttpTool shared] removeBeanDiary:diaryId];
         }
     }
 }
 
-/**
- *  点击修改按钮
- */
-- (void)onClickUpdateBtn {
-    
-    
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-    
-    if (self.segment.selectedSegmentIndex == 0) {
-        UIStoryboard *board = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
-        UpdateMedicalRecordTableViewController *vc = [board instantiateViewControllerWithIdentifier:@"UpdateMedicalRecordTableViewController"];
-        [vc setHidesBottomBarWhenPushed:YES];
-        
-        NSString *string = [self.dayDetailInfo objectForKey:@"date"];
-        NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
-        [formatter setTimeZone:timeZone];
-        NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:[string intValue] + 28800];
-        NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
-        vc.receivedTimeStr = confromTimespStr;
-        vc.receivedTempStr = [self.dayDetailInfo objectForKey:@"value"];
-        vc.receivedSymptomStr = [self.dayDetailInfo objectForKey:@"symbton"];
-        vc.receivedDescriptStr = [self.dayDetailInfo objectForKey:@"desc"];
-        vc.detailMedicalRecordInfo = self.dayDetailInfo;
-        [self.navigationController pushViewController:vc animated:YES];
-    }else if ( self.segment.selectedSegmentIndex == 1) {
-        UIStoryboard *board = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
-        AddBeanRecordViewController *vc = [board instantiateViewControllerWithIdentifier:@"AddBeanRecordViewController"];
-        [vc setHidesBottomBarWhenPushed:YES];
-        
-        NSString *string = [self.beanDayDetailInfo objectForKey:@"date"];
-        NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
-        [formatter setTimeZone:timeZone];
-        NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:[string intValue] + 28800];
-        NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
-        vc.receivedTimeStr = confromTimespStr;
-        vc.receivedTempStr = [self.beanDayDetailInfo objectForKey:@"value"];
-        vc.receivedSymptomStr = [self.beanDayDetailInfo objectForKey:@"symbton"];
-        vc.receivedDescriptStr = [self.beanDayDetailInfo objectForKey:@"desc"];
-//        vc.detailMedicalRecordInfo = self.beanDayDetailInfo;
-        vc.isFromUpdateBtn = YES;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (self.segment.selectedSegmentIndex == 1) {
-        NSDictionary *detailInfo = [self.beanHistoryList objectAtIndex:section];
-        NSString *dayInfo = [detailInfo objectForKey:@"day"];
-        return dayInfo;
-    }
-    NSDictionary *detailInfo = [self.historyList objectAtIndex:section];
-    NSString *dayInfo = [detailInfo objectForKey:@"day"];
-    return dayInfo;
-}
-
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {
-    return 103;
-}
 
 - (NSArray *)getSymptons:(NSNumber *)value{
     if (value==0) {
@@ -431,10 +492,10 @@
     return [[GlobalTool shared] getFlagInIntergerPosition:value];
 }
 
-- (NSMutableArray *)historyList
+- (NSMutableArray *)stickHistoryList
 {
     //先判断数据库中是否存在测温记录
-    NSMutableArray *list = self.diaryList;
+    NSMutableArray *list = self.stickDiaryArray;
     NSMutableArray *showList = [NSMutableArray array];
     for (int i=0; i<list.count; i++) {
         NSDictionary *dayHistory = [list objectAtIndex:i];
@@ -501,12 +562,13 @@
         [dayDiary addObject:timeDiary];
     }
     
-    _historyList = showList;
-    return _historyList;
+    _stickHistoryList = showList;
+    return _stickHistoryList;
 }
+
 - (NSMutableArray *)beanHistoryList {
     //先判断数据库中是否存在测温记录
-    NSMutableArray *list = self.beanDiaryList;
+    NSMutableArray *list = self.beanDiaryArray;
     NSMutableArray *showList = [NSMutableArray array];
     for (int i=0; i<list.count; i++) {
         NSDictionary *dayHistory = [list objectAtIndex:i];
@@ -578,16 +640,6 @@
 }
 
 /**
- *  点击添加按钮
- */
-- (IBAction)onClickAddDiary {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
-    AddMedicalRecordViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"AddMedicalRecordViewController"];
-    [vc setHidesBottomBarWhenPushed:YES];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-/**
  *  点击图片
  */
 - (void)tapImageView:(UITapGestureRecognizer *)recognizer {
@@ -600,9 +652,7 @@
         [self.photoDataSource addObject:photo];
     }
     [self.browser setInitialPageIndex:imageView.tag];
-    [self presentViewController:self.browser animated:NO completion:^{
-        [self.folderTableView performClose:nil];
-    }];
+    [self presentViewController:self.browser animated:NO completion:nil];
 }
 
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(CXPhotoBrowser *)photoBrowser
@@ -617,8 +667,4 @@
     return nil;
 }
 
-#pragma mark - UIScrollViewDelegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [self.tableView performClose:nil];
-}
 @end

@@ -85,7 +85,6 @@
 		963E5A111C044EE5004A6377 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 963E5A0A1C044EE5004A6377 /* FMDatabaseQueue.m */; };
 		963E5A121C044EE5004A6377 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 963E5A0D1C044EE5004A6377 /* FMResultSet.m */; };
 		9640EC9F1BFDCE1400C620D4 /* GlobalTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9640EC9E1BFDCE1400C620D4 /* GlobalTool.m */; };
-		9665E30F1C097953006B6B31 /* MedicalRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9665E30E1C097953006B6B31 /* MedicalRecordCell.m */; };
 		966ACF441C166D560023E7C7 /* AdvertisementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 966ACF431C166D560023E7C7 /* AdvertisementViewController.m */; };
 		966DB93D1C0C4D1700A8859F /* AddMedicalRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 966DB93C1C0C4D1700A8859F /* AddMedicalRecordViewController.m */; };
 		966DB9401C0C51F200A8859F /* TimeLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 966DB93F1C0C51F200A8859F /* TimeLabelCell.m */; };
@@ -103,6 +102,8 @@
 		968D65791C11293800B67D7A /* CXZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 968D65711C11293800B67D7A /* CXZoomingScrollView.m */; };
 		969860AD1C070E5900B4AE16 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 969860AC1C070E5900B4AE16 /* MessageViewController.m */; };
 		969D638C1C06BC7B00B70B36 /* once_100ms_on_100ms_off.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 969D638B1C06BC7B00B70B36 /* once_100ms_on_100ms_off.mp3 */; };
+		96A8B55C1C3FA570003FA193 /* MedicalRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96A8B55B1C3FA570003FA193 /* MedicalRecordViewController.m */; };
+		96A8B55F1C3FB3E4003FA193 /* MedicalRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96A8B55E1C3FB3E4003FA193 /* MedicalRecordCell.m */; };
 		96A9946E1C03027100AA1A82 /* CopyConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96A994411C03027100AA1A82 /* CopyConnection.framework */; };
 		96A9946F1C03027100AA1A82 /* FacebookConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96A994421C03027100AA1A82 /* FacebookConnection.framework */; };
 		96A994701C03027100AA1A82 /* MailConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96A994431C03027100AA1A82 /* MailConnection.framework */; };
@@ -158,7 +159,6 @@
 		96AA3CFF1C059D4100908F23 /* MapNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AA3CFE1C059D4100908F23 /* MapNavigationController.m */; };
 		96AA3D021C059D5300908F23 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AA3D011C059D5300908F23 /* MapViewController.m */; };
 		96AA3D071C05A6B600908F23 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AA3D061C05A6B600908F23 /* MyAnnotation.m */; };
-		96B681A01BFCD88200A7D6DE /* MedicalRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B6819F1BFCD88200A7D6DE /* MedicalRecordViewController.m */; };
 		96B681A31BFCD89C00A7D6DE /* MedicalRecordNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B681A21BFCD89C00A7D6DE /* MedicalRecordNavigationController.m */; };
 		96B819A11BFC689E000E1289 /* HttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B819A01BFC689E000E1289 /* HttpTool.m */; };
 		96C3F0061BFDFEB5007EC012 /* RECommonFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C3F0011BFDFEB5007EC012 /* RECommonFunctions.m */; };
@@ -360,8 +360,6 @@
 		963E5A0D1C044EE5004A6377 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
 		9640EC9D1BFDCE1400C620D4 /* GlobalTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalTool.h; sourceTree = "<group>"; };
 		9640EC9E1BFDCE1400C620D4 /* GlobalTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalTool.m; sourceTree = "<group>"; };
-		9665E30D1C097953006B6B31 /* MedicalRecordCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MedicalRecordCell.h; sourceTree = "<group>"; };
-		9665E30E1C097953006B6B31 /* MedicalRecordCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MedicalRecordCell.m; sourceTree = "<group>"; };
 		966ACF421C166D560023E7C7 /* AdvertisementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvertisementViewController.h; sourceTree = "<group>"; };
 		966ACF431C166D560023E7C7 /* AdvertisementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvertisementViewController.m; sourceTree = "<group>"; };
 		966DB93B1C0C4D1700A8859F /* AddMedicalRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddMedicalRecordViewController.h; sourceTree = "<group>"; };
@@ -397,6 +395,10 @@
 		969860AB1C070E5900B4AE16 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		969860AC1C070E5900B4AE16 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		969D638B1C06BC7B00B70B36 /* once_100ms_on_100ms_off.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = once_100ms_on_100ms_off.mp3; sourceTree = "<group>"; };
+		96A8B55A1C3FA570003FA193 /* MedicalRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MedicalRecordViewController.h; sourceTree = "<group>"; };
+		96A8B55B1C3FA570003FA193 /* MedicalRecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MedicalRecordViewController.m; sourceTree = "<group>"; };
+		96A8B55D1C3FB3E4003FA193 /* MedicalRecordCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MedicalRecordCell.h; sourceTree = "<group>"; };
+		96A8B55E1C3FB3E4003FA193 /* MedicalRecordCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MedicalRecordCell.m; sourceTree = "<group>"; };
 		96A994411C03027100AA1A82 /* CopyConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CopyConnection.framework; sourceTree = "<group>"; };
 		96A994421C03027100AA1A82 /* FacebookConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookConnection.framework; sourceTree = "<group>"; };
 		96A994431C03027100AA1A82 /* MailConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MailConnection.framework; sourceTree = "<group>"; };
@@ -475,8 +477,6 @@
 		96AA3D011C059D5300908F23 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		96AA3D051C05A6B600908F23 /* MyAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAnnotation.h; sourceTree = "<group>"; };
 		96AA3D061C05A6B600908F23 /* MyAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAnnotation.m; sourceTree = "<group>"; };
-		96B6819E1BFCD88200A7D6DE /* MedicalRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MedicalRecordViewController.h; sourceTree = "<group>"; };
-		96B6819F1BFCD88200A7D6DE /* MedicalRecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MedicalRecordViewController.m; sourceTree = "<group>"; };
 		96B681A11BFCD89C00A7D6DE /* MedicalRecordNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MedicalRecordNavigationController.h; sourceTree = "<group>"; };
 		96B681A21BFCD89C00A7D6DE /* MedicalRecordNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MedicalRecordNavigationController.m; sourceTree = "<group>"; };
 		96B8199F1BFC689E000E1289 /* HttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpTool.h; sourceTree = "<group>"; };
@@ -1116,10 +1116,10 @@
 			children = (
 				96B681A11BFCD89C00A7D6DE /* MedicalRecordNavigationController.h */,
 				96B681A21BFCD89C00A7D6DE /* MedicalRecordNavigationController.m */,
-				96B6819E1BFCD88200A7D6DE /* MedicalRecordViewController.h */,
-				96B6819F1BFCD88200A7D6DE /* MedicalRecordViewController.m */,
-				9665E30D1C097953006B6B31 /* MedicalRecordCell.h */,
-				9665E30E1C097953006B6B31 /* MedicalRecordCell.m */,
+				96A8B55A1C3FA570003FA193 /* MedicalRecordViewController.h */,
+				96A8B55B1C3FA570003FA193 /* MedicalRecordViewController.m */,
+				96A8B55D1C3FB3E4003FA193 /* MedicalRecordCell.h */,
+				96A8B55E1C3FB3E4003FA193 /* MedicalRecordCell.m */,
 				6E5D74BA1C0C4B430099A486 /* MedicalRecordDetailViewController.h */,
 				6E5D74BB1C0C4B430099A486 /* MedicalRecordDetailViewController.m */,
 				966DB93B1C0C4D1700A8859F /* AddMedicalRecordViewController.h */,
@@ -1498,7 +1498,6 @@
 				968D65741C11293800B67D7A /* CXPhoto.m in Sources */,
 				96D859671C05B79D00C99070 /* NSData+ImageContentType.m in Sources */,
 				968D65761C11293800B67D7A /* CXPhotoLoadingView.m in Sources */,
-				96B681A01BFCD88200A7D6DE /* MedicalRecordViewController.m in Sources */,
 				96C595931C0AB41100CB93BB /* FolderCoverView.m in Sources */,
 				96AA3CFB1C0591C800908F23 /* DoctorNavigationController.m in Sources */,
 				96A994B11C03050F00AA1A82 /* ForgetPwdNavigationController.m in Sources */,
@@ -1550,7 +1549,6 @@
 				967F35771C0FE7B500589B8B /* ProblemViewController.m in Sources */,
 				9628BD691C1986DE006A53D0 /* MJRefreshBackStateFooter.m in Sources */,
 				962423161C0ED1B9002FFB4F /* MMDrawerBarButtonItem.m in Sources */,
-				9665E30F1C097953006B6B31 /* MedicalRecordCell.m in Sources */,
 				963E5A111C044EE5004A6377 /* FMDatabaseQueue.m in Sources */,
 				96175AA41BFC7BDF00650761 /* MainTabBarController.m in Sources */,
 				6EBB71BC1C224C4000B353B3 /* LineChartCell.m in Sources */,
@@ -1564,6 +1562,7 @@
 				96175A991BFC710200650761 /* AFNetworkReachabilityManager.m in Sources */,
 				96D859701C05B79D00C99070 /* UIImage+GIF.m in Sources */,
 				96D859721C05B79D00C99070 /* UIImage+WebP.m in Sources */,
+				96A8B55C1C3FA570003FA193 /* MedicalRecordViewController.m in Sources */,
 				96175AA81BFC8AE900650761 /* HomeNavigationController.m in Sources */,
 				96CBAC781C0458A4002CBE69 /* UIViewController+REFrostedViewController.m in Sources */,
 				9628BD631C1986DE006A53D0 /* MJRefreshHeader.m in Sources */,
@@ -1602,6 +1601,7 @@
 				6E5D74BC1C0C4B430099A486 /* MedicalRecordDetailViewController.m in Sources */,
 				96314BE31C3CF31F009C53AD /* UseStickCheckViewController.m in Sources */,
 				9640EC9F1BFDCE1400C620D4 /* GlobalTool.m in Sources */,
+				96A8B55F1C3FB3E4003FA193 /* MedicalRecordCell.m in Sources */,
 				963E5A101C044EE5004A6377 /* FMDatabasePool.m in Sources */,
 				96C3F0081BFDFEB5007EC012 /* UIViewController+RESideMenu.m in Sources */,
 				96D859681C05B79D00C99070 /* SDImageCache.m in Sources */,
