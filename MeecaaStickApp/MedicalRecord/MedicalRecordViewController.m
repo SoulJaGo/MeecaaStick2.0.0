@@ -323,50 +323,64 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [tableView beginUpdates];
-    if (self.segmentControl.selectedSegmentIndex == 0) {
+    if (self.selectedIndexPath == nil) { //一开始没有选择过Cell
+        self.selectedIndexPath = indexPath;
         NSUInteger section = [indexPath section];
         NSInteger row = [indexPath row];
-        NSDictionary *detailInfo = [self.stickHistoryList objectAtIndex:section];
+        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        /*数据*/
+        NSDictionary *detailInfo = [NSDictionary dictionary];
+        if (self.segmentControl.selectedSegmentIndex == 0) {
+            detailInfo = [self.stickHistoryList objectAtIndex:section];
+        } else if (self.segmentControl.selectedSegmentIndex == 1) {
+            detailInfo = [self.beanHistoryList objectAtIndex:section];
+        }
         NSArray *infoList = [detailInfo objectForKey:@"detail"];
         NSMutableDictionary *dayDetailInfo = [infoList objectAtIndex:(row)];
         self.dayDetailInfo = dayDetailInfo;
         self.picsArray = dayDetailInfo[@"pics"];
+        MedicalRecordCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        [self createDetailViewWithInfoDict:self.dayDetailInfo Cell:cell];
     } else {
-        NSUInteger section = [indexPath section];
-        NSInteger row = [indexPath row];
-        NSDictionary *detailInfo = [self.beanHistoryList objectAtIndex:section];
-        NSArray *infoList = [detailInfo objectForKey:@"detail"];
-        NSMutableDictionary *dayDetailInfo = [infoList objectAtIndex:(row)];
-        self.dayDetailInfo = dayDetailInfo;
-        self.picsArray = dayDetailInfo[@"pics"];
+        if (self.selectedIndexPath == indexPath) {
+            MedicalRecordCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            for (UIView *subview in cell.contentView.subviews) {
+                if (subview.frame.origin.y == 103) {
+                    [subview removeFromSuperview];
+                    break;
+                }
+            }
+            self.selectedIndexPath = nil;
+            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        } else {
+            NSIndexPath *oldIndexPath = self.selectedIndexPath;
+            self.selectedIndexPath = indexPath;
+            NSUInteger section = [indexPath section];
+            NSInteger row = [indexPath row];
+            [tableView reloadRowsAtIndexPaths:@[oldIndexPath,indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            /*数据*/
+            NSDictionary *detailInfo = [NSDictionary dictionary];
+            if (self.segmentControl.selectedSegmentIndex == 0) {
+                detailInfo = [self.stickHistoryList objectAtIndex:section];
+            } else if (self.segmentControl.selectedSegmentIndex == 1) {
+                detailInfo = [self.beanHistoryList objectAtIndex:section];
+            }
+            NSArray *infoList = [detailInfo objectForKey:@"detail"];
+            NSMutableDictionary *dayDetailInfo = [infoList objectAtIndex:(row)];
+            self.dayDetailInfo = dayDetailInfo;
+            self.picsArray = dayDetailInfo[@"pics"];
+            MedicalRecordCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            MedicalRecordCell *selectedCell = [tableView cellForRowAtIndexPath:oldIndexPath];
+            for (UIView *subview in selectedCell.contentView.subviews) {
+                if (subview.frame.origin.y == 103) {
+                    [subview removeFromSuperview];
+                    break;
+                }
+            }
+            [self createDetailViewWithInfoDict:self.dayDetailInfo Cell:cell];
+        }
     }
     
-    MedicalRecordCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    MedicalRecordCell *selectedCell = [tableView cellForRowAtIndexPath:self.selectedIndexPath];
-    if (indexPath == self.selectedIndexPath) {
-        if (selectedCell != nil) {
-            for (UIView *subview in selectedCell.contentView.subviews) {
-                if (subview.frame.origin.y == 103) {
-                    [subview removeFromSuperview];
-                    break;
-                }
-            }
-        }
-        self.selectedIndexPath = nil;
-    } else {
-        self.selectedIndexPath = indexPath;
-        if (selectedCell != nil) {
-            for (UIView *subview in selectedCell.contentView.subviews) {
-                if (subview.frame.origin.y == 103) {
-                    [subview removeFromSuperview];
-                    break;
-                }
-            }
-        }
-        [self createDetailViewWithInfoDict:self.dayDetailInfo Cell:cell];
-    }
-    [tableView endUpdates];
 }
 
 #pragma mark - 详细信息

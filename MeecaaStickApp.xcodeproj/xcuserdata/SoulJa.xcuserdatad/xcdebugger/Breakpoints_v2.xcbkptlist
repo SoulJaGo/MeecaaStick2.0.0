@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeecaaStickApp/MedicalRecord/MedicalRecordViewController.m"
-            timestampString = "474190019.016246"
+            timestampString = "474198410.232552"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "741"
-            endingLineNumber = "741">
+            startingLineNumber = "760"
+            endingLineNumber = "760">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
