@@ -53,6 +53,7 @@
         [temperatureLabel setFont:[UIFont systemFontOfSize:33]];
         [temperatureLabel setText:[[infoDict objectForKey:@"value"] stringByAppendingString:@"℃"]];
         [temperatureLabel setTextAlignment:NSTextAlignmentRight];
+        
         [self.contentView addSubview:temperatureLabel];
     }
     return self;

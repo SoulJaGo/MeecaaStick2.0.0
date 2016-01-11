@@ -39,7 +39,7 @@
  *  返回按钮
  */
 - (void)goBack {
-    [self dismissViewControllerAnimated:NO completion:nil];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 /**

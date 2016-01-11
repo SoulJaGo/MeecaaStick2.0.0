@@ -674,7 +674,7 @@
             NSString *symptoms = [NSString stringWithFormat:@"%@",diary[@"symptoms"]];
             NSString *temperature = [NSString stringWithFormat:@"%@",diary[@"temperature"]];
             NSString *type = [NSString stringWithFormat:@"%@",diary[@"type"]];
-            BOOL result = [db executeUpdate:@"insert into bean_diary (date,description,endtime,id,latitude,longitude,member_id,photo_count,starttime,symptoms,temperature,type) values (?,?,?,?,?,?,?,?,?,?,?,?);",date,description,endtime,diaryId,latitude,longitude,member_id,photo_count,starttime,symptoms,temperature,type];
+            BOOL result = [db executeUpdate:@"insert into bean_diary (date,description,endtime,id,latitude,longitude,member_id,photo_count,starttime,symptoms,temperature,type,pics) values (?,?,?,?,?,?,?,?,?,?,?,?,?);",date,description,endtime,diaryId,latitude,longitude,member_id,photo_count,starttime,symptoms,temperature,type,picsStr];
             if (!result) {
                 NSLog(@"插入温豆数据失败!");
                 [db close];

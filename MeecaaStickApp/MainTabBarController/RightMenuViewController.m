@@ -11,6 +11,7 @@
 #import "UserUpdateViewController.h"
 #import "MessageViewController.h"
 #import "MessageNavigationController.h"
+#import "HomeNavigationController.h"
 
 @interface RightMenuViewController ()
 @property (nonatomic,strong) UIImageView *iconImageView;
@@ -156,6 +157,8 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Third" bundle:nil];
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
+            MainTabBarController *tabBarC = (MainTabBarController *)self.mm_drawerController.centerViewController;
+            HomeNavigationController *homeNav = tabBarC.selectedViewController;
             if (![[DatabaseTool shared] getDefaultMember]) {
                 UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
                 UIViewController *loginVc = [board instantiateViewControllerWithIdentifier:@"LoginViewController"];
@@ -163,15 +166,18 @@
                     [SVProgressHUD showErrorWithStatus:@"请您先登录!"];
                 }];
             } else {
-                UserUpdateViewController *userUpdateVc = [storyboard instantiateViewControllerWithIdentifier:@"UserUpdateViewController"];
-                userUpdateVc.memberInfoDict = [[DatabaseTool shared] getDefaultMember];
-                userUpdateVc.isFromMain = YES;
-                UserNavigationController *userNav = [[UserNavigationController alloc] initWithRootViewController:userUpdateVc];
-                [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-                [self presentViewController:userNav animated:NO completion:nil];
+                [self.mm_drawerController closeDrawerAnimated:NO completion:^(BOOL finished) {
+                    UserUpdateViewController *userUpdateVc = [storyboard instantiateViewControllerWithIdentifier:@"UserUpdateViewController"];
+                    userUpdateVc.memberInfoDict = [[DatabaseTool shared] getDefaultMember];
+                    userUpdateVc.isFromMain = YES;
+                    [userUpdateVc setHidesBottomBarWhenPushed:YES];
+                    [homeNav pushViewController:userUpdateVc animated:YES];
+                }];
             }
             
         } else if (indexPath.row == 1) {
+            MainTabBarController *tabBarC = (MainTabBarController *)self.mm_drawerController.centerViewController;
+            HomeNavigationController *homeNav = tabBarC.selectedViewController;
             if (![[DatabaseTool shared] getDefaultMember]) {
                 UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
                 UIViewController *loginVc = [board instantiateViewControllerWithIdentifier:@"LoginViewController"];
@@ -179,8 +185,11 @@
                     [SVProgressHUD showErrorWithStatus:@"请您先登录!"];
                 }];
             } else {
-                UserNavigationController *userNav = [storyboard instantiateViewControllerWithIdentifier:@"UserNavigationController"];
-                [self presentViewController:userNav animated:NO completion:nil];
+                [self.mm_drawerController closeDrawerAnimated:NO completion:^(BOOL finished) {
+                    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"UserListTableViewController"];
+                    [vc setHidesBottomBarWhenPushed:YES];
+                    [homeNav pushViewController:vc animated:YES];
+                }];
             }
         }
     } else if (indexPath.section == 1){
@@ -192,9 +201,14 @@
                     [SVProgressHUD showErrorWithStatus:@"请您先登录!"];
                 }];
             } else {
-                UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
-                UIViewController *vc = [board instantiateViewControllerWithIdentifier:@"ProblemNavigationController"];
-                [self presentViewController:vc animated:NO completion:nil];
+                MainTabBarController *tabBarC = (MainTabBarController *)self.mm_drawerController.centerViewController;
+                HomeNavigationController *homeNav = tabBarC.selectedViewController;
+                [self.mm_drawerController closeDrawerAnimated:NO completion:^(BOOL finished) {
+                    UIStoryboard *board = [UIStoryboard storyboardWithName:@"First" bundle:nil];
+                    UIViewController *vc = [board instantiateViewControllerWithIdentifier:@"ProblemViewController"];
+                    [vc setHidesBottomBarWhenPushed:YES];
+                    [homeNav pushViewController:vc animated:YES];
+                }];
             }
         } else if (indexPath.row == 1) {
             if (![[DatabaseTool shared] getDefaultMember]) {
@@ -204,9 +218,14 @@
                     [SVProgressHUD showErrorWithStatus:@"请您先登录!"];
                 }];
             } else {
-                MessageViewController *messageVc = [[MessageViewController alloc] init];
-                MessageNavigationController *nav = [[MessageNavigationController alloc] initWithRootViewController:messageVc];
-                [self presentViewController:nav animated:NO completion:nil];
+                MainTabBarController *tabBarC = (MainTabBarController *)self.mm_drawerController.centerViewController;
+                HomeNavigationController *homeNav = tabBarC.selectedViewController;
+                [self.mm_drawerController closeDrawerAnimated:NO completion:^(BOOL finished) {
+                    MessageViewController *messageVc = [[MessageViewController alloc] init];
+                    [messageVc setHidesBottomBarWhenPushed:YES];
+                    [homeNav pushViewController:messageVc animated:YES];
+                }];
+                
             }
         }
 
@@ -222,13 +241,17 @@
             [SVProgressHUD showErrorWithStatus:@"请您先登录!"];
         }];
     } else {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Third" bundle:nil];
-        UserUpdateViewController *userUpdateVc = [storyboard instantiateViewControllerWithIdentifier:@"UserUpdateViewController"];
-        userUpdateVc.memberInfoDict = [[DatabaseTool shared] getDefaultMember];
-        userUpdateVc.isFromMain = YES;
-        UserNavigationController *userNav = [[UserNavigationController alloc] initWithRootViewController:userUpdateVc];
-        [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-        [self presentViewController:userNav animated:NO completion:nil];
+        MainTabBarController *tabBarC = (MainTabBarController *)self.mm_drawerController.centerViewController;
+        HomeNavigationController *homeNav = tabBarC.selectedViewController;
+        [self.mm_drawerController closeDrawerAnimated:NO completion:^(BOOL finished) {
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Third" bundle:nil];
+            UserUpdateViewController *userUpdateVc = [storyboard instantiateViewControllerWithIdentifier:@"UserUpdateViewController"];
+            userUpdateVc.memberInfoDict = [[DatabaseTool shared] getDefaultMember];
+            userUpdateVc.memberInfoDict = [[DatabaseTool shared] getDefaultMember];
+            userUpdateVc.isFromMain = YES;
+            [userUpdateVc setHidesBottomBarWhenPushed:YES];
+            [homeNav pushViewController:userUpdateVc animated:YES];
+        }];
     }
 }
 @end

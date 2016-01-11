@@ -991,7 +991,6 @@ typedef enum
  *	12 / 22 新接口 棒子测温完成和豆子测温完成后跳转界面，点保存走此接口，默认棒子，豆子 = 1，手动添加温度记录页面，点保存默认添加的是棒子测温
  */
 - (void)addMedicalRecordWithType:(int )type Member_id:(NSString *)member_id Temperture:(NSString *)temperature Date:(NSString *)date StartTime:(int )startTime EndTime:(int )endTime Symptoms:(NSString *)symptoms Description:(NSString *)description Longitude:(NSString *)longitude Latitude:(NSString *)latitude Pic_ids:(NSString *)pic_ids{
-    
     //发送请求数据
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"type"] = [NSNumber numberWithInt:type];
@@ -1065,6 +1064,7 @@ typedef enum
             }
             [SVProgressHUD dismiss];
         } else {
+            [SVProgressHUD dismiss];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"InitBeanDiaryDataEndSuccessNotification" object:nil];
             return;
         }
@@ -1134,6 +1134,7 @@ typedef enum
         if ([responseObject[@"status"] isEqual:@0]) {
             [SVProgressHUD showErrorWithStatus:[responseObject objectForKey:@"msg"]];
         } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"SubmitProblemSuccessNotification" object:nil];
             [SVProgressHUD showSuccessWithStatus:@"提交成功!"];
         }
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {

@@ -7,6 +7,7 @@
 //
 
 #import "AboutUsViewController.h"
+#import "UIViewController+MMDrawerController.h"
 @interface AboutUsViewController ()
 @property (nonatomic,strong) MMDrawerController * drawerController;
 @end
@@ -32,6 +33,6 @@
  *  返回按钮
  */
 - (void)goBack {
-    [self dismissViewControllerAnimated:NO completion:nil];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 @end

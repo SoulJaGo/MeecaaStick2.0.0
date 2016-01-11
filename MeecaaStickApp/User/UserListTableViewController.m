@@ -11,6 +11,7 @@
 @interface UserListTableViewController ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>
 @property (nonatomic,strong) NSMutableArray *members;
 @property (nonatomic,copy) NSString *willRemoveMemberId;
+@property (nonatomic,strong) UITableView *tableView;
 @end
 
 @implementation UserListTableViewController
@@ -18,7 +19,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupNav];
+    
+    UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    [self.view addSubview:tableView];
+    self.tableView = tableView;
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
     
     //如果获取的成员数量为0 或者不存在则需要登陆
     if ([[DatabaseTool shared] getDefaultMember] == nil) {
@@ -33,16 +42,13 @@
 - (void)setupNav{
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
     self.title = @"家庭成员信息";
-    [self.navigationController.navigationBar setTranslucent:NO];
-    
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"login_back_icon"] style:UIBarButtonItemStyleDone target:self action:@selector(goBack)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add_user"] style:UIBarButtonItemStyleDone target:self action:@selector(addUser)];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
 }
 //模态消失
 - (void)goBack{
-    [self dismissViewControllerAnimated:NO completion:nil];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 - (void)addUser{
     UIStoryboard *board = [UIStoryboard storyboardWithName:@"Third" bundle:nil];

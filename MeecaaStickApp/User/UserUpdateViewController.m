@@ -335,7 +335,7 @@
  */
 - (void)goBack{
     if (self.isFromMain) {
-        [self dismissViewControllerAnimated:NO completion:nil];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
         UserListTableViewController *userListVc = [[UserListTableViewController alloc] init];
         [self.navigationController pushViewController:userListVc animated:YES];

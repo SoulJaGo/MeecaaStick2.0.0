@@ -210,7 +210,7 @@
 - (void)setUpView{
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 37, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 149)];
     self.scrollView.backgroundColor = [UIColor whiteColor];
-    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width * 3, self.view.frame.size.height - 149);
+    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width * 2, self.view.frame.size.height - 149);
     self.scrollView.showsVerticalScrollIndicator = NO;
     self.scrollView.showsHorizontalScrollIndicator= NO;
     self.scrollView.pagingEnabled = YES;
@@ -237,7 +237,7 @@
     timeLabelOne.text = timeLabelTwo.text = timeLabelThree.text = @"00:00";
     timeLabelOne.font = timeLabelTwo.font = timeLabelThree.font = [UIFont systemFontOfSize:30];
     [_scrollView addSubview:timeLabelThree];
-    [_scrollView addSubview:timeLabelTwo];
+//    [_scrollView addSubview:timeLabelTwo];
     [_scrollView addSubview:timeLabelOne];
     
     //添加温度label

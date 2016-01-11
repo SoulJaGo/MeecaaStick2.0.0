@@ -260,7 +260,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="oDd-3r-cUQ" kind="relationship" relationship="rootViewController" id="7vN-Pb-hbM"/>
+                        <segue destination="oDd-3r-cUQ" kind="relationship" relationship="rootViewController" id="0Wz-db-nOm"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JKG-CV-pj4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -279,15 +279,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LEf-0D-tfY">
-                                <rect key="frame" x="26" y="74" width="323" height="200"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="jiH-zH-0it"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PC8-FZ-Bcd">
                                 <rect key="frame" x="51" y="294" width="273" height="40"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.80000000000000004" blue="0.85490196080000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -305,11 +296,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="LEf-0D-tfY" firstAttribute="top" secondItem="8dE-oa-67f" secondAttribute="bottom" constant="10" id="1kB-HY-UN4"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="LEf-0D-tfY" secondAttribute="trailing" constant="10" id="98k-DF-3Cc"/>
-                            <constraint firstItem="PC8-FZ-Bcd" firstAttribute="top" secondItem="LEf-0D-tfY" secondAttribute="bottom" constant="20" id="NaI-5F-Vzb"/>
-                            <constraint firstItem="LEf-0D-tfY" firstAttribute="leading" secondItem="JKf-BX-c4h" secondAttribute="leadingMargin" constant="10" id="bfi-1w-RQe"/>
                             <constraint firstAttribute="trailingMargin" secondItem="PC8-FZ-Bcd" secondAttribute="trailing" constant="35" id="iwi-aA-ryA"/>
+                            <constraint firstItem="PC8-FZ-Bcd" firstAttribute="top" secondItem="8dE-oa-67f" secondAttribute="bottom" constant="230" id="nT7-oa-Bno"/>
                             <constraint firstItem="PC8-FZ-Bcd" firstAttribute="leading" secondItem="JKf-BX-c4h" secondAttribute="leadingMargin" constant="35" id="pH1-3d-VdL"/>
                         </constraints>
                     </view>
@@ -317,7 +305,6 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="submitBtn" destination="PC8-FZ-Bcd" id="kiP-hF-Cmm"/>
-                        <outlet property="textView" destination="LEf-0D-tfY" id="WFx-MM-Ueu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kzp-8v-Gks" userLabel="First Responder" sceneMemberID="firstResponder"/>

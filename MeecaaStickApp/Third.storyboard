@@ -5,32 +5,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
-        <!--User List Table View Controller-->
-        <scene sceneID="FPq-6e-gJm">
-            <objects>
-                <tableViewController storyboardIdentifier="UserListTableViewController" id="nFv-1j-0sZ" customClass="UserListTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="5Ic-mc-24L">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="nFv-1j-0sZ" id="XBH-yy-vZu"/>
-                            <outlet property="delegate" destination="nFv-1j-0sZ" id="m1a-7U-NDx"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="KAS-K3-4fH">
-                        <barButtonItem key="rightBarButtonItem" title="添加成员" id="5vR-A5-038">
-                            <connections>
-                                <segue destination="gaU-5d-4au" kind="show" id="dj7-PX-MOa"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="LV5-7a-FSU" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1224.5" y="1216.5"/>
-        </scene>
         <!--User Navigation Controller-->
         <scene sceneID="a9T-fB-wV4">
             <objects>
@@ -42,13 +16,29 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="nFv-1j-0sZ" kind="relationship" relationship="rootViewController" id="xmY-i6-NzI"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rd3-YA-S4X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="771" y="1217"/>
+        </scene>
+        <!--User List Table View Controller-->
+        <scene sceneID="VbH-Sd-KCT">
+            <objects>
+                <viewController storyboardIdentifier="UserListTableViewController" id="lgH-TD-yKM" customClass="UserListTableViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="vdd-YC-T3M"/>
+                        <viewControllerLayoutGuide type="bottom" id="xPG-vS-k5d"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="1Gh-Ux-qNF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pzK-gk-kIZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1343.5" y="1216.5"/>
         </scene>
         <!--添加成员-->
         <scene sceneID="Yrs-TZ-apE">

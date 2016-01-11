@@ -7,8 +7,8 @@
 //
 
 #import "LeftMenuViewController.h"
-#import "AboutUsNavigationController.h"
 #import "KnowledgeNavigationController.h"
+#import "HomeNavigationController.h"
 
 @interface LeftMenuViewController ()
 
@@ -18,6 +18,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     [self.tableView setBackgroundColor:MENU_BACKGROUND_COLOR];
     self.tableView.separatorStyle = UITableViewCellSelectionStyleNone;
@@ -95,11 +97,21 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
     if (indexPath.row == 0) { //关于米开
-        AboutUsNavigationController *aboutUsNav = [storyboard instantiateViewControllerWithIdentifier:@"AboutUsNavigationController"];
-        [self presentViewController:aboutUsNav animated:NO completion:nil];
+        MainTabBarController *tabBarC = (MainTabBarController *)self.mm_drawerController.centerViewController;
+        HomeNavigationController *homeNav = tabBarC.selectedViewController;
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"AboutUsViewController"];
+        [vc setHidesBottomBarWhenPushed:YES];
+        [homeNav pushViewController:vc animated:YES];
+        [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
     } else if (indexPath.row == 1) { //体温小常识
-        KnowledgeNavigationController *knowledgeNav = [storyboard instantiateViewControllerWithIdentifier:@"KnowledgeNavigationController"];
-        [self presentViewController:knowledgeNav animated:NO completion:nil];
+        MainTabBarController *tabBarC = (MainTabBarController *)self.mm_drawerController.centerViewController;
+        HomeNavigationController *homeNav = tabBarC.selectedViewController;
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"KnowledgeViewController"];
+        [vc setHidesBottomBarWhenPushed:YES];
+        [homeNav pushViewController:vc animated:YES];
+        [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
     } else if (indexPath.row == 2) { //跳转到设置
         NSURL *url = [NSURL URLWithString:@"prefs:root=prefs:root=NOTIFICATIONS_ID"];
         if ([[UIApplication sharedApplication] canOpenURL:url]) {

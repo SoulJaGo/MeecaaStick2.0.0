@@ -12,6 +12,7 @@
 #import "UpdateMedicalRecordTableViewController.h"
 #import "AddBeanRecordViewController.h"
 #import "CXPhotoBrowser.h"
+#import "AddMedicalRecordViewController.h"
 @interface MedicalRecordViewController () <UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,CXPhotoBrowserDataSource,CXPhotoBrowserDelegate>
 @property (nonatomic,strong) UISegmentedControl *segmentControl;
 @property (nonatomic,strong) UIScrollView *scorllView;
@@ -78,6 +79,18 @@
     
     self.beanPage = 1;
     self.beanDiaryArray = [NSMutableArray array];
+    
+    /*添加温度按钮*/
+    UIButton *addDiaryBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    CGFloat addDiaryBtnW = 100;
+    CGFloat addDiaryBtnH = 100;
+    CGFloat addDiaryBtnX = (kScreen_Width - 100) / 2;
+    CGFloat addDiaryBtnY = kScreen_Height - addDiaryBtnH - 120;
+    [addDiaryBtn setFrame:CGRectMake(addDiaryBtnX, addDiaryBtnY, addDiaryBtnW, addDiaryBtnH)];
+    [addDiaryBtn setBackgroundImage:[UIImage imageNamed:@"medical_go_icon"] forState:UIControlStateNormal];
+    [addDiaryBtn addTarget:self action:@selector(onClickAddDiary) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:addDiaryBtn];
+    
     
     //设置Nav
     [self setupNav];
@@ -353,7 +366,6 @@
         }
         [self createDetailViewWithInfoDict:self.dayDetailInfo Cell:cell];
     }
-    
     [tableView endUpdates];
 }
 
@@ -637,6 +649,16 @@
     
     _beanHistoryList = showList;
     return _beanHistoryList;
+}
+
+/**
+ *  点击添加按钮
+ */
+- (void)onClickAddDiary {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
+    AddMedicalRecordViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"AddMedicalRecordViewController"];
+    [vc setHidesBottomBarWhenPushed:YES];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 /**

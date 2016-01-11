@@ -98,7 +98,6 @@
 }
 
 - (void)AddPictureSuccessNotification:(NSNotification *)notify {
-    NSLog(@"notify.object %@",notify.object);
     [self.picturesIDArray addObject:notify.object];
 }
 /**
@@ -265,9 +264,6 @@
             temperatureLabelCell.temperatureTextField.delegate = self;
             self.temperatureLabelCell = temperatureLabelCell;
             self.temperatureLabelCell.temperatureTextField.text = self.receivedTempStr;
-            //        if ([GlobalTool sharedSingleton].fromBeanPresentView == 0) {
-            //            self.temperatureLabelCell.temperatureTextField.text = nil;
-            //        }
             return temperatureLabelCell;
         } else if (indexPath.section == 3) {
             SymptomCell *symptomCell = [tableView dequeueReusableCellWithIdentifier:@"SymptomCell"];

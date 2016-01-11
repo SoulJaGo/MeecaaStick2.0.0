@@ -9,7 +9,7 @@
 #import "ProblemViewController.h"
 
 @interface ProblemViewController () <UITextViewDelegate>
-@property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (strong, nonatomic) UITextView *textView;
 @property (nonatomic,strong) UILabel *placeholderLabel;
 @property (weak, nonatomic) IBOutlet UIButton *submitBtn;
 - (IBAction)onClickSubmit;
@@ -23,10 +23,11 @@
     [self setupNav];
     
     [self.view setBackgroundColor:UIVIEW_BACKGROUND_COLOR];
-    self.modalPresentationCapturesStatusBarAppearance = NO;
-    self.edgesForExtendedLayout = UIRectEdgeNone;
-    self.extendedLayoutIncludesOpaqueBars = NO;
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    self.textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 64, kScreen_Width, 200)];
+    [self.textView becomeFirstResponder];
+    self.textView.font = [UIFont systemFontOfSize:15];
+    [self.view addSubview:self.textView];
     
     self.textView.delegate = self;
     
@@ -40,6 +41,15 @@
     self.submitBtn.layer.cornerRadius = 8.0f;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(submitProblemSuccessNotification) name:@"SubmitProblemSuccessNotification" object:nil];
+}
+
+- (void)submitProblemSuccessNotification {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
 /**
  *  设置Nav
  */
@@ -51,7 +61,7 @@
 }
 
 - (void)goBack {
-    [self dismissViewControllerAnimated:NO completion:nil];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 
