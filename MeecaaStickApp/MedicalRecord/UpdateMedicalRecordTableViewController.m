@@ -554,6 +554,17 @@
     return [self validateNumber:string];
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [self.datePickerHeaderView removeFromSuperview];
+    [self.datePicker removeFromSuperview];
+    
+    [self.SymptomButtonsView removeFromSuperview];
+    [self.SymptomButtonsHeaderView removeFromSuperview];
+    
+    [self.photosView removeFromSuperview];
+    [self.photosHeaderView removeFromSuperview];
+}
+
 - (BOOL)validateNumber:(NSString*)number {
     BOOL res = YES;
     NSCharacterSet* tmpSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789."];

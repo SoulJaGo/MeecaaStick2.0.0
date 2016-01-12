@@ -379,6 +379,17 @@
     return [self validateNumber:string];
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [self.datePickerHeaderView removeFromSuperview];
+    [self.datePicker removeFromSuperview];
+    
+    [self.SymptomButtonsView removeFromSuperview];
+    [self.SymptomButtonsHeaderView removeFromSuperview];
+    
+    [self.photosView removeFromSuperview];
+    [self.photosHeaderView removeFromSuperview];
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
@@ -668,17 +679,6 @@
  *  点击取消
  */
 - (void)cancelSelectSymptom {
-    //    self.symptomButtonsArray = nil;
-    //    for (UIView *subview in self.SymptomButtonsView.subviews) {
-    //        if ([subview isKindOfClass:[UIButton class]]) {
-    //            for (UIView *nextSubview in subview.subviews) {
-    //                if ([nextSubview isKindOfClass:[UIImageView class]]) {
-    //                    [nextSubview setHidden:YES];
-    //                }
-    //            }
-    //        }
-    //    }
-    
     [self.SymptomButtonsView removeFromSuperview];
     [self.SymptomButtonsHeaderView removeFromSuperview];
 }

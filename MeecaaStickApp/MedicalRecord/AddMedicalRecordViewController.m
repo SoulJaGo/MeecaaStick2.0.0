@@ -607,6 +607,7 @@
         temperatureLabelCell.temperatureTextField.delegate = self;
         self.temperatureLabelCell = temperatureLabelCell;
         self.temperatureLabelCell.temperatureTextField.text = [GlobalTool sharedSingleton].receivedTempStr;
+        self.temperatureLabelCell.temperatureTextField.delegate = self;
         if ([GlobalTool sharedSingleton].presentView == 0) {
             self.temperatureLabelCell.temperatureTextField.text = nil;
         }
@@ -731,6 +732,18 @@
     [self.descriptionHeaderView removeFromSuperview];
     [self.descriptionTextView removeFromSuperview];
     self.descCell.descriptionLabel.text = textView.text;
+}
+
+#pragma mark - UITextFieldDelegate
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [self.datePickerHeaderView removeFromSuperview];
+    [self.datePicker removeFromSuperview];
+    
+    [self.SymptomButtonsView removeFromSuperview];
+    [self.SymptomButtonsHeaderView removeFromSuperview];
+    
+    [self.photosView removeFromSuperview];
+    [self.photosHeaderView removeFromSuperview];
 }
 
 /*
