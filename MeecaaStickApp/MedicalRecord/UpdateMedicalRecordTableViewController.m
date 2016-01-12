@@ -197,7 +197,8 @@
     return 5;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {    return 1;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 60;
@@ -206,7 +207,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         TimeLabelCell *timeLabelcell = [tableView dequeueReusableCellWithIdentifier:@"TimeLabelCell"];
-        timeLabelcell.addMedicalRecordVc = self;
         self.timeLabelCell = timeLabelcell;
         self.timeLabelCell.isFromUpdateVC = YES;
         self.timeLabelCell.timeLabel.text = self.receivedTimeStr;
@@ -228,6 +228,7 @@
         DescriptionLabelCell *descCell = [tableView dequeueReusableCellWithIdentifier:@"DescriptionLabelCell"];
         self.descCell = descCell;
         self.descCell.descriptionLabel.text = [self.detailMedicalRecordInfo objectForKey:@"desc"];
+        [self.descriptionTextView setText:[self.detailMedicalRecordInfo objectForKey:@"desc"]];
         return descCell;
     } else if (indexPath.section == 4) {
         PhotosCell *photosCell = [tableView dequeueReusableCellWithIdentifier:@"PhotosCell"];
@@ -272,7 +273,6 @@
         [self.photosView removeFromSuperview];
         [self.photosHeaderView removeFromSuperview];
         [self.descriptionTextView becomeFirstResponder];
-//        [self.tableView setContentOffset:CGPointMake(0, 200) animated:NO];
         [self.view addSubview:self.descriptionTextView];
         [self.view addSubview:self.descriptionHeaderView];
     } else if (indexPath.section == 4) {
@@ -328,6 +328,7 @@
     if (_descriptionTextView == nil) {
         _descriptionTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 216 - 216, self.view.bounds.size.width, 216)];
         _descriptionTextView.delegate = self;
+        [_descriptionTextView setFont:[UIFont systemFontOfSize:15]];
     }
     return _descriptionTextView;
 }
@@ -370,6 +371,7 @@
 - (void)completeSelectDesc {
     [self.descriptionHeaderView removeFromSuperview];
     [self.descriptionTextView removeFromSuperview];
+    [self.descCell.descriptionLabel setText:self.descriptionTextView.text];
 }
 
 

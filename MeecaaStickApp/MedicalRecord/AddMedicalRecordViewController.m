@@ -324,6 +324,7 @@
 - (void)completeSelectDesc {
     [self.descriptionHeaderView removeFromSuperview];
     [self.descriptionTextView removeFromSuperview];
+    [self.descCell.descriptionLabel setText:self.descriptionTextView.text];
 }
 
 

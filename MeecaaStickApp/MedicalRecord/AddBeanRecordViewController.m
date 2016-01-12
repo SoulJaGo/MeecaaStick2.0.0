@@ -25,6 +25,8 @@
 @property (nonatomic,strong) UIView *datePickerHeaderView;
 @property (nonatomic,strong) TemperatureLabelCell *temperatureLabelCell;
 @property (nonatomic,strong) SymptomCell *symptomCell;
+@property (nonatomic,strong) DescriptionLabelCell *descCell;
+@property (nonatomic,strong) PhotosCell *photosCell;
 /**
  *  症状视图
  */
@@ -223,7 +225,6 @@
             return lineChartCell;
         } else if (indexPath.section == 1) {
             TimeLabelCell *timeLabelcell = [tableView dequeueReusableCellWithIdentifier:@"TimeLabelCell"];
-            timeLabelcell.addMedicalRecordVc = self;
             self.timeLabelCell = timeLabelcell;
             return timeLabelcell;
         } else if (indexPath.section == 2) {
@@ -240,9 +241,11 @@
             return symptomCell;
         } else if (indexPath.section == 4) {
             DescriptionLabelCell *descCell = [tableView dequeueReusableCellWithIdentifier:@"DescriptionLabelCell"];
+            self.descCell = descCell;
             return descCell;
         } else if (indexPath.section == 5) {
             PhotosCell *photosCell = [tableView dequeueReusableCellWithIdentifier:@"PhotosCell"];
+            self.photosCell = photosCell;
             return photosCell;
         }
     }else if (self.isFromUpdateBtn == YES) {
@@ -255,7 +258,6 @@
             return lineChartCell;
         } else if (indexPath.section == 1) {
             TimeLabelCell *timeLabelcell = [tableView dequeueReusableCellWithIdentifier:@"TimeLabelCell"];
-            timeLabelcell.addMedicalRecordVc = self;
             self.timeLabelCell = timeLabelcell;
             self.timeLabelCell.timeLabel.text = self.receivedTimeStr;
             return timeLabelcell;
@@ -571,6 +573,11 @@
 - (void)completePhotos {
     [self.photosHeaderView removeFromSuperview];
     [self.photosView removeFromSuperview];
+    if (self.picturesIDArray == nil || self.picturesIDArray.count <= 0) {
+        [self.photosCell.photosLabel setText:@"未添加"];
+    } else {
+        [self.photosCell.photosLabel setText:@"已添加"];
+    }
 }
 - (void)cancelSelectPhoto {
     [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
@@ -628,6 +635,7 @@
     [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
     [self.descriptionHeaderView removeFromSuperview];
     [self.descriptionTextView removeFromSuperview];
+    [self.descCell.descriptionLabel setText:self.descriptionTextView.text];
 }
 
 
@@ -795,4 +803,8 @@
     [self.datePickerHeaderView removeFromSuperview];
 }
 
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self.view endEditing:YES];
+}
 @end

@@ -13,6 +13,7 @@
 #import "AddBeanRecordViewController.h"
 #import "CXPhotoBrowser.h"
 #import "AddMedicalRecordViewController.h"
+#import "ZX.h"
 @interface MedicalRecordViewController () <UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,CXPhotoBrowserDataSource,CXPhotoBrowserDelegate>
 @property (nonatomic,strong) UISegmentedControl *segmentControl;
 @property (nonatomic,strong) UIScrollView *scorllView;
@@ -315,7 +316,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {
     if (indexPath == self.selectedIndexPath) {
-        return 263;
+        if (self.segmentControl.selectedSegmentIndex == 1) {
+            return 463;
+        } else {
+            return 263;
+        }
     } else {
         return 103;
     }
@@ -384,7 +389,13 @@
 
 #pragma mark - 详细信息
 - (void)createDetailViewWithInfoDict:(NSMutableDictionary *)infoDict Cell:(MedicalRecordCell *)cell{
-    UIView *detailView = [[UIView alloc] initWithFrame:CGRectMake(0, 103, kScreen_Width, 160)];
+    CGFloat detaiViewH = 0;
+    if (self.segmentControl.selectedSegmentIndex == 0) {
+        detaiViewH = 160;
+    } else {
+        detaiViewH = 360;
+    }
+    UIView *detailView = [[UIView alloc] initWithFrame:CGRectMake(0, 103, kScreen_Width, detaiViewH)];
     detailView.layer.borderColor = [UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1.0]    .CGColor;
     detailView.layer.borderWidth = 1.0f;
     
@@ -427,9 +438,35 @@
         }
     }
     
+    if (self.segmentControl.selectedSegmentIndex == 1) {
+        UIScrollView *chartScrollView = [[UIScrollView alloc] init];
+        CGFloat chartScrollViewX = 10;
+        CGFloat chartScrollViewY = 120;
+        CGFloat chartScrollViewW = kScreen_Width - 20;
+        CGFloat chartScrollViewH = 230;
+        [chartScrollView setFrame:CGRectMake(chartScrollViewX, chartScrollViewY, chartScrollViewW, chartScrollViewH)];
+        chartScrollView.bounces=NO;
+        chartScrollView.showsHorizontalScrollIndicator = NO;
+        [chartScrollView setContentSize:CGSizeMake(2000, 230)];
+        ZX *lineChart = [[ZX alloc]initWithFrame:CGRectMake(0, 0, chartScrollView.contentSize.width,230)];
+        [lineChart setBackgroundColor:[UIColor clearColor]];
+        NSString *temperatureStr = [infoDict objectForKey:@"value"];
+        NSMutableArray *temperatureArray = [NSMutableArray arrayWithArray:[temperatureStr componentsSeparatedByString:@","]];
+        [lineChart setArray:temperatureArray];
+        [lineChart setNeedsDisplay];
+
+        [chartScrollView addSubview:lineChart];
+        [detailView addSubview:chartScrollView];
+    }
+    
     UIButton *updateBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     CGFloat updateBtnX = 10;
-    CGFloat updateBtnY = 120;
+    CGFloat updateBtnY = 0;
+    if (self.segmentControl.selectedSegmentIndex == 1) {
+        updateBtnY = 330;
+    } else {
+        updateBtnY = 120;
+    }
     CGFloat updateBtnW = 50;
     CGFloat updateBtnH = 30;
     [updateBtn setFrame:CGRectMake(updateBtnX, updateBtnY, updateBtnW, updateBtnH)];
@@ -442,7 +479,12 @@
     CGFloat deleteBtnW = 50;
     CGFloat deleteBtnH = 30;
     CGFloat deleteBtnX = kScreen_Width - deleteBtnW - 10;
-    CGFloat deleteBtnY = 120;
+    CGFloat deleteBtnY = 0;
+    if (self.segmentControl.selectedSegmentIndex == 1) {
+        deleteBtnY = 330;
+    } else {
+        deleteBtnY = 120;
+    }
     [deleteBtn setFrame:CGRectMake(deleteBtnX, deleteBtnY, deleteBtnW, deleteBtnH)];
     [deleteBtn setTitleColor:NAVIGATIONBAR_BACKGROUND_COLOR forState:UIControlStateNormal];
     [deleteBtn setTitle:@"删除" forState:UIControlStateNormal];
