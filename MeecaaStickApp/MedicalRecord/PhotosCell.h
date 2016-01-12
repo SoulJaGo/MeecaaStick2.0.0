@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface PhotosCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *photosLabel;
 
 @end

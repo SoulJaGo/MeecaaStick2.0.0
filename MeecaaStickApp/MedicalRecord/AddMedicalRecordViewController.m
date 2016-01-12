@@ -24,6 +24,8 @@
 @property (nonatomic,strong) UIView *datePickerHeaderView;
 @property (nonatomic,strong) TemperatureLabelCell *temperatureLabelCell;
 @property (nonatomic,strong) SymptomCell *symptomCell;
+@property (nonatomic,strong) DescriptionLabelCell *descCell;
+@property (nonatomic,strong) PhotosCell *photosCell;
 /**
  *  症状视图
  */
@@ -265,6 +267,11 @@
 - (void)completePhotos {
     [self.photosHeaderView removeFromSuperview];
     [self.photosView removeFromSuperview];
+    if (self.picturesIDArray == nil || self.picturesIDArray.count <= 0) {
+        [self.photosCell.photosLabel setText:@"未添加"];
+    } else {
+        [self.photosCell.photosLabel setText:@"已添加"];
+    }
 }
 
 /**
@@ -273,6 +280,7 @@
 - (UITextView *)descriptionTextView {
     if (_descriptionTextView == nil) {
         _descriptionTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 216 - 216, self.view.bounds.size.width, 216)];
+        _descriptionTextView.font = [UIFont systemFontOfSize:15];
         _descriptionTextView.delegate = self;
     }
     return _descriptionTextView;
@@ -609,9 +617,11 @@
         return symptomCell;
     } else if (indexPath.section == 3) {
         DescriptionLabelCell *descCell = [tableView dequeueReusableCellWithIdentifier:@"DescriptionLabelCell"];
+        self.descCell = descCell;
         return descCell;
     } else if (indexPath.section == 4) {
         PhotosCell *photosCell = [tableView dequeueReusableCellWithIdentifier:@"PhotosCell"];
+        self.photosCell = photosCell;
         return photosCell;
     }
     
@@ -641,6 +651,8 @@
         self.datePicker.frame = CGRectMake(0, self.view.frame.size.height - 216, self.view.frame.size.width, 216);
         [self.view addSubview:self.datePicker];
     } else if (indexPath.section == 2) {
+        //去除键盘
+        [self.view endEditing:YES];
         [self.datePickerHeaderView removeFromSuperview];
         [self.datePicker removeFromSuperview];
         [self.descriptionTextView removeFromSuperview];
@@ -650,6 +662,8 @@
         [self.view addSubview:self.SymptomButtonsView];
         [self.view addSubview:self.SymptomButtonsHeaderView];
     } else if (indexPath.section == 3) {
+        //去除键盘
+        [self.view endEditing:YES];
         [self.datePickerHeaderView removeFromSuperview];
         [self.datePicker removeFromSuperview];
         [self.SymptomButtonsView removeFromSuperview];
@@ -715,6 +729,7 @@
 - (void)textViewDidEndEditing:(UITextView *)textView {
     [self.descriptionHeaderView removeFromSuperview];
     [self.descriptionTextView removeFromSuperview];
+    self.descCell.descriptionLabel.text = textView.text;
 }
 
 /*

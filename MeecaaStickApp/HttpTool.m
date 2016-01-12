@@ -1031,7 +1031,6 @@ typedef enum
             [SVProgressHUD showErrorWithStatus:@"添加测温记录失败!"];
         }
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        [SVProgressHUD dismiss];
         NSLog(@"%@",error);
         [SVProgressHUD showErrorWithStatus:@"网络不给力哦！"];
     }];

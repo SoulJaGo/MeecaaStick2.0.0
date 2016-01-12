@@ -553,12 +553,33 @@
                                             <color key="textColor" red="0.36078431370000003" green="0.80000000000000004" blue="0.85490196080000003" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xXN-eW-bA9">
+                                            <rect key="frame" x="127" y="6.5" width="230" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="230" id="YG6-Vp-r4O"/>
+                                                <constraint firstAttribute="height" constant="30" id="urR-yI-ebQ"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.72156862749999995" green="0.72156862749999995" blue="0.72156862749999995" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="2U9-Ei-6ZU" firstAttribute="centerY" secondItem="tNI-cB-kSb" secondAttribute="centerY" id="6ps-TO-DMb"/>
+                                        <constraint firstItem="xXN-eW-bA9" firstAttribute="centerX" secondItem="tNI-cB-kSb" secondAttribute="centerX" id="RGX-YU-eDL"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="xXN-eW-bA9" secondAttribute="trailing" constant="10" id="hiW-hf-shr"/>
+                                        <constraint firstItem="xXN-eW-bA9" firstAttribute="centerY" secondItem="tNI-cB-kSb" secondAttribute="centerY" id="xxQ-yH-6wr"/>
                                         <constraint firstItem="2U9-Ei-6ZU" firstAttribute="leading" secondItem="tNI-cB-kSb" secondAttribute="leadingMargin" constant="10" id="z7C-aw-ajJ"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="RGX-YU-eDL"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="descriptionLabel" destination="xXN-eW-bA9" id="gPL-Ff-hkz"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PhotosCell" id="9Fg-uN-sfm" customClass="PhotosCell">
                                 <rect key="frame" x="0.0" y="241.5" width="375" height="44"/>
@@ -577,12 +598,27 @@
                                             <color key="textColor" red="0.36078431370000003" green="0.80000000000000004" blue="0.85490196080000003" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="未添加" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="puA-OC-wUQ">
+                                            <rect key="frame" x="257" y="11" width="100" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="100" id="1WU-5Y-rK6"/>
+                                                <constraint firstAttribute="height" constant="21" id="Gmn-Qi-2Qk"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.72156862749999995" green="0.72156862749999995" blue="0.72156862749999995" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="puA-OC-wUQ" firstAttribute="centerY" secondItem="f1h-ai-7CY" secondAttribute="centerY" id="1uW-Vu-oeV"/>
                                         <constraint firstItem="2e3-N6-GnN" firstAttribute="leading" secondItem="f1h-ai-7CY" secondAttribute="leadingMargin" constant="10" id="D8F-QO-W22"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="puA-OC-wUQ" secondAttribute="trailing" constant="10" id="Pu7-5A-wfh"/>
                                         <constraint firstItem="2e3-N6-GnN" firstAttribute="centerY" secondItem="f1h-ai-7CY" secondAttribute="centerY" id="zkM-Q1-6dt"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="photosLabel" destination="puA-OC-wUQ" id="Cl6-1J-KWt"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

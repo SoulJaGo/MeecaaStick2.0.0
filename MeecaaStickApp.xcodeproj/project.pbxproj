@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		6E2AFB961C0D5A63005BD33A /* UpdateMedicalRecordTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2AFB951C0D5A63005BD33A /* UpdateMedicalRecordTableViewController.m */; };
 		6E539BC71C0C651A000F34DA /* Address.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E539BC61C0C651A000F34DA /* Address.plist */; };
-		6E5D74BC1C0C4B430099A486 /* MedicalRecordDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E5D74BB1C0C4B430099A486 /* MedicalRecordDetailViewController.m */; };
 		6E6ACDAB1C16DE7600B2BB4D /* 多组数据.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E6ACDA91C16DE7600B2BB4D /* 多组数据.plist */; };
 		6E6ACDAC1C16DE7600B2BB4D /* TemperatureRecord.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E6ACDAA1C16DE7600B2BB4D /* TemperatureRecord.plist */; };
 		6E9E64B01C06E96F002AF88A /* Third.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E9E64AF1C06E96F002AF88A /* Third.storyboard */; };
@@ -207,8 +206,6 @@
 		6E2AFB941C0D5A63005BD33A /* UpdateMedicalRecordTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateMedicalRecordTableViewController.h; sourceTree = "<group>"; };
 		6E2AFB951C0D5A63005BD33A /* UpdateMedicalRecordTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateMedicalRecordTableViewController.m; sourceTree = "<group>"; };
 		6E539BC61C0C651A000F34DA /* Address.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Address.plist; sourceTree = "<group>"; };
-		6E5D74BA1C0C4B430099A486 /* MedicalRecordDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MedicalRecordDetailViewController.h; sourceTree = "<group>"; };
-		6E5D74BB1C0C4B430099A486 /* MedicalRecordDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MedicalRecordDetailViewController.m; sourceTree = "<group>"; };
 		6E6ACDA91C16DE7600B2BB4D /* 多组数据.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "多组数据.plist"; sourceTree = "<group>"; };
 		6E6ACDAA1C16DE7600B2BB4D /* TemperatureRecord.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TemperatureRecord.plist; sourceTree = "<group>"; };
 		6E9E64AF1C06E96F002AF88A /* Third.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Third.storyboard; sourceTree = "<group>"; };
@@ -1120,8 +1117,6 @@
 				96A8B55B1C3FA570003FA193 /* MedicalRecordViewController.m */,
 				96A8B55D1C3FB3E4003FA193 /* MedicalRecordCell.h */,
 				96A8B55E1C3FB3E4003FA193 /* MedicalRecordCell.m */,
-				6E5D74BA1C0C4B430099A486 /* MedicalRecordDetailViewController.h */,
-				6E5D74BB1C0C4B430099A486 /* MedicalRecordDetailViewController.m */,
 				966DB93B1C0C4D1700A8859F /* AddMedicalRecordViewController.h */,
 				966DB93C1C0C4D1700A8859F /* AddMedicalRecordViewController.m */,
 				6E9F0CA21C240A5D0060F81B /* AddBeanRecordViewController.h */,
@@ -1598,7 +1593,6 @@
 				96AA3CF81C0591AD00908F23 /* DoctorViewController.m in Sources */,
 				96D8596E1C05B79D00C99070 /* SDWebImagePrefetcher.m in Sources */,
 				96CBAC761C0458A4002CBE69 /* UIImage+REFrostedViewController.m in Sources */,
-				6E5D74BC1C0C4B430099A486 /* MedicalRecordDetailViewController.m in Sources */,
 				96314BE31C3CF31F009C53AD /* UseStickCheckViewController.m in Sources */,
 				9640EC9F1BFDCE1400C620D4 /* GlobalTool.m in Sources */,
 				96A8B55F1C3FB3E4003FA193 /* MedicalRecordCell.m in Sources */,

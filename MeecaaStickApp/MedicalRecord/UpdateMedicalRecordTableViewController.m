@@ -20,6 +20,7 @@
 @property (nonatomic,strong) UIView *datePickerHeaderView;
 @property (nonatomic,strong) TemperatureLabelCell *temperatureLabelCell;
 @property (nonatomic,strong) SymptomCell *symptomCell;
+@property (nonatomic,strong) DescriptionLabelCell *descCell;
 /**
  *  症状视图
  */
@@ -225,7 +226,8 @@
         return symptomCell;
     } else if (indexPath.section == 3) {
         DescriptionLabelCell *descCell = [tableView dequeueReusableCellWithIdentifier:@"DescriptionLabelCell"];
-//        descCell.
+        self.descCell = descCell;
+        self.descCell.descriptionLabel.text = [self.detailMedicalRecordInfo objectForKey:@"desc"];
         return descCell;
     } else if (indexPath.section == 4) {
         PhotosCell *photosCell = [tableView dequeueReusableCellWithIdentifier:@"PhotosCell"];

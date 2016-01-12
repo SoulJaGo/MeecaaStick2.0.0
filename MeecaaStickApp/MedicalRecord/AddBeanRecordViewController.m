@@ -324,6 +324,8 @@
         self.datePicker.frame = CGRectMake(0, self.view.frame.size.height - 216, self.view.frame.size.width, 216);
         [self.view addSubview:self.datePicker];
     } else if (indexPath.section == 3) {
+        //去除键盘
+        [self.view endEditing:YES];
         [self.datePickerHeaderView removeFromSuperview];
         [self.datePicker removeFromSuperview];
         [self.descriptionTextView removeFromSuperview];
@@ -343,6 +345,8 @@
         [self.view addSubview:self.descriptionTextView];
         [self.view addSubview:self.descriptionHeaderView];
     } else if (indexPath.section == 5) {
+        //去除键盘
+        [self.view endEditing:YES];
         [self.datePickerHeaderView removeFromSuperview];
         [self.datePicker removeFromSuperview];
         [self.SymptomButtonsView removeFromSuperview];
@@ -579,6 +583,7 @@
 - (UITextView *)descriptionTextView {
     if (_descriptionTextView == nil) {
         _descriptionTextView = [[UITextView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 416, self.view.frame.size.width, 216)];
+        _descriptionTextView.font = [UIFont systemFontOfSize:15];
     }
     return _descriptionTextView;
 }

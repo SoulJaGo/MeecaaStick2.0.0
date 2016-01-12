@@ -379,13 +379,14 @@
             }
             [self createDetailViewWithInfoDict:self.dayDetailInfo Cell:cell];
         }
-    }
-    
+    }    
 }
 
 #pragma mark - 详细信息
 - (void)createDetailViewWithInfoDict:(NSMutableDictionary *)infoDict Cell:(MedicalRecordCell *)cell{
     UIView *detailView = [[UIView alloc] initWithFrame:CGRectMake(0, 103, kScreen_Width, 160)];
+    detailView.layer.borderColor = [UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1.0]    .CGColor;
+    detailView.layer.borderWidth = 1.0f;
     
     UILabel *descLabel = [[UILabel alloc] init];
     CGFloat descLabelX = 10;
@@ -398,20 +399,31 @@
     [descLabel setFont:[UIFont boldSystemFontOfSize:17]];
     [detailView addSubview:descLabel];
     
+    UIScrollView *scrollView = [[UIScrollView alloc] init];
+    CGFloat scorllViewW = kScreen_Width;
+    CGFloat scorllViewH = 60;
+    CGFloat scorllViewX = 0;
+    CGFloat scorllViewY = CGRectGetMaxY(descLabel.frame) + 10;
+    [scrollView setFrame:CGRectMake(scorllViewX, scorllViewY, scorllViewW, scorllViewH)];
+    [scrollView setScrollEnabled:YES];
+    [scrollView setShowsVerticalScrollIndicator:NO];
+    [scrollView setContentSize:CGSizeMake(5 * 60 + 6 * 10, 60)];
+    [detailView addSubview:scrollView];
+    
     if ([[infoDict objectForKey:@"pics"] count] > 0 && ![[[infoDict objectForKey:@"pics"] objectAtIndex:0]  isEqual: @""]) {
         for (int i = 0; i < [[infoDict objectForKey:@"pics"] count]; i++) {
             UIImageView *imageView = [[UIImageView alloc] init];
             CGFloat imageViewW = 60;
             CGFloat imageViewH = 60;
             CGFloat imageViewX = 10 * (i+1) + imageViewW * i;
-            CGFloat imageViewY = CGRectGetMaxY(descLabel.frame) + 10;
+            CGFloat imageViewY = 0;
             [imageView setFrame:CGRectMake(imageViewX, imageViewY, imageViewW, imageViewH)];
             [imageView sd_setImageWithURL:[NSURL URLWithString:[[infoDict objectForKey:@"pics"] objectAtIndex:i]]];
             imageView.userInteractionEnabled = YES;
             [imageView setTag:i];
             UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImageView:)];
             [imageView addGestureRecognizer:recognizer];
-            [detailView addSubview:imageView];
+            [scrollView addSubview:imageView];
         }
     }
     
