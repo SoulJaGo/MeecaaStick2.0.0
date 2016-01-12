@@ -317,7 +317,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {
     if (indexPath == self.selectedIndexPath) {
         if (self.segmentControl.selectedSegmentIndex == 1) {
-            return 463;
+            return 473;
         } else {
             return 263;
         }
@@ -393,7 +393,7 @@
     if (self.segmentControl.selectedSegmentIndex == 0) {
         detaiViewH = 160;
     } else {
-        detaiViewH = 360;
+        detaiViewH = 370;
     }
     UIView *detailView = [[UIView alloc] initWithFrame:CGRectMake(0, 103, kScreen_Width, detaiViewH)];
     detailView.layer.borderColor = [UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1.0]    .CGColor;
@@ -463,7 +463,7 @@
     CGFloat updateBtnX = 10;
     CGFloat updateBtnY = 0;
     if (self.segmentControl.selectedSegmentIndex == 1) {
-        updateBtnY = 330;
+        updateBtnY = 340;
     } else {
         updateBtnY = 120;
     }
@@ -481,7 +481,7 @@
     CGFloat deleteBtnX = kScreen_Width - deleteBtnW - 10;
     CGFloat deleteBtnY = 0;
     if (self.segmentControl.selectedSegmentIndex == 1) {
-        deleteBtnY = 330;
+        deleteBtnY = 340;
     } else {
         deleteBtnY = 120;
     }
