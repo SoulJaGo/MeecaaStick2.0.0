@@ -236,6 +236,7 @@
 }
 
 - (void)initBeanDiaryDataEndSuccessNotification {
+    [self.beanTableView reloadData];
     [self.beanTableView.footer endRefreshing];
 }
 

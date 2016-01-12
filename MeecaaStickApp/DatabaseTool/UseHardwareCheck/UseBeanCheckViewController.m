@@ -298,7 +298,7 @@
             [self presentViewController:vc animated:YES completion:nil];
         }else {
             [self SearchDevice];
-            press = YES;
+            
         }
     }
     
@@ -416,6 +416,7 @@
     [SVProgressHUD showWithStatus:@"正在搜索米开温豆"];
     if (_cbCentralManager.state == CBCentralManagerStatePoweredOff) {
         [SVProgressHUD showInfoWithStatus:@"检测到蓝牙未开启，请开启蓝牙重试"];
+        press = NO;
     }else {
         //第一个参数:根据外设的UUID来扫描,若设置为nil就是扫描周围所有的外设（过滤条件）
         [_cbCentralManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:USERDEF_SERV_UUID]] options:nil];
@@ -424,6 +425,7 @@
          *	12 22 修改蓝牙搜索时长的方法
          */
         searchTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(searchTimerCount) userInfo:nil repeats:YES];
+        press = YES;
     }
 }
 
@@ -511,7 +513,6 @@
     } else if (searchTimeCount == 30) {
         [_cbCentralManager stopScan];//关闭搜索,非常重要!
         if (_peripheralArray.count == 0) {
-            [SVProgressHUD dismiss];
             [SVProgressHUD showErrorWithStatus:@"未检测到米开温豆!"];
         }
         [_timer invalidate];
@@ -640,7 +641,7 @@
      *	12 / 14 温度测温完成以后跳转到保存温度的界面
      */
 #warning ToDo -- 暂时定为三分钟测温
-    if (timercount >= 20) {
+    if (timercount >= 180) {
 //        [self finishTemp];
         //开始传值
         [GlobalTool sharedSingleton].beanCheckTempStr = TempStr;
@@ -790,7 +791,6 @@
         }
         researchTime++;
     }else{
-        [SVProgressHUD dismiss];
         [SVProgressHUD showErrorWithStatus:@"无法连接到设备"];
         [self finishTemp];
         [_timer setFireDate:[NSDate distantFuture]];
