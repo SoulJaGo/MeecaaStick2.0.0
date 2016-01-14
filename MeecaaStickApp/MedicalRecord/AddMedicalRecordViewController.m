@@ -50,7 +50,7 @@
 
 @property (nonatomic,strong) MMDrawerController * drawerController;
 @property (nonatomic,strong) NSMutableArray *picturesIDArray;//用于存放用户选取图片后返回的id的数组
-
+@property (nonatomic,strong) UIImage *selectedImage;
 @end
 
 @implementation AddMedicalRecordViewController
@@ -98,7 +98,9 @@
 }
 
 - (void)AddPictureSuccessNotification:(NSNotification *)notify {
+    [self.photosArray addObject:self.selectedImage];
     [self.picturesIDArray addObject:notify.object];
+    [self.collectionView reloadData];
 }
 /**
  *  添加照片View
@@ -157,9 +159,7 @@
 
 - (void)onClickDelPhoto:(UIButton *)btn {
     [self.photosArray removeObjectAtIndex:btn.tag];
-    if ([self.picturesIDArray objectAtIndex:btn.tag]) {
-        [self.picturesIDArray removeObjectAtIndex:btn.tag];
-    }
+    [self.picturesIDArray removeObjectAtIndex:btn.tag];
     [self.collectionView reloadData];
 }
 
@@ -242,12 +242,12 @@
 {
     [picker dismissViewControllerAnimated:YES completion:^{
         UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-        [[HttpTool shared] uploadPicture:image];
-        [SVProgressHUD showWithStatus:@"图片上传中..."];
+        self.selectedImage = image;
         [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+        [SVProgressHUD showWithStatus:@"图片上传中..."];
+        [[HttpTool shared] uploadPicture:image];
     }];
-    [self.photosArray addObject:info[UIImagePickerControllerOriginalImage]];
-    [self.collectionView reloadData];
+    
 }
 
 
@@ -257,8 +257,15 @@
     if (_photosHeaderView == nil) {
         self.photosHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 260, self.view.bounds.size.width, 44)];
         [self.photosHeaderView setBackgroundColor:NAVIGATIONBAR_BACKGROUND_COLOR];
+        UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        cancelBtn.frame = CGRectMake(0, 0, 100, 44);
+        [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+        cancelBtn.titleLabel.font = [UIFont systemFontOfSize:18 weight:18];
+        [cancelBtn addTarget:self action:@selector(cancelSelectPhotos) forControlEvents:UIControlEventTouchUpInside];
+        [_photosHeaderView addSubview:cancelBtn];
+        
         UIButton *completeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        completeBtn.frame = CGRectMake(0, 0, 100, 44);
+        completeBtn.frame = CGRectMake(kScreen_Width - 100, 0, 100, 44);
         [completeBtn setTitle:@"完成" forState:UIControlStateNormal];
         completeBtn.titleLabel.font = [UIFont systemFontOfSize:18 weight:18];
         [completeBtn addTarget:self action:@selector(completePhotos) forControlEvents:UIControlEventTouchUpInside];
@@ -276,6 +283,11 @@
     } else {
         [self.photosCell.photosLabel setText:@"已添加"];
     }
+}
+
+- (void)cancelSelectPhotos {
+    [self.photosHeaderView removeFromSuperview];
+    [self.photosView removeFromSuperview];
 }
 
 /**

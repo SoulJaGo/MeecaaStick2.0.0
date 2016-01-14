@@ -52,6 +52,10 @@
     [self setupNav];
     
     self.photosArray = [NSMutableArray array];
+    
+    if ([self.detailMedicalRecordInfo objectForKey:@"pics"] != nil && ![[[self.detailMedicalRecordInfo objectForKey:@"pics"] objectAtIndex:0] isEqualToString:@""]) {
+        self.photosArray = [self.detailMedicalRecordInfo objectForKey:@"pics"];
+    }
 }
 /**
  *  设置Nav
@@ -170,15 +174,9 @@
         self.photosView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 216, self.view.bounds.size.width, 216)];
         [self.photosView setBackgroundColor:[UIColor whiteColor]];
         
-        UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        addBtn.frame = CGRectMake(10, 78, 60, 60);
-        [addBtn setBackgroundImage:[UIImage imageNamed:@"medical_add_icon"] forState:UIControlStateNormal];
-        [addBtn addTarget:self action:@selector(onClickAddPhoto) forControlEvents:UIControlEventTouchUpInside];
-        [self.photosView addSubview:addBtn];
-        
         UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
         [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-        self.collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(80, 78, self.view.bounds.size.width - 10 - 60 - 10, 60) collectionViewLayout:flowLayout];
+        self.collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(10, 78, self.view.bounds.size.width - 10, 60) collectionViewLayout:flowLayout];
         [self.collectionView setBackgroundColor:[UIColor whiteColor]];
         //设置代理
         self.collectionView.delegate = self;
@@ -305,20 +303,14 @@
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *identify = @"cell";
     CollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identify forIndexPath:indexPath];
-    [cell.imageView setImage:self.photosArray[indexPath.row]];
-    [cell.delBtn setTag:indexPath.row];
-    [cell.delBtn addTarget:self action:@selector(onClickDelPhoto:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.imageView sd_setImageWithURL:[NSURL URLWithString:self.photosArray[indexPath.row]]];
+    [cell.delBtn removeFromSuperview];
     [cell sizeToFit];
-//    if (!cell) {
-//        NSLog(@"无法创建CollectionViewCell时打印，自定义的cell就不可能进来了。");
-//    }
-    
     return cell;
 }
 
-- (void)onClickDelPhoto:(UIButton *)btn {
-    [self.photosArray removeObjectAtIndex:btn.tag];
-    [self.collectionView reloadData];
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return CGSizeMake(65, 60);
 }
 
 

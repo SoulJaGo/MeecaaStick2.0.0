@@ -53,6 +53,7 @@
 @property (nonatomic,strong)ZX *lineChart;
 @property (nonatomic,strong)UIScrollView *scrollView;    //显示可滑动折线图的scrollView
 @property (nonatomic,strong) NSMutableArray *picturesIDArray;//用于存放用户选取图片后返回的id的数组
+@property (nonatomic,strong) UIImage *selectedImage;
 @property (nonatomic,strong) MMDrawerController * drawerController;
 @end
 
@@ -100,7 +101,9 @@
 }
 
 - (void)AddPictureSuccessNotification:(NSNotification *)notify {
+    [self.photosArray addObject:self.selectedImage];
     [self.picturesIDArray addObject:notify.object];
+    [self.collectionView reloadData];
 }
 /**
  *  设置Nav
@@ -551,10 +554,9 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [picker dismissViewControllerAnimated:YES completion:^{
         UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        self.selectedImage = image;
         [[HttpTool shared] uploadPicture:image];
     }];
-    [self.photosArray addObject:info[UIImagePickerControllerOriginalImage]];
-    [self.collectionView reloadData];
 }
 
 
