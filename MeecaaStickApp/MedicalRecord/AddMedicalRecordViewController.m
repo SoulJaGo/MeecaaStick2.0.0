@@ -157,7 +157,9 @@
 
 - (void)onClickDelPhoto:(UIButton *)btn {
     [self.photosArray removeObjectAtIndex:btn.tag];
-    [self.picturesIDArray removeObjectAtIndex:btn.tag];
+    if ([self.picturesIDArray objectAtIndex:btn.tag]) {
+        [self.picturesIDArray removeObjectAtIndex:btn.tag];
+    }
     [self.collectionView reloadData];
 }
 
@@ -241,6 +243,8 @@
     [picker dismissViewControllerAnimated:YES completion:^{
         UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
         [[HttpTool shared] uploadPicture:image];
+        [SVProgressHUD showWithStatus:@"图片上传中..."];
+        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
     }];
     [self.photosArray addObject:info[UIImagePickerControllerOriginalImage]];
     [self.collectionView reloadData];

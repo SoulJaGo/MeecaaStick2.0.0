@@ -257,6 +257,7 @@
         self.datePicker.frame = CGRectMake(0, self.view.frame.size.height - 216, self.view.frame.size.width, 216);
         [self.view addSubview:self.datePicker];
     } else if (indexPath.section == 2) {
+        [self.view endEditing:YES];
         [self.datePickerHeaderView removeFromSuperview];
         [self.datePicker removeFromSuperview];
         [self.descriptionTextView removeFromSuperview];

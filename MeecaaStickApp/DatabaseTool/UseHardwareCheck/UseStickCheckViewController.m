@@ -221,36 +221,30 @@
     UIImage *_image = [UIImage imageNamed:@"yuanquan"];
     circularImageViewOne = [[UIImageView alloc] initWithImage:_image];
     circularImageViewTwo = [[UIImageView alloc] initWithImage:_image];
-    circularImageViewThree = [[UIImageView alloc] initWithImage:_image];
-    circularImageViewOne.frame = CGRectMake((self.view.frame.size.width - 200) / 2, 30, 200, 200);
-    circularImageViewTwo.frame = CGRectMake(kScreen_Width + (self.view.frame.size.width - 200) / 2, 30, 200, 200);
-    circularImageViewThree.frame = CGRectMake(kScreen_Width * 2 + (self.view.frame.size.width - 200) / 2, 30, 200, 200);
+    circularImageViewOne.frame = CGRectMake((self.view.frame.size.width - 200) / 2 + kScreen_Width, 30, 200, 200);
+    circularImageViewTwo.frame = CGRectMake((self.view.frame.size.width - 200) / 2, 30, 200, 200);
     [self.scrollView addSubview:circularImageViewOne];
     [self.scrollView addSubview:circularImageViewTwo];
-    [self.scrollView addSubview:circularImageViewThree];
     
     //添加时间label
-    timeLabelOne = [[UILabel alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 100) / 2 + 130, 0, 100, 30)];
-    timeLabelTwo = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width + (self.view.frame.size.width - 100) / 2 + 130, 0, 100, 30)];
-    timeLabelThree = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width * 2 + (self.view.frame.size.width - 100) / 2 + 130, 0, 100, 30)];
-    timeLabelOne.textColor = timeLabelTwo.textColor = timeLabelThree.textColor = NAVIGATIONBAR_BACKGROUND_COLOR;
-    timeLabelOne.text = timeLabelTwo.text = timeLabelThree.text = @"00:00";
-    timeLabelOne.font = timeLabelTwo.font = timeLabelThree.font = [UIFont systemFontOfSize:30];
-    [_scrollView addSubview:timeLabelThree];
-//    [_scrollView addSubview:timeLabelTwo];
+    timeLabelOne = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width + (self.view.frame.size.width - 100) / 2 + 130, 0, 100, 30)];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 100) / 2 + 130, 0, 100, 30)];
+    [imageView setImage:[UIImage imageNamed:@"start_logo"]];
+    timeLabelOne.textColor = timeLabelTwo.textColor = NAVIGATIONBAR_BACKGROUND_COLOR;
+    timeLabelOne.text = timeLabelTwo.text = @"00:00";
+    timeLabelOne.font = timeLabelTwo.font = [UIFont systemFontOfSize:30];
     [_scrollView addSubview:timeLabelOne];
     
     //添加温度label
     temperatureLabelOne = [[UILabel alloc] initWithFrame:CGRectMake((200 - 130) / 2, 70, 130, 40)];
-    temperatureLabelTwo = [[UILabel alloc] initWithFrame:CGRectMake((200 - 130) / 2, 70, 130, 40)];
-    temperatureLabelThree = [[UILabel alloc] initWithFrame:CGRectMake((200 - 130) / 2, 70, 130, 40)];
-    temperatureLabelOne.text = temperatureLabelThree.text = temperatureLabelTwo.text = @"--.-℃";
-    temperatureLabelOne.textAlignment = temperatureLabelThree.textAlignment = temperatureLabelTwo.textAlignment = NSTextAlignmentCenter;
-    temperatureLabelOne.font = temperatureLabelTwo.font =temperatureLabelThree.font = [UIFont systemFontOfSize:36];
+    UIImageView *logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake((200 - 100) / 2, 40, 100, 70)];
+    [logoImageView setImage:[UIImage imageNamed:@"start_logo"]];
+    temperatureLabelOne.text = @"--.-℃";
+    temperatureLabelOne.textAlignment = temperatureLabelTwo.textAlignment = NSTextAlignmentCenter;
+    temperatureLabelOne.font = temperatureLabelTwo.font = [UIFont systemFontOfSize:36];
     temperatureLabelOne.textColor = temperatureLabelTwo.textColor =temperatureLabelThree.textColor = NAVIGATIONBAR_BACKGROUND_COLOR;
     [circularImageViewOne addSubview:temperatureLabelOne];
-    [circularImageViewTwo addSubview:temperatureLabelTwo];
-    [circularImageViewThree addSubview:temperatureLabelThree];
+    [circularImageViewTwo addSubview:logoImageView];
     
     //添加测温类型label
     
@@ -258,17 +252,13 @@
     UIImage *start = [UIImage imageNamed:@"anniu"];
     startViewOne = [[UIImageView alloc] initWithImage:start];
     startViewTwo = [[UIImageView alloc] initWithImage:start];
-    startViewThree = [[UIImageView alloc] initWithImage:start];
-    startViewOne.frame = CGRectMake((kScreen_Width - 120) / 2, 260, 120, 120);
-    startViewTwo.frame = CGRectMake(kScreen_Width + (kScreen_Width - 120) / 2, 260, 120, 120);
-    startViewThree.frame = CGRectMake(kScreen_Width * 2 + (kScreen_Width - 120) / 2, 260, 120, 120);
+    startViewOne.frame = CGRectMake(kScreen_Width + (kScreen_Width - 120) / 2, 260, 120, 120);
+    startViewTwo.frame = CGRectMake((kScreen_Width - 120) / 2, 260, 120, 120);
     startViewOne.userInteractionEnabled = startViewTwo.userInteractionEnabled = startViewThree.userInteractionEnabled = YES;
     [startViewOne addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickToNormalCheck)]];
     [startViewTwo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickToQuickCheck)]];
-    [startViewThree addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickToQuickCheck)]];
     [_scrollView addSubview:startViewOne];
     [_scrollView addSubview:startViewTwo];
-    [_scrollView addSubview:startViewThree];
     
     for (int i = 0; i < 3; i++) {
         UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width * i + (kScreen_Width - 80) / 2, 140, 80, 40)];
@@ -276,9 +266,9 @@
         typeLabel.textAlignment = NSTextAlignmentCenter;
         typeLabel.textColor = NAVIGATIONBAR_BACKGROUND_COLOR;
         if (typeLabel.tag == 10000) {
-            typeLabel.text = @"常规测温";
-        }else if (typeLabel.tag == 10001){
             typeLabel.text = @"快速测温";
+        }else if (typeLabel.tag == 10001){
+            typeLabel.text = @"常规测温";
         }
         [self.scrollView addSubview:typeLabel];
     }

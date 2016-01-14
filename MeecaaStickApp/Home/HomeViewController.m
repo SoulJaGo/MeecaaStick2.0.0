@@ -137,6 +137,9 @@
     self.noDeviceView.backgroundColor = UIVIEW_BACKGROUND_COLOR;
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width - 200)/2, 64 + 50, 200, 200)];
     [imageView setImage:[UIImage imageNamed:@"yuanquan"]];
+    UIImageView *logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake((200 - 100) / 2, 50, 100, 70)];
+    [logoImageView setImage:[UIImage imageNamed:@"start_logo"]];
+    [imageView addSubview:logoImageView];
     [self.noDeviceView addSubview:imageView];
     
     
@@ -342,7 +345,7 @@
 - (void)volumeChanged:(NSNotification *)notification {
     CGFloat volume = [notification.userInfo[@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
     if (volume < 1.0) {
-        [SVProgressHUD showErrorWithStatus:@"请将音量调到最大！"];
+//        [SVProgressHUD showErrorWithStatus:@"请将音量调到最大！"];
     }
 }
 

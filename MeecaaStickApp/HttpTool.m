@@ -969,18 +969,16 @@ typedef enum
 - (void)uploadPicture:(UIImage *)image {
     NSString *urlStr = [HOST stringByAppendingString:@"api.php?m=open&c=member&a=uploadPicture"];
     [self.manager POST:urlStr parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-        [SVProgressHUD showWithStatus:@"图片上传中..."];
         [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.5) name:@"img" fileName:@"img.jpg" mimeType:@"image/jpeg"];
     } success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-        [SVProgressHUD dismiss];
         if (responseObject[@"status"] == [NSNumber numberWithInteger:1]) {
+            [SVProgressHUD dismiss];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"AddPictureSuccessNotification" object:responseObject[@"data"]];
         }else {
             [SVProgressHUD showErrorWithStatus:@"上传图片失败!"];
         }
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        [SVProgressHUD dismiss];
-        NSLog(@" ereerererer   %@",error);
+        NSLog(@"%@",error);
         [SVProgressHUD showErrorWithStatus:@"网络不给力哦！"];
     }];
 }
