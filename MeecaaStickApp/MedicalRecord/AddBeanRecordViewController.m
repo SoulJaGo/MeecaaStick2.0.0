@@ -174,6 +174,12 @@
     if (self.picturesIDArray.count > 0) {
         pic_ids = [self.picturesIDArray componentsJoinedByString:@","];
     }
+    
+    if (![[DatabaseTool shared] getDefaultMemberLastBeanDiary]) { //没有数据的时候（豆子）
+        //请求网络读取数据
+        [[HttpTool shared] getDefaultMemberBeanDiaryInfoByPage:1];//手动写了一个1类型传进去，把所有豆子的记录传回来
+    }
+    
     [[HttpTool shared] addMedicalRecordWithType:1 Member_id:defaultMemberId Temperture:[[GlobalTool sharedSingleton].lineChartArray componentsJoinedByString:@","] Date:timeStr StartTime:[GlobalTool sharedSingleton].startTime EndTime:[GlobalTool sharedSingleton].endTime Symptoms:[NSString stringWithFormat:@"%d",symptomInt] Description:desc Longitude:[NSString stringWithFormat:@"%f",[[GlobalTool shared] longitude]] Latitude:[NSString stringWithFormat:@"%f",[[GlobalTool shared] latitude]] Pic_ids:pic_ids];
 }
 

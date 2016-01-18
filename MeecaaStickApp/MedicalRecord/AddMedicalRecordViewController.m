@@ -567,6 +567,12 @@
     if (self.picturesIDArray.count > 0) {
         pic_ids = [self.picturesIDArray componentsJoinedByString:@","];
     }
+    
+    if (![[DatabaseTool shared] getDefaultMemberLastDiary]) { //没有数据的时候（t_dairy 棒子）
+        //请求网络读取数据
+        [[HttpTool shared] getDefaultMemberDiaryInfoByPage:1];//手动写了一个0类型传进去，把所有棒子的记录传回来
+    }
+    
     [[HttpTool shared] addMedicalRecordWithType:0 Member_id:defaultMemberId Temperture:self.temperatureLabelCell.temperatureTextField.text Date:timeStr StartTime:[GlobalTool sharedSingleton].receivedStartTime EndTime:[GlobalTool sharedSingleton].receivedEndTime Symptoms:[NSString stringWithFormat:@"%d",symptomInt] Description:desc Longitude:[NSString stringWithFormat:@"%f",[[GlobalTool shared] longitude]] Latitude:[NSString stringWithFormat:@"%f",[[GlobalTool shared] latitude]] Pic_ids:pic_ids];
 }
 

@@ -37,9 +37,9 @@
     UIImageView *circularImageViewTwo;
     UIImageView *circularImageViewThree;
     
-    UIImageView *startViewOne;
-    UIImageView *startViewTwo;
-    UIImageView *startViewThree;
+    UIButton *startViewOne;
+    UIButton *startViewTwo;
+    UIButton *startViewThree;
     
     NSTimer *progressTimer;
     
@@ -259,18 +259,18 @@
     //添加测温类型label
     
     //添加开始按钮
-    UIImage *start = [UIImage imageNamed:@"anniu"];
-    startViewOne = [[UIImageView alloc] initWithImage:start];
-    startViewTwo = [[UIImageView alloc] initWithImage:start];
+    startViewOne = [UIButton buttonWithType:UIButtonTypeCustom];
+    startViewTwo = [UIButton buttonWithType:UIButtonTypeCustom];
     startViewOne.frame = CGRectMake((kScreen_Width - 120) / 2, 260, 120, 120);
     startViewTwo.frame = CGRectMake((kScreen_Width - 120) / 2, 260, 120, 120);
-    startViewOne.userInteractionEnabled = startViewTwo.userInteractionEnabled = startViewThree.userInteractionEnabled = YES;
-    [startViewOne addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickToNormalCheck)]];
-    [startViewTwo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickToQuickCheck)]];
+    [startViewOne setBackgroundImage:[UIImage imageNamed:@"anniu"] forState:UIControlStateNormal];
+    [startViewTwo setBackgroundImage:[UIImage imageNamed:@"anniu"] forState:UIControlStateNormal];
+    [startViewOne addTarget:self action:@selector(clickToNormalCheck) forControlEvents:UIControlEventTouchUpInside];
+    [startViewTwo addTarget:self action:@selector(clickToQuickCheck) forControlEvents:UIControlEventTouchUpInside];
     [normalView addSubview:startViewOne];
     [quickView addSubview:startViewTwo];
     
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 2; i++) {
         UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width * i + (kScreen_Width - 80) / 2, 140, 80, 40)];
         typeLabel.tag  = 10000 + i;
         typeLabel.textAlignment = NSTextAlignmentCenter;

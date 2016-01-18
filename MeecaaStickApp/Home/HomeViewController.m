@@ -132,6 +132,31 @@
     [self.view addSubview:self.stickView.view];
     
     [self.selectDeviceBtn setTitle:@"米开体温棒" forState:UIControlStateNormal];
+    
+    /**
+     *  SoulJa 2015-01-18
+     *  添加指示层
+     */
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSInteger isInitGuideSelectDevice = [defaults integerForKey:@"isInitGuideSelectDevice"];
+    if (isInitGuideSelectDevice == 0) {
+        self.holeView = [[JMHoledView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        self.holeView.holeViewDelegate = self;
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((kScreen_Width - 120)/2, 260, 120, 120)];
+        [imageView setImage:[UIImage imageNamed:@"start_logo"]];
+        [self.holeView addHCustomView:imageView onRect:imageView.frame];
+        UITapGestureRecognizer *recongnizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHoleView)];
+        [self.holeView addGestureRecognizer:recongnizer];
+        
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btn setFrame:CGRectMake(kScreen_Width - 100 - 10 , kScreen_Height - 44 - 40, 100, 40)];
+        [btn setTitle:@"不再提示" forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(onClickNoGuide) forControlEvents:UIControlEventTouchUpInside];
+        [self.holeView addSubview:btn];
+        
+        [[UIApplication sharedApplication].keyWindow.rootViewController.view addSubview:self.holeView];
+    }
 }
 
 - (void)setUpNoDeviceView{
@@ -229,6 +254,30 @@
     
     [self.selectDeviceBtn setTitle:@"米开温豆" forState:UIControlStateNormal];
 
+    /**
+     *  SoulJa 2015-01-18
+     *  添加指示层
+     */
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSInteger isInitGuideSelectDevice = [defaults integerForKey:@"isInitGuideSelectDevice"];
+    if (isInitGuideSelectDevice == 0) {
+        self.holeView = [[JMHoledView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        self.holeView.holeViewDelegate = self;
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 220, 120, 120)];
+        [imageView setImage:[UIImage imageNamed:@"start_logo"]];
+        [self.holeView addHCustomView:imageView onRect:imageView.frame];
+        UITapGestureRecognizer *recongnizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHoleView)];
+        [self.holeView addGestureRecognizer:recongnizer];
+        
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btn setFrame:CGRectMake(kScreen_Width - 100 - 10 , kScreen_Height - 44 - 40, 100, 40)];
+        [btn setTitle:@"不再提示" forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(onClickNoGuide) forControlEvents:UIControlEventTouchUpInside];
+        [self.holeView addSubview:btn];
+        
+        [[UIApplication sharedApplication].keyWindow.rootViewController.view addSubview:self.holeView];
+    }
 }
 
 
