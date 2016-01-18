@@ -232,6 +232,7 @@
 }
 
 - (void)initDiaryDataEndSuccessNotification {
+    [self.stickTableView reloadData];
     [self.stickTableView.footer endRefreshing];
 }
 

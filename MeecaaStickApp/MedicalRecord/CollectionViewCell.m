@@ -13,7 +13,6 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
-        [imageView setBackgroundColor:[UIColor redColor]];
         [self addSubview:imageView];
         self.imageView = imageView;
         

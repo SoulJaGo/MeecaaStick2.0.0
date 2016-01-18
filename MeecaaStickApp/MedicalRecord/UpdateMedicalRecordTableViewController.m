@@ -677,6 +677,11 @@
     [self.descriptionHeaderView removeFromSuperview];
     [self.descriptionTextView removeFromSuperview];
 }
+
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self.view endEditing:YES];
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {

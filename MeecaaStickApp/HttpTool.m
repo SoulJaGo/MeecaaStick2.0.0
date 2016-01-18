@@ -563,32 +563,25 @@ typedef enum
  */
 - (void)removeMember:(NSString *)mid
 {
-    //初始化请求管理者
-    AFHTTPRequestOperationManager *mgr = [AFHTTPRequestOperationManager manager];
     //发送请求数据
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"member_id"] = mid;
     NSString *urlStr = [HOST stringByAppendingString:@"api.php?m=open&c=member&a=del"];
-    [mgr POST:urlStr parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.manager POST:urlStr parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [SVProgressHUD dismiss];
         if ([[NSString stringWithFormat:@"%@",responseObject[@"status"]] isEqualToString:@"1"]) { //表示删除成功
-//            BOOL result = [DatabaseTool removeMember:mid];
             BOOL result = [[DatabaseTool shared] removeOneMember:mid];
             if (!result) {
-//                [[TTToolsHelper shared] showAlertMessage:@"删除成员失败!"];
                 [SVProgressHUD showErrorWithStatus:@"删除成员失败!"];
             } else {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"RemoveMemberSuccessNotification" object:nil];
                 [SVProgressHUD showSuccessWithStatus:@"删除成员成功！"];
             }
         } else {
-//            [[TTToolsHelper shared] showAlertMessage:@"删除成员失败!"];
             [SVProgressHUD showErrorWithStatus:@"删除成员失败!"];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [SVProgressHUD dismiss];
         NSLog(@"%@",error);
-//        [[TTToolsHelper shared] showAlertMessage:@"网络不给力哦！"];
         [SVProgressHUD showErrorWithStatus:@"网络不给力哦！"];
     }];
     
@@ -597,8 +590,6 @@ typedef enum
  *  添加成员的方法
  */
 - (void)addMemberWithName:(NSString *)name Sex:(NSString *)sex City:(NSString *)city Birth:(NSString *)birth Addr:(NSString *)addr Acc_id:(NSString *)acc_id{
-    
-    AFHTTPRequestOperationManager *mgr = [AFHTTPRequestOperationManager manager];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"name"] = name;
     params[@"sex"] = sex;
@@ -607,7 +598,7 @@ typedef enum
     params[@"addr"] = addr;
     params[@"acc_id"] = acc_id;
     NSString *urlStr = [HOST stringByAppendingString:@"api.php?m=open&c=member&a=setting"];
-    [mgr POST:urlStr parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.manager POST:urlStr parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [SVProgressHUD dismiss];
         if (responseObject[@"status"] == [NSNumber numberWithInteger:1]) {
             BOOL result = [[DatabaseTool shared] addMember:responseObject[@"data"]];
@@ -622,7 +613,6 @@ typedef enum
             [SVProgressHUD showErrorWithStatus:@"添加成员失败!"];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [SVProgressHUD dismiss];
         NSLog(@"%@",error);
         [SVProgressHUD showErrorWithStatus:@"网络不给力哦！"];
     }];
@@ -632,7 +622,6 @@ typedef enum
  */
 - (void)addMemberWithName:(NSString *)name Sex:(NSString *)sex City:(NSString *)city Birth:(NSString *)birth Addr:(NSString *)addr Acc_id:(NSString *)acc_id IconImage:(UIImage *)iconImage
 {
-    AFHTTPRequestOperationManager *mgr = [AFHTTPRequestOperationManager manager];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"name"] = name;
     params[@"sex"] = sex;
@@ -641,7 +630,7 @@ typedef enum
     params[@"addr"] = addr;
     params[@"acc_id"] = acc_id;
     NSString *urlStr = [HOST stringByAppendingString:@"api.php?m=open&c=member&a=setting"];
-    [mgr POST:urlStr parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    [self.manager POST:urlStr parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         [formData appendPartWithFileData:UIImageJPEGRepresentation(iconImage,0.5) name:@"img" fileName:@"img.jpg" mimeType:@"image/jpeg"];
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [SVProgressHUD dismiss];
@@ -659,7 +648,6 @@ typedef enum
             [SVProgressHUD showErrorWithStatus:@"添加成员失败!"];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [SVProgressHUD dismiss];
         NSLog(@"%@",error);
 //        [[TTToolsHelper shared] showAlertMessage:@"网络不给力哦！"];
         [SVProgressHUD showErrorWithStatus:@"网络不给力哦！"];
@@ -686,12 +674,10 @@ typedef enum
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"RemoveDiarySuccessNotification" object:nil];
             }
         } else {
-            [SVProgressHUD dismiss];
             [SVProgressHUD showErrorWithStatus:@"删除记录失败!"];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"%@",error);
-        [SVProgressHUD dismiss];
         [SVProgressHUD showErrorWithStatus:@"网络不给力哦！"];
     }];
 }
@@ -735,7 +721,6 @@ typedef enum
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [SVProgressHUD dismiss];
         NSLog(@"%@",error);
 //        [[TTToolsHelper shared] showAlertMessage:@"网络不给力哦！"];
         [SVProgressHUD showErrorWithStatus:@"网络不给力哦！"];
@@ -778,7 +763,6 @@ typedef enum
             [SVProgressHUD showErrorWithStatus:@"修改成员失败!"];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [SVProgressHUD dismiss];
         NSLog(@"%@",error);
 //        [[TTToolsHelper shared] showAlertMessage:@"网络不给力哦！"];
         [SVProgressHUD showErrorWithStatus:@"网络不给力哦！"];
@@ -819,7 +803,6 @@ typedef enum
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [SVProgressHUD dismiss];
         NSLog(@"%@",error);
         [SVProgressHUD showErrorWithStatus:@"网络不给力哦！"];
     }];
@@ -855,7 +838,6 @@ typedef enum
             [SVProgressHUD showErrorWithStatus:@"更新病历记录失败!"];
         }
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-        [SVProgressHUD dismiss];
         NSLog(@"%@",error);
         [SVProgressHUD showErrorWithStatus:@"网络不给力哦！"];
     }];
@@ -891,6 +873,7 @@ typedef enum
             }
             [SVProgressHUD dismiss];
         } else {
+            [SVProgressHUD dismiss];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"InitDiaryDataEndSuccessNotification" object:nil];
             return;
         }
@@ -924,7 +907,6 @@ typedef enum
             return;
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [SVProgressHUD dismiss];
         NSLog(@"%@",error);
         [SVProgressHUD showErrorWithStatus:@"网络不给力哦!"];
     }];
@@ -1103,12 +1085,10 @@ typedef enum
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"RemoveBeanDiarySuccessNotification" object:nil];
             }
         } else {
-            [SVProgressHUD dismiss];
             [SVProgressHUD showErrorWithStatus:@"删除记录失败!"];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"%@",error);
-        [SVProgressHUD dismiss];
         [SVProgressHUD showErrorWithStatus:@"网络不给力哦！"];
     }];
 }

@@ -12,6 +12,7 @@
 @property (nonatomic,strong) NSMutableArray *members;
 @property (nonatomic,copy) NSString *willRemoveMemberId;
 @property (nonatomic,strong) UITableView *tableView;
+@property (nonatomic,strong) MMDrawerController *drawerController;
 @end
 
 @implementation UserListTableViewController
@@ -81,12 +82,23 @@
 - (void)setDefaultMemberSuccessNotification {
     [self.tableView reloadData];
     [SVProgressHUD dismiss];
-//    UIStoryboard *board = [UIStoryboard storyboardWithName:@"Third" bundle:nil];
-//    UIViewController *vc = [board instantiateViewControllerWithIdentifier:@"MainTabBarViewController"];
-//    [self presentViewController:vc animated:YES completion:^{
-//        [SVProgressHUD dismiss];
-//    }];
+    [UIApplication sharedApplication].keyWindow.rootViewController = self.drawerController;
 }
+
+- (MMDrawerController *)drawerController {
+    if (_drawerController == nil) {
+        MainTabBarController *mainTabBarC = [[MainTabBarController alloc] init];
+        LeftMenuViewController *leftMenuVc = [[LeftMenuViewController alloc] init];
+        RightMenuViewController *rightMenuVc = [[RightMenuViewController alloc] init];
+        
+        self.drawerController = [[MMDrawerController alloc] initWithCenterViewController:mainTabBarC leftDrawerViewController:leftMenuVc rightDrawerViewController:rightMenuVc];
+        [self.drawerController setShowsShadow:NO];
+        [self.drawerController setMaximumRightDrawerWidth:200];
+        [self.drawerController setMaximumLeftDrawerWidth:200];
+    }
+    return _drawerController;
+}
+
 
 
 
