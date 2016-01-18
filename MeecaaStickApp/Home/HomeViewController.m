@@ -18,7 +18,7 @@
 #import "UseStickCheckViewController.h"
 #import "AddMedicalRecordViewController.h"
 
-@interface HomeViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>{
+@interface HomeViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,JMHoledViewDelegate>{
     NSUserDefaults *userDefaults;
 }
 @property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
@@ -55,6 +55,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *pullImageView;//选择设备按钮旁边下拉箭头
 
 - (IBAction)onClickOnceCheck;
+
+@property (nonatomic,strong) JMHoledView *holeView;
 @end
 @implementation HomeViewController
 
@@ -87,6 +89,8 @@
     self.deviceListTV.dataSource = self;
     [self.view addSubview:self.deviceListTV];
 }
+
+
 - (IBAction)selectDevice {
     [self.view bringSubviewToFront:self.deviceListTV];
     self.pullImageView.center = CGPointMake(self.pullImageView.center.x, self.pullImageView.center.y);
@@ -142,7 +146,6 @@
     [imageView addSubview:logoImageView];
     [self.noDeviceView addSubview:imageView];
     
-    
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     
     btn.frame = CGRectMake((self.view.bounds.size.width - 120)/2, CGRectGetMaxY(imageView.frame) + 50, 120, 120);
@@ -155,7 +158,44 @@
     
     [self.view addSubview:self.noDeviceView];
     [self.selectDeviceBtn setTitle:@"米开设备" forState:UIControlStateNormal];
+    
+    /**
+     *  SoulJa 2015-01-18
+     *  添加指示层
+     */
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSInteger isInitGuideSelectDevice = [defaults integerForKey:@"isInitGuideSelectDevice"];
+    if (isInitGuideSelectDevice == 0) {
+        self.holeView = [[JMHoledView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        self.holeView.holeViewDelegate = self;
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((kScreen_Width - 120)/2, 64, 120, 120)];
+        [imageView setImage:[UIImage imageNamed:@"start_logo"]];
+        [self.holeView addHCustomView:imageView onRect:imageView.frame];
+        UITapGestureRecognizer *recongnizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHoleView)];
+        [self.holeView addGestureRecognizer:recongnizer];
+        
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btn setFrame:CGRectMake(kScreen_Width - 100 - 10 , kScreen_Height - 44 - 40, 100, 40)];
+        [btn setTitle:@"不再提示" forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(onClickNoGuide) forControlEvents:UIControlEventTouchUpInside];
+        [self.holeView addSubview:btn];
+        
+        [[UIApplication sharedApplication].keyWindow.rootViewController.view addSubview:self.holeView];
+    }
+}
 
+#pragma mark - 点击HoleView
+- (void)tapHoleView {
+    [self.holeView removeFromSuperview];
+}
+
+#pragma mark - 点击“不在提示”
+- (void)onClickNoGuide {
+    [self.holeView removeFromSuperview];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setInteger:1 forKey:@"isInitGuideSelectDevice"];
+    [defaults synchronize];
 }
 
 - (void)onClickSelect {
@@ -367,4 +407,9 @@
 //    }
 }
 
+
+#pragma mark - JMHoleViewDelegate
+- (void)holedView:(JMHoledView *)holedView didSelectHoleAtIndex:(NSUInteger)index {
+    NSLog(@"%s %ld", __PRETTY_FUNCTION__,(long)index);
+}
 @end

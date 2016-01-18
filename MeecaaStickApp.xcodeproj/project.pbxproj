@@ -84,6 +84,7 @@
 		963E5A111C044EE5004A6377 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 963E5A0A1C044EE5004A6377 /* FMDatabaseQueue.m */; };
 		963E5A121C044EE5004A6377 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 963E5A0D1C044EE5004A6377 /* FMResultSet.m */; };
 		9640EC9F1BFDCE1400C620D4 /* GlobalTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9640EC9E1BFDCE1400C620D4 /* GlobalTool.m */; };
+		9650566E1C4C84BD001DEF52 /* JMHoledView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9650566D1C4C84BD001DEF52 /* JMHoledView.m */; };
 		966ACF441C166D560023E7C7 /* AdvertisementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 966ACF431C166D560023E7C7 /* AdvertisementViewController.m */; };
 		966DB93D1C0C4D1700A8859F /* AddMedicalRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 966DB93C1C0C4D1700A8859F /* AddMedicalRecordViewController.m */; };
 		966DB9401C0C51F200A8859F /* TimeLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 966DB93F1C0C51F200A8859F /* TimeLabelCell.m */; };
@@ -357,6 +358,8 @@
 		963E5A0D1C044EE5004A6377 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
 		9640EC9D1BFDCE1400C620D4 /* GlobalTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalTool.h; sourceTree = "<group>"; };
 		9640EC9E1BFDCE1400C620D4 /* GlobalTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalTool.m; sourceTree = "<group>"; };
+		9650566C1C4C84BD001DEF52 /* JMHoledView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMHoledView.h; sourceTree = "<group>"; };
+		9650566D1C4C84BD001DEF52 /* JMHoledView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMHoledView.m; sourceTree = "<group>"; };
 		966ACF421C166D560023E7C7 /* AdvertisementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvertisementViewController.h; sourceTree = "<group>"; };
 		966ACF431C166D560023E7C7 /* AdvertisementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvertisementViewController.m; sourceTree = "<group>"; };
 		966DB93B1C0C4D1700A8859F /* AddMedicalRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddMedicalRecordViewController.h; sourceTree = "<group>"; };
@@ -881,6 +884,15 @@
 			path = GlobalTool;
 			sourceTree = "<group>";
 		};
+		9650566B1C4C84BD001DEF52 /* JMHoledView */ = {
+			isa = PBXGroup;
+			children = (
+				9650566C1C4C84BD001DEF52 /* JMHoledView.h */,
+				9650566D1C4C84BD001DEF52 /* JMHoledView.m */,
+			);
+			path = JMHoledView;
+			sourceTree = "<group>";
+		};
 		966ACF411C166D150023E7C7 /* Advertisement */ = {
 			isa = PBXGroup;
 			children = (
@@ -1330,6 +1342,7 @@
 		96F117381BFC66F600C51B32 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				9650566B1C4C84BD001DEF52 /* JMHoledView */,
 				9628BD321C1986DE006A53D0 /* MJRefresh */,
 				968D655F1C11293800B67D7A /* CXPhotoBrowser */,
 				9624230C1C0ED1B9002FFB4F /* MMDrawerController */,
@@ -1578,6 +1591,7 @@
 				966ACF441C166D560023E7C7 /* AdvertisementViewController.m in Sources */,
 				963E59F41C04089C004A6377 /* RegisterNavigationController.m in Sources */,
 				96D7D81E1C0494E100ADC940 /* AboutUsNavigationController.m in Sources */,
+				9650566E1C4C84BD001DEF52 /* JMHoledView.m in Sources */,
 				9624231F1C0EDF53002FFB4F /* RightMenuViewController.m in Sources */,
 				9628BD611C1986DE006A53D0 /* MJRefreshComponent.m in Sources */,
 				9624231C1C0EDB64002FFB4F /* LeftMenuViewController.m in Sources */,

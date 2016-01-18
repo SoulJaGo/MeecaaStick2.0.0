@@ -49,6 +49,11 @@
 #import "RightMenuViewController.h"
 
 /**
+ *  加入引导层
+ */
+#import "JMHoledView.h"
+
+/**
  *  正式服务器地址
  */
 //#define HOST @"http://api.meecaa.cn/"

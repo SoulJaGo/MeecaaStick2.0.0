@@ -95,7 +95,6 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
     if (indexPath.row == 0) { //关于米开
         MainTabBarController *tabBarC = (MainTabBarController *)self.mm_drawerController.centerViewController;
         HomeNavigationController *homeNav = tabBarC.selectedViewController;

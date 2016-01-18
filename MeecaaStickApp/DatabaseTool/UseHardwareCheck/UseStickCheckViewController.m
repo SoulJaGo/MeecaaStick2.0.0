@@ -217,23 +217,33 @@
     self.scrollView.bounces = NO;
     self.scrollView.delegate = self;
     
+    /**
+     *  SoulJa 2016-01-18
+     *  快速测温页面
+     */
+    UIView *quickView = [[UIView alloc] initWithFrame:self.scrollView.bounds];
+    UIView *normalView = [[UIView alloc] initWithFrame:CGRectMake(kScreen_Width, 0, kScreen_Width, kScreen_Height)];
+    
+    [self.scrollView addSubview:quickView];
+    [self.scrollView addSubview:normalView];
+    
     //往滚动视图上添加一组图片
     UIImage *_image = [UIImage imageNamed:@"yuanquan"];
     circularImageViewOne = [[UIImageView alloc] initWithImage:_image];
     circularImageViewTwo = [[UIImageView alloc] initWithImage:_image];
-    circularImageViewOne.frame = CGRectMake((self.view.frame.size.width - 200) / 2 + kScreen_Width, 30, 200, 200);
+    circularImageViewOne.frame = CGRectMake((self.view.frame.size.width - 200) / 2, 30, 200, 200);
     circularImageViewTwo.frame = CGRectMake((self.view.frame.size.width - 200) / 2, 30, 200, 200);
-    [self.scrollView addSubview:circularImageViewOne];
-    [self.scrollView addSubview:circularImageViewTwo];
+    [normalView addSubview:circularImageViewOne];
+    [quickView addSubview:circularImageViewTwo];
     
     //添加时间label
-    timeLabelOne = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width + (self.view.frame.size.width - 100) / 2 + 130, 0, 100, 30)];
+    timeLabelOne = [[UILabel alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 100) / 2 + 130, 0, 100, 30)];
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 100) / 2 + 130, 0, 100, 30)];
     [imageView setImage:[UIImage imageNamed:@"start_logo"]];
     timeLabelOne.textColor = timeLabelTwo.textColor = NAVIGATIONBAR_BACKGROUND_COLOR;
     timeLabelOne.text = timeLabelTwo.text = @"00:00";
     timeLabelOne.font = timeLabelTwo.font = [UIFont systemFontOfSize:30];
-    [_scrollView addSubview:timeLabelOne];
+    [normalView addSubview:timeLabelOne];
     
     //添加温度label
     temperatureLabelOne = [[UILabel alloc] initWithFrame:CGRectMake((200 - 130) / 2, 70, 130, 40)];
@@ -252,13 +262,13 @@
     UIImage *start = [UIImage imageNamed:@"anniu"];
     startViewOne = [[UIImageView alloc] initWithImage:start];
     startViewTwo = [[UIImageView alloc] initWithImage:start];
-    startViewOne.frame = CGRectMake(kScreen_Width + (kScreen_Width - 120) / 2, 260, 120, 120);
+    startViewOne.frame = CGRectMake((kScreen_Width - 120) / 2, 260, 120, 120);
     startViewTwo.frame = CGRectMake((kScreen_Width - 120) / 2, 260, 120, 120);
     startViewOne.userInteractionEnabled = startViewTwo.userInteractionEnabled = startViewThree.userInteractionEnabled = YES;
     [startViewOne addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickToNormalCheck)]];
     [startViewTwo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickToQuickCheck)]];
-    [_scrollView addSubview:startViewOne];
-    [_scrollView addSubview:startViewTwo];
+    [normalView addSubview:startViewOne];
+    [quickView addSubview:startViewTwo];
     
     for (int i = 0; i < 3; i++) {
         UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width * i + (kScreen_Width - 80) / 2, 140, 80, 40)];
