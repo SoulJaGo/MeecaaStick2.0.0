@@ -82,6 +82,7 @@
  */
 -(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
     [[GlobalTool shared] setDeviceToken:deviceToken];
+    NSLog(@"%@",deviceToken);
 }
 
 #pragma mark 获取device token失败后

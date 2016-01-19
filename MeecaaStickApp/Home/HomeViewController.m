@@ -142,11 +142,13 @@
     if (isInitGuideSelectDevice == 0) {
         self.holeView = [[JMHoledView alloc] initWithFrame:[UIScreen mainScreen].bounds];
         self.holeView.holeViewDelegate = self;
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((kScreen_Width - 120)/2, 260, 120, 120)];
-        [imageView setImage:[UIImage imageNamed:@"start_logo"]];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((kScreen_Width - 280)/2, 260 + 60 + 64, 280, 200)];
+        [imageView setImage:[UIImage imageNamed:@"stickStartCheck"]];
         [self.holeView addHCustomView:imageView onRect:imageView.frame];
         UITapGestureRecognizer *recongnizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHoleView)];
         [self.holeView addGestureRecognizer:recongnizer];
+        
+        [self.holeView addHoleRoundedRectOnRect:CGRectMake((kScreen_Width - 80)/2, 260 + 55 + 64, 80, 80) withCornerRadius:40];
         
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [btn setFrame:CGRectMake(kScreen_Width - 100 - 10 , kScreen_Height - 44 - 40, 100, 40)];
@@ -193,11 +195,13 @@
     if (isInitGuideSelectDevice == 0) {
         self.holeView = [[JMHoledView alloc] initWithFrame:[UIScreen mainScreen].bounds];
         self.holeView.holeViewDelegate = self;
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((kScreen_Width - 120)/2, 64, 120, 120)];
-        [imageView setImage:[UIImage imageNamed:@"start_logo"]];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((kScreen_Width - 200)/2 + 60, 35, 200, 100)];
+        [imageView setImage:[UIImage imageNamed:@"selectDevice"]];
         [self.holeView addHCustomView:imageView onRect:imageView.frame];
         UITapGestureRecognizer *recongnizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHoleView)];
         [self.holeView addGestureRecognizer:recongnizer];
+        
+        [self.holeView addHoleRoundedRectOnRect:CGRectMake((kScreen_Width - 120) / 2, 20, 120, 44) withCornerRadius:8];
         
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [btn setFrame:CGRectMake(kScreen_Width - 100 - 10 , kScreen_Height - 44 - 40, 100, 40)];
@@ -263,11 +267,25 @@
     if (isInitGuideSelectDevice == 0) {
         self.holeView = [[JMHoledView alloc] initWithFrame:[UIScreen mainScreen].bounds];
         self.holeView.holeViewDelegate = self;
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 220, 120, 120)];
-        [imageView setImage:[UIImage imageNamed:@"start_logo"]];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((kScreen_Width - 200)/2 + 20, 240 + 10, 250, 200)];
+        [imageView setImage:[UIImage imageNamed:@"stickStartCheck"]];
         [self.holeView addHCustomView:imageView onRect:imageView.frame];
         UITapGestureRecognizer *recongnizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHoleView)];
         [self.holeView addGestureRecognizer:recongnizer];
+        
+        CGFloat rectX = 0;
+        CGFloat rectY = 180 + 64;
+        CGFloat rectW = 70;
+        CGFloat rectH = 70;
+        if ([[[GlobalTool shared] deviceString] isEqualToString:@"iPhone 6S Plus"] || [[[GlobalTool shared] deviceString] isEqualToString:@"iPhone 6 Plus"]) {
+            rectX = 240;
+        } else if ([[[GlobalTool shared] deviceString] isEqualToString:@"iPhone 6"] || [[[GlobalTool shared] deviceString] isEqualToString:@"iPhone 6S"]) {
+            rectX = 211;
+            rectY = 233;
+        } else {
+            rectX = 200;
+        }
+        [self.holeView addHoleRoundedRectOnRect:CGRectMake(rectX, rectY, rectW, rectH) withCornerRadius:rectW / 2];
         
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [btn setFrame:CGRectMake(kScreen_Width - 100 - 10 , kScreen_Height - 44 - 40, 100, 40)];
