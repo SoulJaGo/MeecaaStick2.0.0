@@ -741,6 +741,7 @@
         }
         [GlobalTool sharedSingleton].presentView = YES;//标记是体温棒测温页面跳转过去的
         [UIApplication sharedApplication].keyWindow.rootViewController = nav;
+        [self stopCheck];
     }
     /*开始播放*/
     [self play];
