@@ -297,8 +297,13 @@
             UIViewController *vc = [board instantiateViewControllerWithIdentifier:@"LoginViewController"];
             [self presentViewController:vc animated:YES completion:nil];
         }else {
+            _temperatureLab.text = @"--.-℃";
+            self._timeLabel.text = @"00:00:00";
+            _pointArr = [NSMutableArray array];
+            [GlobalTool sharedSingleton].lineChartArray = _pointArr;
+            [lineChart setArray:_pointArr];
+            [lineChart setNeedsDisplay];
             [self SearchDevice];
-            
         }
     }
     
@@ -453,7 +458,7 @@
                 [self finishTemp];
                 [_timer invalidate];
                 _timer = nil;
-                self._timeLabel.text = @"00.00.00";
+                self._timeLabel.text = @"00:00:00";
                 [researchTimer setFireDate:[NSDate distantFuture]];     //计时器暂停
                 researchTime = 0;
                 [searchTimer setFireDate:[NSDate distantFuture]];
@@ -490,7 +495,7 @@
                     [self finishTemp];
                     [_timer invalidate];
                     _timer = nil;
-                    self._timeLabel.text = @"00.00.00";
+                    self._timeLabel.text = @"00:00:00";
                     [researchTimer setFireDate:[NSDate distantFuture]];     //计时器暂停
                     researchTime = 0;
                     [searchTimer setFireDate:[NSDate distantFuture]];
@@ -521,7 +526,7 @@
         [searchTimer invalidate];
         searchTimer = nil;
         searchTimeCount = 0;
-        self._timeLabel.text = @"00.00.00";
+        self._timeLabel.text = @"00:00:00";
         [researchTimer setFireDate:[NSDate distantFuture]];
         researchTimer = 0;
         press = NO;
@@ -535,7 +540,7 @@
         [SVProgressHUD showErrorWithStatus:@"未检测到米开温豆!"];
         [_timer invalidate];
         _timer = nil;
-        self._timeLabel.text = @"00.00.00";
+        self._timeLabel.text = @"00:00:00";
         [researchTimer setFireDate:[NSDate distantFuture]];
         researchTimer = 0;
         press = NO;
@@ -558,7 +563,7 @@
             [self finishTemp];
             [_timer invalidate];
             _timer = nil;
-            self._timeLabel.text = @"00.00.00";
+            self._timeLabel.text = @"00:00:00";
             [researchTimer setFireDate:[NSDate distantFuture]];     //计时器暂停
             researchTime = 0;
             press = NO;
@@ -584,7 +589,7 @@
                 [self finishTemp];
                 [_timer invalidate];
                 _timer = nil;
-                self._timeLabel.text = @"00.00.00";
+                self._timeLabel.text = @"00:00:00";
                 [researchTimer setFireDate:[NSDate distantFuture]];     //计时器暂停
                 researchTime = 0;
                 press = NO;
@@ -691,7 +696,7 @@
                                                 userInfo: nil
                                                  repeats: YES];
     }
-    self._timeLabel.text = @"00.00.00";
+    self._timeLabel.text = @"00:00:00";
     timercount = 0;
     [peripheral setDelegate:self];
     [peripheral discoverServices: @[[CBUUID UUIDWithString:USERDEF_SERV_UUID]]];
@@ -1049,6 +1054,12 @@
     [self performSelector:@selector(breakUp) withObject:self afterDelay:2];
     
     [self removeMaskView];
+//    _pointArr = [NSMutableArray array];
+//    [GlobalTool sharedSingleton].lineChartArray = _pointArr;
+//    [lineChart setArray:_pointArr];
+//    [lineChart setNeedsDisplay];
+    
+    
 }
 - (void)breakUp{
     //然后判断是不是已经在连接

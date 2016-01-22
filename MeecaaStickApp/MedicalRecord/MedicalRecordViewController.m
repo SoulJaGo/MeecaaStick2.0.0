@@ -82,15 +82,15 @@
     self.beanDiaryArray = [NSMutableArray array];
     
     /*添加温度按钮*/
-    UIButton *addDiaryBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGFloat addDiaryBtnW = 100;
-    CGFloat addDiaryBtnH = 100;
-    CGFloat addDiaryBtnX = (kScreen_Width - 100) / 2;
-    CGFloat addDiaryBtnY = kScreen_Height - addDiaryBtnH - 120;
-    [addDiaryBtn setFrame:CGRectMake(addDiaryBtnX, addDiaryBtnY, addDiaryBtnW, addDiaryBtnH)];
-    [addDiaryBtn setBackgroundImage:[UIImage imageNamed:@"medical_go_icon"] forState:UIControlStateNormal];
-    [addDiaryBtn addTarget:self action:@selector(onClickAddDiary) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:addDiaryBtn];
+//    UIButton *addDiaryBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    CGFloat addDiaryBtnW = 100;
+//    CGFloat addDiaryBtnH = 100;
+//    CGFloat addDiaryBtnX = (kScreen_Width - 100) / 2;
+//    CGFloat addDiaryBtnY = kScreen_Height - addDiaryBtnH - 120;
+//    [addDiaryBtn setFrame:CGRectMake(addDiaryBtnX, addDiaryBtnY, addDiaryBtnW, addDiaryBtnH)];
+//    [addDiaryBtn setBackgroundImage:[UIImage imageNamed:@"medical_go_icon"] forState:UIControlStateNormal];
+//    [addDiaryBtn addTarget:self action:@selector(onClickAddDiary) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:addDiaryBtn];
     
     
     //设置Nav
@@ -125,6 +125,7 @@
 #pragma mark - 设置导航栏
 - (void)setupNav {
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"top_logo"]];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStyleDone target:self action:@selector(onClickAddDiary)];
 }
 
 #pragma mark - 改变TableView

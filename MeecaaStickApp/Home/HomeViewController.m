@@ -87,6 +87,8 @@
     self.deviceListTV.scrollEnabled = NO;
     self.deviceListTV.delegate = self;
     self.deviceListTV.dataSource = self;
+    self.deviceListTV.layer.borderWidth = 1.0f;
+    self.deviceListTV.layer.borderColor = [UIColor lightGrayColor].CGColor;
     [self.view addSubview:self.deviceListTV];
 }
 
@@ -365,13 +367,13 @@
     cell.selected = NO;
     if (indexPath.section == 0 && indexPath.row == 0) {
         cell.textLabel.text = @"               米开体温棒";
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"medical_go_icon"]];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"stick"]];
         imageView.frame = CGRectMake(10, 10, 60, 60);
         //放在cell的内容视图上显示
         [cell.contentView addSubview:imageView];
     }else if (indexPath.section == 0 && indexPath.row == 1){
         cell.textLabel.text = @"               米开温豆";
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"medical_go_icon"]];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bean"]];
         imageView.frame = CGRectMake(10, 10, 60, 60);
         //放在cell的内容视图上显示
         [cell.contentView addSubview:imageView];

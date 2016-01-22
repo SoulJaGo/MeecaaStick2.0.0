@@ -11,8 +11,6 @@
 @interface ProblemViewController () <UITextViewDelegate>
 @property (strong, nonatomic) UITextView *textView;
 @property (nonatomic,strong) UILabel *placeholderLabel;
-@property (weak, nonatomic) IBOutlet UIButton *submitBtn;
-- (IBAction)onClickSubmit;
 @end
 
 @implementation ProblemViewController
@@ -37,8 +35,6 @@
     [placeholderLabel setTextColor:[UIColor grayColor]];
     self.placeholderLabel = placeholderLabel;
     [self.textView addSubview:placeholderLabel];
-    
-    self.submitBtn.layer.cornerRadius = 8.0f;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -58,6 +54,7 @@
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     self.navigationItem.title = @"问题反馈";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"message_back_icon"] style:UIBarButtonItemStyleDone target:self action:@selector(goBack)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"提交" style:UIBarButtonItemStyleDone target:self action:@selector(onClickSubmit)];
 }
 
 - (void)goBack {
@@ -91,7 +88,7 @@
 }
 */
 #pragma mark - 提交反馈问题
-- (IBAction)onClickSubmit {
+- (void)onClickSubmit {
     //退出键盘
     [self.view endEditing:YES];
     if (self.textView.text.length > 200) { //判断输入字数
