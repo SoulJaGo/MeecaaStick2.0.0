@@ -269,6 +269,7 @@
              [self finishTemp];
              [SVProgressHUD dismiss];
              press = NO;
+             [self removeMaskView];
          }];
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             
@@ -277,7 +278,6 @@
         [alert addAction:cancelAction];
         [self presentViewController:alert animated:YES completion:nil];
     }else if (press == NO || (_testPeripheral.state != CBPeripheralStateConnected)){
-        
         //判断用户是否已经登陆了
         //如果获取的成员数量为0 或者不存在则需要登陆
         if ([[DatabaseTool shared] getDefaultMember] == nil) {
@@ -292,6 +292,7 @@
             [lineChart setArray:_pointArr];
             [lineChart setNeedsDisplay];
             [self SearchDevice];
+            [self addMaskView];
         }
     }
     
@@ -419,7 +420,34 @@
          */
         searchTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(searchTimerCount) userInfo:nil repeats:YES];
         press = YES;
+        
+        UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapWhenSearching:)];
+        [self.view addGestureRecognizer:recognizer];
     }
+}
+
+- (void)tapWhenSearching:(UIGestureRecognizer *)recognizer {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"是否确定停止为您的宝宝测温？" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [_cbCentralManager stopScan];//关闭搜索,非常重要!
+        [SVProgressHUD dismiss];
+        [_timer invalidate];
+        _timer = nil;
+        [searchTimer setFireDate:[NSDate distantFuture]];
+        [searchTimer invalidate];
+        searchTimer = nil;
+        searchTimeCount = 0;
+        self._timeLabel.text = @"00:00:00";
+        [researchTimer setFireDate:[NSDate distantFuture]];
+        researchTimer = 0;
+        press = NO;
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alert addAction:okAction];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)searchTimerCount {
@@ -1036,7 +1064,7 @@
     researchTimer = nil;
     [_timer invalidate];
     _timer = nil;
-    [self performSelector:@selector(breakUp) withObject:self afterDelay:2];
+    [self performSelector:@selector(breakUp) withObject:self afterDelay:0.5];
     
     [self removeMaskView];
 //    _pointArr = [NSMutableArray array];
@@ -1070,20 +1098,6 @@
 
 
 /**
- *	12 / 16 添加 / 移除透明层
- */
-- (void)addMaskView {
-    maskViewOne = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, 64)];
-    maskViewTwo = [[UIView alloc] initWithFrame:CGRectMake(0, kScreen_Height - 49, kScreen_Width, 49)];
-    maskViewOne.backgroundColor = maskViewTwo.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:maskViewOne];
-    [self.view addSubview:maskViewTwo];
-}
--(void)removeMaskView {
-    [maskViewOne removeFromSuperview];
-    [maskViewTwo removeFromSuperview];
-}
-/**
  *	播放警告声音的方法
  */
 - (void)playAlarm {
@@ -1093,6 +1107,19 @@
     [avAudioPlayer prepareToPlay];
     [avAudioPlayer play];
 }
+
+- (void)addMaskView {
+    maskViewOne = [[UIView alloc] initWithFrame:CGRectMake(0, 20, kScreen_Width, 44)];
+    maskViewTwo = [[UIView alloc] initWithFrame:CGRectMake(0, kScreen_Height - 49, kScreen_Width, 49)];
+    maskViewOne.backgroundColor = maskViewTwo.backgroundColor = [UIColor clearColor ];
+    [[UIApplication sharedApplication].keyWindow addSubview:maskViewOne];
+    [[UIApplication sharedApplication].keyWindow addSubview:maskViewTwo];
+}
+-(void)removeMaskView {
+    [maskViewOne removeFromSuperview];
+    [maskViewTwo removeFromSuperview];
+}
+
 /*
 #pragma mark - Navigation
 
