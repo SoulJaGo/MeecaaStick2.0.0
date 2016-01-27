@@ -89,17 +89,7 @@
     BOOL press;//用于标记开始按钮的状态
 }
 @property (weak, nonatomic) IBOutlet UILabel *_timeLabel;
-//@property (weak, nonatomic) IBOutlet UIButton *maxTempBtn;
-//@property (weak, nonatomic) IBOutlet UILabel *maxTempLabel;
-//@property (weak, nonatomic) IBOutlet UIButton *minTempBtn;
-//@property (weak, nonatomic) IBOutlet UILabel *minTempLabel;
-//@property (weak, nonatomic) IBOutlet UIImageView *start;
-//@property (weak, nonatomic) IBOutlet UIImageView *circular;
-//@property (weak, nonatomic) IBOutlet UIView *lineChartView;
 
-
-
-//@property (nonatomic, strong)UILabel *_temperatureLab;
 @end
 
 @implementation UseBeanCheckViewController
@@ -128,8 +118,6 @@
 
     //显示高温报警
     max = 380;
-    //显示低温报警
-    min = 360;
     
     //初始化选择器
     pickview=[[ZHPickView alloc] initPickviewWithPlistName:@"多组数据" isHaveNavControler:NO];
@@ -165,20 +153,20 @@
     [maxTempBtn setTag:1000];
     [self.view addSubview:maxTempBtn];
     
-    minTempLabel = [[UILabel alloc] init];
-//    minTempLabel.frame = CGRectMake(180, 130, 70, 30);
-    minTempLabel.text = @"最低温度:";
-    minTempLabel.font = [UIFont systemFontOfSize:15];
-    minTempLabel.textColor = [UIColor lightGrayColor];
-    [self.view addSubview:minTempLabel];
-    minTempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    minTempBtn.frame = CGRectMake(250, 130, 86, 30);
-    [minTempBtn setTitle:@"36.0℃" forState:UIControlStateNormal];
-    [minTempBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
-    minTempBtn.titleLabel.font = [UIFont systemFontOfSize:25];
-    [minTempBtn addTarget:self action:@selector(tempWarning:) forControlEvents:UIControlEventTouchUpInside];
-    [minTempBtn setTag:1001];
-    [self.view addSubview:minTempBtn];
+//    minTempLabel = [[UILabel alloc] init];
+////    minTempLabel.frame = CGRectMake(180, 130, 70, 30);
+//    minTempLabel.text = @"最低温度:";
+//    minTempLabel.font = [UIFont systemFontOfSize:15];
+//    minTempLabel.textColor = [UIColor lightGrayColor];
+//    [self.view addSubview:minTempLabel];
+//    minTempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+////    minTempBtn.frame = CGRectMake(250, 130, 86, 30);
+//    [minTempBtn setTitle:@"36.0℃" forState:UIControlStateNormal];
+//    [minTempBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+//    minTempBtn.titleLabel.font = [UIFont systemFontOfSize:25];
+//    [minTempBtn addTarget:self action:@selector(tempWarning:) forControlEvents:UIControlEventTouchUpInside];
+//    [minTempBtn setTag:1001];
+//    [self.view addSubview:minTempBtn];
     
     //点击开始按钮
     UIImage *_image = [UIImage imageNamed:@"anniu"];
