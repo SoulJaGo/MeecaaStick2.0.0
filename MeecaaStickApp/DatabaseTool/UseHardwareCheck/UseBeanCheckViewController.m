@@ -213,7 +213,7 @@
         
         start.frame = CGRectMake(200, 180, 70, 70);
         
-        lineChartView.frame = CGRectMake(0, 260, kScreen_Width, 230);
+        lineChartView.frame = CGRectMake(0, 240, kScreen_Width, 230);
 
     }else if ([[[GlobalTool shared] deviceString] isEqualToString:@ "iPhone 6 Plus"] || [[[GlobalTool shared] deviceString] isEqualToString:@ "iPhone 6S Plus"]) {
         circular.frame = CGRectMake(30, 100, 130, 130);
