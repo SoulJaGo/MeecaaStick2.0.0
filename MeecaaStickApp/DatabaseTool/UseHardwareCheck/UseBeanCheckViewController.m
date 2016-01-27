@@ -1116,6 +1116,7 @@
  *	播放警告声音的方法
  */
 - (void)playAlarm {
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     avAudioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"wav"]] error:nil];
     avAudioPlayer.volume = 1;
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
