@@ -633,9 +633,8 @@
     /**
      *	12 / 14 温度测温完成以后跳转到保存温度的界面
      */
-#warning ToDo -- 暂时定为三分钟测温
-    if (timercount >= 180) {
-//        [self finishTemp];
+
+    if (timercount >= 24 * 60 * 60) {
         //开始传值
         [GlobalTool sharedSingleton].beanCheckTempStr = TempStr;
         //标记页面是温豆测温页面跳转过去的
@@ -645,7 +644,9 @@
         UIStoryboard *board = [UIStoryboard storyboardWithName:@"Second" bundle:nil];
         AddBeanRecordViewController *vc = [board instantiateViewControllerWithIdentifier:@"AddBeanRecordViewController"];
         MedicalRecordNavigationController *nav = [[MedicalRecordNavigationController alloc] initWithRootViewController:vc];
-        [self presentViewController:nav animated:YES completion:nil];
+        [self presentViewController:nav animated:YES completion:^{
+            [self finishTemp];
+        }];
 
     }
     
@@ -653,8 +654,7 @@
     int h = m / 60;
     int s = timercount % 60;
     self._timeLabel.text = [NSString stringWithFormat:@"%@:%@:%@",[self getTimeStr:h],[self getTimeStr:m % 60], [self getTimeStr:s % 60]];
-    NSLog(@"timecount %d",timercount % 20);
-    if (timercount == 7 || (timercount % 20 == 0)) {    //若为三十秒的整数倍就绘制
+    if (timercount == 7 || (timercount % 30 == 0)) {    //若为三十秒的整数倍就绘制
         [self draw];
     }
     
@@ -890,9 +890,6 @@
              */
             if (a * 10 > max) {
                 [SVProgressHUD showInfoWithStatus:@"您的体温高于最高温度！"];
-                [self playAlarm];
-            }else if (a * 10 < min){
-                [SVProgressHUD showInfoWithStatus:@"您的体温低于最低温度！"];
                 [self playAlarm];
             }
             
