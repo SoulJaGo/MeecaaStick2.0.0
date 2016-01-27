@@ -31,7 +31,7 @@
 
 @synthesize hDesc,vDesc;
 
-const CGFloat   kXScale = 40.0;//X轴点间距
+const CGFloat   kXScale = 45.0;//X轴点间距
 const CGFloat   kYScale = 4.0;//Y轴纵向拉伸比例
 
 static inline CGAffineTransform
@@ -47,7 +47,7 @@ CGAffineTransformMakeScaleTranslate(CGFloat sx, CGFloat sy,
     if (self) {
         // Initialization code
         hInterval = 10;
-        vInterval = 40;
+        vInterval = 45;
         
         NSMutableArray *vArr = [NSMutableArray array];
 
@@ -66,27 +66,21 @@ CGAffineTransformMakeScaleTranslate(CGFloat sx, CGFloat sy,
             [label setBackgroundColor:[UIColor clearColor]];
             [label setCenter:CGPointMake(bPoint.x-15, bPoint.y-20)];
             [label setTextAlignment:NSTextAlignmentLeft];
-            label.font=[UIFont systemFontOfSize:12];
+            label.font=[UIFont systemFontOfSize:8];
             [label setText:[vArr objectAtIndex:i]];
             [self addSubview:label];
             y -= 40;
         }
 
-        NSString*filePath=[[NSBundle mainBundle] pathForResource:@"TemperatureRecord" ofType:@"plist"];
-        NSDictionary *dic=[[NSDictionary alloc] initWithContentsOfFile:filePath];
-        NSArray *arrayL=[[dic allKeys] sortedArrayUsingSelector:@selector(compare:)];
-        NSMutableArray *hArr=[NSMutableArray array];
-        for (NSString *str in arrayL) {
-            [hArr addObject:dic[str]];
-        }
+        NSString *filePath=[[NSBundle mainBundle] pathForResource:@"TempArray" ofType:@"plist"];
+        NSMutableArray *hArr=[NSMutableArray arrayWithContentsOfFile:filePath];
         for (int i=0; i<hArr.count; i++) {
-            
-            UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(i*vInterval+50, 190, 40, 30)];
+            UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(i*vInterval+50, 190, vInterval, 30)];
             [label setBackgroundColor:[UIColor clearColor]];
             label.textColor = NAVIGATIONBAR_BACKGROUND_COLOR;
             [label setTextAlignment:NSTextAlignmentLeft];
             label.numberOfLines = 1;
-            label.font=[UIFont systemFontOfSize:12];
+            label.font=[UIFont systemFontOfSize:8];
             [label setText:[hArr objectAtIndex:i]];
             [self addSubview:label];
         }
@@ -105,7 +99,7 @@ CGAffineTransformMakeScaleTranslate(CGFloat sx, CGFloat sy,
        
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    int x = 2000;
+    int x = kChartViewWidth;
     int y = 210;
     
     for (int i=0; i<5; i++) {

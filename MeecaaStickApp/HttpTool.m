@@ -1016,6 +1016,23 @@ typedef enum
     }];
 }
 
+- (void)addMedicalRecordWithType:(int )type Member_id:(NSString *)member_id Temperture:(NSString *)temperature Date:(NSString *)date {
+    //发送请求数据
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    params[@"type"] = [NSNumber numberWithInt:type];
+    params[@"member_id"] = member_id;
+    params[@"temperature"] = temperature;
+    params[@"date"] = date;
+    params[@"takedate"] = date;
+    NSString *urlStr = [HOST stringByAppendingString:@"api.php?m=open&c=bluetooth&a=addTemperature"];
+    [self.manager POST:urlStr parameters:params success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        return;
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+    }];
+}
+
+
 /**
  *  获取默认用户的所有测温记录 1 -- 豆子
  */

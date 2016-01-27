@@ -89,7 +89,7 @@
     BOOL press;//用于标记开始按钮的状态
 }
 @property (weak, nonatomic) IBOutlet UILabel *_timeLabel;
-
+@property (nonatomic,assign) int starttime;
 @end
 
 @implementation UseBeanCheckViewController
@@ -184,7 +184,7 @@
     scrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 230)];
     scrollView.bounces=NO;
     scrollView.showsHorizontalScrollIndicator = NO;
-    [scrollView setContentSize:CGSizeMake(2000, 230)];
+    [scrollView setContentSize:CGSizeMake(kChartViewWidth, 230)];
     lineChart = [[ZX alloc]initWithFrame:CGRectMake(0, 0, scrollView.contentSize.width,230)];
     [lineChart setBackgroundColor:[UIColor clearColor]];
     _pointArr=[NSMutableArray array];
@@ -682,8 +682,18 @@
     int h = m / 60;
     int s = timercount % 60;
     self._timeLabel.text = [NSString stringWithFormat:@"%@:%@:%@",[self getTimeStr:h],[self getTimeStr:m % 60], [self getTimeStr:s % 60]];
-    if (timercount == 7 || (timercount % 30 == 0)) {    //若为三十秒的整数倍就绘制
+    if (timercount == 10 || (timercount % 30 == 0)) {    //若为三十秒的整数倍就绘制
         [self draw];
+    }
+    
+    if (timercount == 15 * 60) {
+        NSString *member_id = [[[DatabaseTool shared] getDefaultMember] objectForKey:@"id"];
+        NSString *ns=[_pointArr componentsJoinedByString:@","];
+        [[HttpTool shared] addMedicalRecordWithType:1 Member_id:member_id Temperture:ns Date:[NSString stringWithFormat:@"%d",(int)self.starttime]];
+    } else if (timercount % (30 * 60) == 0) {
+        NSString *member_id = [[[DatabaseTool shared] getDefaultMember] objectForKey:@"id"];
+        NSString *ns=[_pointArr componentsJoinedByString:@","];
+        [[HttpTool shared] addMedicalRecordWithType:1 Member_id:member_id Temperture:ns Date:[NSString stringWithFormat:@"%d",(int)self.starttime]];
     }
     
     //每一秒绘制一次圆环
@@ -711,9 +721,11 @@
                                                 selector: @selector(handleTimer:)  //这个方法就是每秒一次获取体温数据
                                                 userInfo: nil
                                                  repeats: YES];
+        [[NSRunLoop mainRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
     }
     self._timeLabel.text = @"00:00:00";
     timercount = 0;
+    self.starttime = [[NSDate date] timeIntervalSince1970];
     [peripheral setDelegate:self];
     [peripheral discoverServices: @[[CBUUID UUIDWithString:USERDEF_SERV_UUID]]];
     
@@ -954,10 +966,13 @@
 //        return;
 //    }
 //    [_pointArr addObject:[NSNumber numberWithDouble:maxTemp]];
+    if (!TempStr) {
+        TempStr = @"0.0";
+    }
     [_pointArr addObject:TempStr];
-//    maxTemp = 0;
     [lineChart setArray:_pointArr];
     [lineChart setNeedsDisplay];
+    
 }
 
 //如果一个特征的值被更新，然后周边代理接收
@@ -1065,7 +1080,7 @@
     [_timer invalidate];
     _timer = nil;
     [self performSelector:@selector(breakUp) withObject:self afterDelay:0.5];
-    
+    self.starttime = 0;
     [self removeMaskView];
 //    _pointArr = [NSMutableArray array];
 //    [GlobalTool sharedSingleton].lineChartArray = _pointArr;

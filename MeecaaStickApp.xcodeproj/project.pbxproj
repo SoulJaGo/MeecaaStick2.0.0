@@ -164,6 +164,7 @@
 		96C3F0061BFDFEB5007EC012 /* RECommonFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C3F0011BFDFEB5007EC012 /* RECommonFunctions.m */; };
 		96C3F0071BFDFEB5007EC012 /* RESideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C3F0031BFDFEB5007EC012 /* RESideMenu.m */; };
 		96C3F0081BFDFEB5007EC012 /* UIViewController+RESideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C3F0051BFDFEB5007EC012 /* UIViewController+RESideMenu.m */; };
+		96C4A2721C58BB26003CFAC2 /* TempArray.plist in Resources */ = {isa = PBXBuildFile; fileRef = 96C4A2711C58BB26003CFAC2 /* TempArray.plist */; };
 		96C595931C0AB41100CB93BB /* FolderCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C5958E1C0AB41100CB93BB /* FolderCoverView.m */; };
 		96C595941C0AB41100CB93BB /* UIFolderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C595901C0AB41100CB93BB /* UIFolderTableView.m */; };
 		96C595951C0AB41100CB93BB /* UIView+screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C595921C0AB41100CB93BB /* UIView+screenshot.m */; };
@@ -487,6 +488,7 @@
 		96C3F0031BFDFEB5007EC012 /* RESideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESideMenu.m; sourceTree = "<group>"; };
 		96C3F0041BFDFEB5007EC012 /* UIViewController+RESideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RESideMenu.h"; sourceTree = "<group>"; };
 		96C3F0051BFDFEB5007EC012 /* UIViewController+RESideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RESideMenu.m"; sourceTree = "<group>"; };
+		96C4A2711C58BB26003CFAC2 /* TempArray.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TempArray.plist; sourceTree = "<group>"; };
 		96C5958D1C0AB41100CB93BB /* FolderCoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FolderCoverView.h; sourceTree = "<group>"; };
 		96C5958E1C0AB41100CB93BB /* FolderCoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FolderCoverView.m; sourceTree = "<group>"; };
 		96C5958F1C0AB41100CB93BB /* UIFolderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIFolderTableView.h; sourceTree = "<group>"; };
@@ -1318,6 +1320,7 @@
 		96F117211BFC5AF800C51B32 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				96C4A2711C58BB26003CFAC2 /* TempArray.plist */,
 				969D638B1C06BC7B00B70B36 /* once_100ms_on_100ms_off.mp3 */,
 				6EBB71BD1C22B63C00B353B3 /* alarm.wav */,
 				96AA3CF31C058EBF00908F23 /* 体温小常识.html */,
@@ -1462,6 +1465,7 @@
 				6EBB71BE1C22B63C00B353B3 /* alarm.wav in Resources */,
 				96AA3CF01C058EAC00908F23 /* jquery-1.8.3.min.js in Resources */,
 				963E59EE1C03FEF0004A6377 /* SVProgressHUD.bundle in Resources */,
+				96C4A2721C58BB26003CFAC2 /* TempArray.plist in Resources */,
 				96A9947E1C03027100AA1A82 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				6E6ACDAC1C16DE7600B2BB4D /* TemperatureRecord.plist in Resources */,
 				96F1172C1BFC5AF800C51B32 /* Main.storyboard in Resources */,

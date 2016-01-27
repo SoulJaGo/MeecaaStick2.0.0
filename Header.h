@@ -100,4 +100,5 @@
  */
 #define MENU_BACKGROUND_COLOR [UIColor colorWithRed:66/255.0 green:69/255.0 blue:74/255.0 alpha:1.0]
 
+#define kChartViewWidth 80000
 #endif /* Header_h */

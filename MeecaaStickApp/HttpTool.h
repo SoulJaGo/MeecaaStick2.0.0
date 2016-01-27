@@ -127,4 +127,6 @@
 
 #pragma mark - 提交问题反馈
 - (void)submitProblemWithText:(NSString *)text;
+
+- (void)addMedicalRecordWithType:(int )type Member_id:(NSString *)member_id Temperture:(NSString *)temperature Date:(NSString *)date;
 @end
