@@ -183,7 +183,12 @@ CGAffineTransformMakeScaleTranslate(CGFloat sx, CGFloat sy,
 {
     
 //    [str drawAtPoint:point withAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12], NSStrokeColorAttributeName:[UIColor whiteColor]}];
-    [str drawInRect:CGRectMake(point.x, point.y, 30, 20) withAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:NAVIGATIONBAR_BACKGROUND_COLOR}];
+    if (self.alert == NO) {
+        [str drawInRect:CGRectMake(point.x, point.y, 30, 20) withAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:NAVIGATIONBAR_BACKGROUND_COLOR}];
+    } else {
+        [str drawInRect:CGRectMake(point.x, point.y, 30, 20) withAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12],NSForegroundColorAttributeName:[UIColor redColor]}];
+    }
+    
 }
 
 /*

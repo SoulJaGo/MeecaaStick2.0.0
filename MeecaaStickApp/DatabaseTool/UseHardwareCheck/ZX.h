@@ -22,5 +22,5 @@
 
 //点信息
 @property (nonatomic, strong) NSMutableArray *array;
-
+@property (nonatomic,assign) BOOL alert;
 @end
