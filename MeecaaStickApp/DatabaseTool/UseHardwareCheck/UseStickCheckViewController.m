@@ -93,6 +93,7 @@
 @property (nonatomic,strong) AddMedicalRecordViewController *addMedicalVC;
 
 @property (nonatomic,assign) int normalErrorCount;//常规测温错误次数
+@property (nonatomic,assign) int myInteger;
 @end
 
 @implementation UseStickCheckViewController
@@ -171,8 +172,9 @@
             if(!available) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self stopCheck];
-                    [self.navigationController popToRootViewControllerAnimated:YES];
-                    [SVProgressHUD showInfoWithStatus:@"请在“设置-隐私-麦克风”选项中允许体温棒访问您的麦克风"];
+                    if (_myInteger == 1) {
+                        [SVProgressHUD showInfoWithStatus:@"请在“设置-隐私-麦克风”选项中允许体温棒访问您的麦克风"];
+                    }
                 });
                 return;
             }
@@ -182,6 +184,21 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    AVAudioSession *avSession = [AVAudioSession sharedInstance];
+    if ([avSession respondsToSelector:@selector(requestRecordPermission:)]) {
+        [avSession requestRecordPermission:^(BOOL available) {
+            if(!available) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self stopCheck];
+                    if (_myInteger == 1) {
+                        [SVProgressHUD showInfoWithStatus:@"请在“设置-隐私-麦克风”选项中允许体温棒访问您的麦克风"];
+                    }
+                });
+                return;
+            }
+        }];
+    }
+
 }
 
 - (void)progressChanged{
@@ -194,6 +211,13 @@
     if (progressView.progress > 1.0f){
         progressView.progress = 0.0f;
     }
+}
+
+- (int)myInteger {
+    if (!_myInteger) {
+        self.myInteger = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"myInteger"];
+    }
+    return _myInteger;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -303,19 +327,11 @@
 - (void)clickToNormalCheck{
     //常规测温错误次数
     self.normalErrorCount = 0;
-    AVAudioSession *avSession = [AVAudioSession sharedInstance];
-    if ([avSession respondsToSelector:@selector(requestRecordPermission:)]) {
-        [avSession requestRecordPermission:^(BOOL available) {
-            if(!available) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self stopCheck];
-                    [self.navigationController popToRootViewControllerAnimated:YES];
-                    [SVProgressHUD showInfoWithStatus:@"请在“设置-隐私-麦克风”选项中允许体温棒访问您的麦克风"];
-                });
-                return;
-            }
-        }];
+    
+    if (![self canRecord]) {
+        return;
     }
+    
     if (press == NO) {
         progressView.progress = 0;
     }
@@ -348,27 +364,21 @@
             [self addMaskView];
         }
     } else {
-        [SVProgressHUD showErrorWithStatus:@"请将体温棒连接手机！"];
+        if (_myInteger == 1) {
+            [SVProgressHUD showErrorWithStatus:@"请将体温棒连接手机！"];
+        }
     }
 }
+
 
 #pragma mark - 点击快速测温按钮
 - (void)clickToQuickCheck {
     for (int i = 0; i < 11; i++) {
         temperature[i] = -55.0f;
     }
-    AVAudioSession *avSession = [AVAudioSession sharedInstance];
-    if ([avSession respondsToSelector:@selector(requestRecordPermission:)]) {
-        [avSession requestRecordPermission:^(BOOL available) {
-            if(!available) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self stopCheck];
-                    [self.navigationController popToRootViewControllerAnimated:YES];
-                    [SVProgressHUD showInfoWithStatus:@"请在“设置-隐私-麦克风”选项中允许体温棒访问您的麦克风"];
-                });
-                return;
-            }
-        }];
+    
+    if (![self canRecord]) {
+        return;
     }
     
     if ([self isHeadsetPluggedIn]) {
@@ -399,7 +409,9 @@
             [self addMaskView];
         }
     } else {
-        [SVProgressHUD showErrorWithStatus:@"请将体温棒连接手机！"];
+        if (_myInteger == 1) {
+            [SVProgressHUD showErrorWithStatus:@"请将体温棒连接手机！"];
+        }
     }
 }
 
@@ -603,11 +615,15 @@
         } else {
             if (itemp == 9999 || itemp == - 9999) {
                 [self stopCheck];
-                [SVProgressHUD showErrorWithStatus:@"超出测温范围!"];
+                if (_myInteger == 1) {
+                    [SVProgressHUD showErrorWithStatus:@"超出测温范围!"];
+                }
                 return;
             } else if (itemp == 7777) {
                 [self stopCheck];
-                [SVProgressHUD showErrorWithStatus:@"请联系客服!"];
+                if (_myInteger == 1) {
+                    [SVProgressHUD showErrorWithStatus:@"请联系客服!"];
+                }
                 return;
             } else {
                 if (flag == 1) {
@@ -620,7 +636,9 @@
                     temperature[10] = ftemp;
                     if (timercount3 >= 40) {
                         [self stopCheck];
-                        [SVProgressHUD showErrorWithStatus:@"体温棒放好了吗？请重新测温!"];
+                        if (_myInteger == 1) {
+                            [SVProgressHUD showErrorWithStatus:@"体温棒放好了吗？请重新测温!"];
+                        }
                     }
                     double resultTemp = judge(temperature);
                     NSLog(@"%f",resultTemp);
@@ -649,7 +667,9 @@
             self.normalErrorCount++;
             if (self.normalErrorCount > 3) {
                 [self stopCheck];
-                [SVProgressHUD showErrorWithStatus:@"请重新连接耳机孔，再次测温。"];
+                if (_myInteger == 1) {
+                    [SVProgressHUD showErrorWithStatus:@"请重新连接耳机孔，再次测温。"];
+                }
                 return;
             }
         } else if (flag == 2) {
@@ -661,7 +681,9 @@
                 return;
             } else {
                 [self stopCheck];
-                [SVProgressHUD showErrorWithStatus:@"请重新连接耳机孔，再次测温。"];
+                if (_myInteger == 1) {
+                    [SVProgressHUD showErrorWithStatus:@"请重新连接耳机孔，再次测温。"];
+                }
             }
         }
     }

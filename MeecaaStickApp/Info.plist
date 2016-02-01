@@ -2,42 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>bluetooth-peripheral</string>
-		<string>bluetooth-central</string>
-	</array>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>请求地理位置</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>weibosdk2.5</string>
-		<string>weibosdk</string>
-		<string>mqq</string>
-		<string>mqzone</string>
-		<string>mqqapi</string>
-		<string>mqqwpa</string>
-		<string>mqqopensdkapiV3</string>
-		<string>wtloginmqq2</string>
-		<string>mqqopensdkapiV2</string>
-		<string>mqqOpensdkSSoLogin</string>
-		<string>mqzoneopensdkapiV2</string>
-		<string>mqzoneopensdkapi19</string>
-		<string>mqzoneopensdkapi</string>
-		<string>mqzoneopensdk</string>
-		<string>sinaweibohdsso</string>
-		<string>sinaweibosso</string>
-		<string>sinaweibohd</string>
-		<string>sinaweibo</string>
-		<string>weixin</string>
-		<string>wechat</string>
-		<string>mqqapi</string>
-		<string>mqq</string>
-		<string>wtloginmqq2</string>
-		<string>mqqopensdkapiV3</string>
-		<string>mqqopensdkapiV2</string>
-		<string>mqqOpensdkSSoLogin</string>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -111,6 +75,35 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>2.0.0</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>weibosdk2.5</string>
+		<string>weibosdk</string>
+		<string>mqq</string>
+		<string>mqzone</string>
+		<string>mqqapi</string>
+		<string>mqqwpa</string>
+		<string>mqqopensdkapiV3</string>
+		<string>wtloginmqq2</string>
+		<string>mqqopensdkapiV2</string>
+		<string>mqqOpensdkSSoLogin</string>
+		<string>mqzoneopensdkapiV2</string>
+		<string>mqzoneopensdkapi19</string>
+		<string>mqzoneopensdkapi</string>
+		<string>mqzoneopensdk</string>
+		<string>sinaweibohdsso</string>
+		<string>sinaweibosso</string>
+		<string>sinaweibohd</string>
+		<string>sinaweibo</string>
+		<string>weixin</string>
+		<string>wechat</string>
+		<string>mqqapi</string>
+		<string>mqq</string>
+		<string>wtloginmqq2</string>
+		<string>mqqopensdkapiV3</string>
+		<string>mqqopensdkapiV2</string>
+		<string>mqqOpensdkSSoLogin</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -118,6 +111,13 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>请求地理位置</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-peripheral</string>
+		<string>bluetooth-central</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

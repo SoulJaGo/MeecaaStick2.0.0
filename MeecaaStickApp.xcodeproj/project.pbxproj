@@ -1751,7 +1751,7 @@
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Header.h";
 				INFOPLIST_FILE = MeecaaStickApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1764,7 +1764,7 @@
 					"$(PROJECT_DIR)/MeecaaStickApp/DatabaseTool/UseHardwareCheck",
 					"$(PROJECT_DIR)/MeecaaStickApp/DatabaseTool/UseHardwareCheck/TestNewDecoder",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.meecaa.stick;
+				PRODUCT_BUNDLE_IDENTIFIER = meecaababy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -1788,7 +1788,7 @@
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Header.h";
 				INFOPLIST_FILE = MeecaaStickApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1801,7 +1801,7 @@
 					"$(PROJECT_DIR)/MeecaaStickApp/DatabaseTool/UseHardwareCheck",
 					"$(PROJECT_DIR)/MeecaaStickApp/DatabaseTool/UseHardwareCheck/TestNewDecoder",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.meecaa.stick;
+				PRODUCT_BUNDLE_IDENTIFIER = meecaababy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

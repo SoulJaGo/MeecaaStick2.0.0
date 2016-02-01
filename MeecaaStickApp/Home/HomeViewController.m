@@ -166,6 +166,21 @@
         
         [[UIApplication sharedApplication].keyWindow.rootViewController.view addSubview:self.holeView];
     }
+    
+    AVAudioSession *avSession = [AVAudioSession sharedInstance];
+    if ([avSession respondsToSelector:@selector(requestRecordPermission:)]) {
+        [avSession requestRecordPermission:^(BOOL available) {
+            if(!available) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (myInteger == 1) {
+                        [SVProgressHUD showInfoWithStatus:@"请在“设置-隐私-麦克风”选项中允许体温棒访问您的麦克风"];
+                    }
+                });
+                return;
+            }
+        }];
+    }
+
 }
 
 - (void)setUpNoDeviceView{

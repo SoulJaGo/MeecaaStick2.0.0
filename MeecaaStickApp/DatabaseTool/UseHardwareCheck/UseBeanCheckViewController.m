@@ -30,7 +30,7 @@
 #define PERIPHERAL_LASTCACHETEMPTIME_UUID       @"0XF4E6"   //最近一次温度缓存的时间
 #define PERIPHERAL_CACHE_FIFO_UUID              @"0XF4E8"   //内部缓存的温度FIFO
 
-@interface UseBeanCheckViewController ()<CBCentralManagerDelegate,CBPeripheralManagerDelegate,CBPeripheralDelegate,ZHPickViewDelegate>{
+@interface UseBeanCheckViewController ()<CBCentralManagerDelegate,CBPeripheralManagerDelegate,CBPeripheralDelegate,ZHPickViewDelegate,UIAlertViewDelegate>{
     //系统蓝牙设备管理对象，可以把他理解为主设备，通过他，可以去扫描和链接外设
     CBCentralManager    *_cbCentralManager;
     
@@ -90,6 +90,8 @@
 }
 @property (weak, nonatomic) IBOutlet UILabel *_timeLabel;
 @property (nonatomic,assign) int starttime;
+@property (nonatomic,strong) UIGestureRecognizer *recognizer;
+@property (nonatomic,strong) NSMutableArray *temperatureArray;
 @end
 
 @implementation UseBeanCheckViewController
@@ -101,6 +103,8 @@
     _cbCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
     _testPeripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
     _peripheralArray = [NSMutableArray array];//用于存放外围设备UUID的数组
+    
+    _temperatureArray = [NSMutableArray array];
 
     //总时长定时器
 //    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateInteger) userInfo:nil repeats:YES];
@@ -264,19 +268,9 @@
 
 - (void)startCheck{
     if (press == YES) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"是否确定停止为您的宝宝测温？" preferredStyle:UIAlertControllerStyleAlert];
-         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-             [self finishTemp];
-             [SVProgressHUD dismiss];
-             press = NO;
-             [self removeMaskView];
-         }];
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            
-        }];
-        [alert addAction:okAction];
-        [alert addAction:cancelAction];
-        [self presentViewController:alert animated:YES completion:nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"是否确定停止为您的宝宝测温？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        [alertView setTag:0];
+        [alertView show];
     }else if (press == NO || (_testPeripheral.state != CBPeripheralStateConnected)){
         //判断用户是否已经登陆了
         //如果获取的成员数量为0 或者不存在则需要登陆
@@ -293,11 +287,37 @@
             [lineChart setNeedsDisplay];
             [self SearchDevice];
             [self addMaskView];
+            progressView.progress = 0.0001;
         }
     }
     
 //    if ((_testPeripheral.state != CBPeripheralStateConnected)) { //状态处于断开
 //    }
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [self.view removeGestureRecognizer:self.recognizer];
+    if (alertView.tag == 0 && buttonIndex == 1) {
+        [self finishTemp];
+        [SVProgressHUD dismiss];
+        press = NO;
+        [self removeMaskView];
+    } else if (alertView.tag == 1 && buttonIndex == 1) {
+        [_cbCentralManager stopScan];//关闭搜索,非常重要!
+        [SVProgressHUD dismiss];
+        [_timer invalidate];
+        _timer = nil;
+        [searchTimer setFireDate:[NSDate distantFuture]];
+        [searchTimer invalidate];
+        searchTimer = nil;
+        searchTimeCount = 0;
+        self._timeLabel.text = @"00:00:00";
+        [researchTimer setFireDate:[NSDate distantFuture]];
+        researchTimer = 0;
+        press = NO;
+        [self removeMaskView];
+    }
 }
 //1秒的间隔，一秒钟有1个间隔，走完一圈为（1 / 0.0001） == 10000个间隔，即1000秒钟，半圈即为500秒
 - (void)progressChange{
@@ -423,31 +443,14 @@
         
         UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapWhenSearching:)];
         [self.view addGestureRecognizer:recognizer];
+        self.recognizer = recognizer;
     }
 }
 
 - (void)tapWhenSearching:(UIGestureRecognizer *)recognizer {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提醒" message:@"是否确定停止为您的宝宝测温？" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [_cbCentralManager stopScan];//关闭搜索,非常重要!
-        [SVProgressHUD dismiss];
-        [_timer invalidate];
-        _timer = nil;
-        [searchTimer setFireDate:[NSDate distantFuture]];
-        [searchTimer invalidate];
-        searchTimer = nil;
-        searchTimeCount = 0;
-        self._timeLabel.text = @"00:00:00";
-        [researchTimer setFireDate:[NSDate distantFuture]];
-        researchTimer = 0;
-        press = NO;
-    }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        
-    }];
-    [alert addAction:okAction];
-    [alert addAction:cancelAction];
-    [self presentViewController:alert animated:YES completion:nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"是否确定停止为您的宝宝测温？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alertView setTag:1];
+    [alertView show];
 }
 
 - (void)searchTimerCount {
@@ -688,11 +691,11 @@
     
     if (timercount == 15 * 60) {
         NSString *member_id = [[[DatabaseTool shared] getDefaultMember] objectForKey:@"id"];
-        NSString *ns=[_pointArr componentsJoinedByString:@","];
+        NSString *ns=[_temperatureArray componentsJoinedByString:@","];
         [[HttpTool shared] addMedicalRecordWithType:1 Member_id:member_id Temperture:ns Date:[NSString stringWithFormat:@"%d",(int)self.starttime]];
     } else if (timercount % (30 * 60) == 0) {
         NSString *member_id = [[[DatabaseTool shared] getDefaultMember] objectForKey:@"id"];
-        NSString *ns=[_pointArr componentsJoinedByString:@","];
+        NSString *ns=[_temperatureArray componentsJoinedByString:@","];
         [[HttpTool shared] addMedicalRecordWithType:1 Member_id:member_id Temperture:ns Date:[NSString stringWithFormat:@"%d",(int)self.starttime]];
     }
     
@@ -806,13 +809,6 @@
     [self removeMaskView];
 }
 
-#pragma mark - UIAlerVIew
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex == 1) {
-        
-        [self finishTemp];
-    }
-}
 
 //设备自动断开网络后判断重连时间
 -(void)startResearchTime{
@@ -894,8 +890,9 @@
                 _LastTempCharacteristic = characteristic;
             }
         }
+        
         [self UpdateFromDate];  //同步时间
-        [self sendOldData];     //在此时发送连续温度转换指令,这两个方法不可分开且只能发送一次
+        [self sendOldData];   //在此时发送连续温度转换指令,这两个方法不可分开且只能发送一次
         [researchTimer setFireDate:[NSDate distantFuture]];//将计时器暂停
         researchTime = 0;
     }
@@ -985,7 +982,10 @@
     NSLog(@"---temp-%@",TempStr);
     if (TempStr) {
         _temperatureLab.text=[NSString stringWithFormat:@"%@℃",TempStr];
+    } else {
+        TempStr = @"0.0";
     }
+    [_temperatureArray addObject:TempStr];
 }
 
 //这个是获取系统时间的方法
@@ -1034,6 +1034,7 @@
     //日期同步的命令码长度是六个字节,B0~B5:秒,分,时,日,月,年
     Byte datebyte[6];
     for (int i=0; i<6; i++) {
+        NSLog(@"%ld",[self getCurrentDate:i]);
         datebyte[i] = [self getCurrentDate:i];
     }
     
@@ -1074,6 +1075,7 @@
         NSData *data=[[NSData alloc] initWithBytes:bt length:sizeof(bt)];
         [_testPeripheral writeValue:data forCharacteristic:_centralCharacteristic type:CBCharacteristicWriteWithResponse];
     }
+    [self removeMaskView];
     [researchTimer setFireDate:[NSDate distantFuture]];
     [researchTimer invalidate];
     researchTimer = nil;
@@ -1081,7 +1083,8 @@
     _timer = nil;
     [self performSelector:@selector(breakUp) withObject:self afterDelay:0.5];
     self.starttime = 0;
-    [self removeMaskView];
+    
+    
 //    _pointArr = [NSMutableArray array];
 //    [GlobalTool sharedSingleton].lineChartArray = _pointArr;
 //    [lineChart setArray:_pointArr];
@@ -1109,6 +1112,7 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    [self finishTemp];
 }
 
 
@@ -1125,15 +1129,15 @@
 }
 
 - (void)addMaskView {
-    maskViewOne = [[UIView alloc] initWithFrame:CGRectMake(0, 20, kScreen_Width, 44)];
-    maskViewTwo = [[UIView alloc] initWithFrame:CGRectMake(0, kScreen_Height - 49, kScreen_Width, 49)];
-    maskViewOne.backgroundColor = maskViewTwo.backgroundColor = [UIColor clearColor ];
-    [[UIApplication sharedApplication].keyWindow addSubview:maskViewOne];
-    [[UIApplication sharedApplication].keyWindow addSubview:maskViewTwo];
+//    maskViewOne = [[UIView alloc] initWithFrame:CGRectMake(0, 20, kScreen_Width, 44)];
+//    maskViewTwo = [[UIView alloc] initWithFrame:CGRectMake(0, kScreen_Height - 49, kScreen_Width, 49)];
+//    maskViewOne.backgroundColor = maskViewTwo.backgroundColor = [UIColor redColor ];
+//    [[UIApplication sharedApplication].keyWindow.rootViewController.view addSubview:maskViewOne];
+//    [[UIApplication sharedApplication].keyWindow.rootViewController.view addSubview:maskViewTwo];
 }
 -(void)removeMaskView {
-    [maskViewOne removeFromSuperview];
-    [maskViewTwo removeFromSuperview];
+//    [maskViewOne removeFromSuperview];
+//    [maskViewTwo removeFromSuperview];
 }
 
 /*
