@@ -172,7 +172,7 @@
             if(!available) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self stopCheck];
-                    if (_myInteger == 1) {
+                    if (_myInteger == 1 || !_myInteger) {
                         [SVProgressHUD showInfoWithStatus:@"请在“设置-隐私-麦克风”选项中允许体温棒访问您的麦克风"];
                     }
                 });
@@ -190,7 +190,7 @@
             if(!available) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self stopCheck];
-                    if (_myInteger == 1) {
+                    if (_myInteger == 1 || !_myInteger) {
                         [SVProgressHUD showInfoWithStatus:@"请在“设置-隐私-麦克风”选项中允许体温棒访问您的麦克风"];
                     }
                 });
@@ -364,7 +364,7 @@
             [self addMaskView];
         }
     } else {
-        if (_myInteger == 1) {
+        if (_myInteger == 1 || !_myInteger) {
             [SVProgressHUD showErrorWithStatus:@"请将体温棒连接手机！"];
         }
     }
@@ -409,7 +409,7 @@
             [self addMaskView];
         }
     } else {
-        if (_myInteger == 1) {
+        if (_myInteger == 1 || !_myInteger) {
             [SVProgressHUD showErrorWithStatus:@"请将体温棒连接手机！"];
         }
     }
@@ -615,13 +615,13 @@
         } else {
             if (itemp == 9999 || itemp == - 9999) {
                 [self stopCheck];
-                if (_myInteger == 1) {
+                if (_myInteger == 1 || !_myInteger) {
                     [SVProgressHUD showErrorWithStatus:@"超出测温范围!"];
                 }
                 return;
             } else if (itemp == 7777) {
                 [self stopCheck];
-                if (_myInteger == 1) {
+                if (_myInteger == 1 || !_myInteger) {
                     [SVProgressHUD showErrorWithStatus:@"请联系客服!"];
                 }
                 return;
@@ -636,7 +636,7 @@
                     temperature[10] = ftemp;
                     if (timercount3 >= 40) {
                         [self stopCheck];
-                        if (_myInteger == 1) {
+                        if (_myInteger == 1 || !_myInteger) {
                             [SVProgressHUD showErrorWithStatus:@"体温棒放好了吗？请重新测温!"];
                         }
                     }
@@ -667,7 +667,7 @@
             self.normalErrorCount++;
             if (self.normalErrorCount > 3) {
                 [self stopCheck];
-                if (_myInteger == 1) {
+                if (_myInteger == 1 || !_myInteger) {
                     [SVProgressHUD showErrorWithStatus:@"请重新连接耳机孔，再次测温。"];
                 }
                 return;
@@ -681,7 +681,7 @@
                 return;
             } else {
                 [self stopCheck];
-                if (_myInteger == 1) {
+                if (_myInteger == 1 || !_myInteger) {
                     [SVProgressHUD showErrorWithStatus:@"请重新连接耳机孔，再次测温。"];
                 }
             }

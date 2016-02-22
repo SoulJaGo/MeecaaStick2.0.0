@@ -102,6 +102,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    avAudioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"wav"]] error:nil];
+    avAudioPlayer.volume = 1;
+
     
     //设置主设备 / 外围设备的代理方法
     _cbCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
@@ -1207,11 +1210,24 @@
  */
 - (void)playAlarm {
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-    avAudioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"wav"]] error:nil];
-    avAudioPlayer.volume = 1;
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    [[AVAudioSession sharedInstance] setActive:YES error:nil];
+    avAudioPlayer.numberOfLoops = 1;
     [avAudioPlayer prepareToPlay];
     [avAudioPlayer play];
+    
+    /*添加本地通知*/
+    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+    localNotification.repeatInterval = 1;
+    localNotification.alertBody = @"高温提示";
+    localNotification.alertAction = @"高温提示";
+    localNotification.alertLaunchImage = @"Default";
+    localNotification.soundName = UILocalNotificationDefaultSoundName;
+    [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+}
+
+- (void)dealloc {
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 
 - (void)addMaskView {
