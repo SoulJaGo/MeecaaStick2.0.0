@@ -295,6 +295,10 @@
         UITapGestureRecognizer *recongnizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHoleView)];
         [self.holeView addGestureRecognizer:recongnizer];
         
+        UIImageView *distanceView = [[UIImageView alloc] initWithFrame:CGRectMake(0, kScreen_Height - 150, 250, 80)];
+        [distanceView setImage:[UIImage imageNamed:@"beanDistance"]];
+        [self.holeView addHCustomView:distanceView onRect:distanceView.frame];
+        
         CGFloat rectX = 0;
         CGFloat rectY = 180 + 64;
         CGFloat rectW = 70;
@@ -330,6 +334,8 @@
             guideMaxX = 150;
         }
         [self.holeView addHoleRoundedRectOnRect:CGRectMake(guideMaxX, 155, 190, 35) withCornerRadius:8];
+        
+        
         
         [[UIApplication sharedApplication].keyWindow.rootViewController.view addSubview:self.holeView];
     }
