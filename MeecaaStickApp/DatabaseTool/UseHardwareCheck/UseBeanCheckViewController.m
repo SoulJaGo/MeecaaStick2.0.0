@@ -29,6 +29,7 @@
 #define PERIPHERAL_CACHE_UUID       @"0XF4E5"   //内部缓存的温度个数
 #define PERIPHERAL_LASTCACHETEMPTIME_UUID       @"0XF4E6"   //最近一次温度缓存的时间
 #define PERIPHERAL_CACHE_FIFO_UUID              @"0XF4E8"   //内部缓存的温度FIFO
+#define PERIPHERAL_CHANGE_NAME_UUID     @"0xF4EF"   //变更温豆名称
 
 @interface UseBeanCheckViewController ()<CBCentralManagerDelegate,CBPeripheralManagerDelegate,CBPeripheralDelegate,ZHPickViewDelegate,UIAlertViewDelegate>{
     //系统蓝牙设备管理对象，可以把他理解为主设备，通过他，可以去扫描和链接外设
@@ -45,6 +46,7 @@
     CBCharacteristic    *_cacheCharacteristic;
     CBCharacteristic    *_cacheFIFOCharacteristic;
     CBCharacteristic    *_LastTempCharacteristic;
+    CBCharacteristic    *_ChangeNameCharacteristic;
     
     NSMutableArray *_peripheralArray;   //用来存放外围设备的UUID的数组
     
@@ -92,6 +94,8 @@
 @property (nonatomic,assign) int starttime;
 @property (nonatomic,strong) UIGestureRecognizer *recognizer;
 @property (nonatomic,strong) NSMutableArray *temperatureArray;
+@property (nonatomic,strong) UITextField *NameTextField;
+@property (nonatomic,strong) UIButton *ChangeNameBtn;
 @end
 
 @implementation UseBeanCheckViewController
@@ -255,8 +259,22 @@
         start.frame = CGRectMake(210, 170, 70, 70);
 
         lineChartView.frame = CGRectMake(0, 300, kScreen_Width, 230);
-
     }
+    
+    self.NameTextField = [[UITextField alloc] init];
+    self.NameTextField.frame = CGRectMake(30, 30, 100, 30);
+    self.NameTextField.textColor = [UIColor lightGrayColor];
+    self.NameTextField.font = [UIFont systemFontOfSize:15];
+    self.NameTextField.hidden = YES;
+    [self.view addSubview:self.NameTextField];
+    
+    self.ChangeNameBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.ChangeNameBtn.frame = CGRectMake(30, 60, 100, 30);
+    [self.ChangeNameBtn setTitle:@"修改名称" forState:UIControlStateNormal];
+    [self.ChangeNameBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    [self.ChangeNameBtn addTarget:self action:@selector(OnClickChangeNameBtn) forControlEvents:UIControlEventTouchUpInside];
+    self.ChangeNameBtn.hidden = YES;
+    [self.view addSubview:self.ChangeNameBtn];
 }
 
 #pragma mark -- 本地读取外围设备id
@@ -317,6 +335,13 @@
         researchTimer = 0;
         press = NO;
         [self removeMaskView];
+    } else if (alertView.tag == 2 && buttonIndex == 1) {
+        if ([[alertView textFieldAtIndex:0].text isEqualToString:@""]) {
+            [SVProgressHUD showErrorWithStatus:@"请填写修改的名称!"];
+        } else {
+            [self ChangeName:[alertView textFieldAtIndex:0].text];
+        }
+        
     }
 }
 //1秒的间隔，一秒钟有1个间隔，走完一圈为（1 / 0.0001） == 10000个间隔，即1000秒钟，半圈即为500秒
@@ -711,7 +736,11 @@
 
 //成功连接上外围设备后的代理，开始发现服务
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
+    NSLog(@"%@",_peripheralArray);
     NSLog(@"和周边设备连接成功");
+    self.NameTextField.text = peripheral.name;
+    self.ChangeNameBtn.hidden = NO;
+    self.NameTextField.hidden = NO;
     [SVProgressHUD dismiss];
     [SVProgressHUD showWithStatus:@"正在获取温度..."];
     [_cbCentralManager stopScan];//关闭搜索,非常重要!
@@ -742,6 +771,8 @@
 //连接外围设备失败
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
     NSLog(@"连接外围设备失败 %@.(%@)",peripheral,[error description]);
+    self.NameTextField.hidden = YES;
+    self.ChangeNameBtn.hidden = YES;
     [self cleanup];
     [_cbCentralManager stopScan];
     [_timer setFireDate:[NSDate distantFuture]];
@@ -786,6 +817,8 @@
 //断开蓝牙设备的代理方法
 -(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
     NSLog(@"外围设备已断开");
+    self.NameTextField.hidden = YES;
+    self.ChangeNameBtn.hidden = YES;
     [_cbCentralManager stopScan];
     [SVProgressHUD dismiss];
     press = NO;
@@ -844,11 +877,13 @@
         [self cleanup];
         return;
     }
+    
     for (CBService *service in peripheral.services){
         NSLog(@"Service found with UUID: %@",service.UUID);
         if ([service.UUID isEqual:[CBUUID  UUIDWithString:USERDEF_SERV_UUID]]){
             [peripheral discoverCharacteristics: nil forService:service];
         }
+        
     }
 }
 //发现特征，并根据特征值设置监听通道
@@ -888,6 +923,9 @@
             else if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:PERIPHERAL_LASTCACHETEMPTIME_UUID]]) {
                 [peripheral setNotifyValue:YES forCharacteristic:characteristic];
                 _LastTempCharacteristic = characteristic;
+            } else if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:PERIPHERAL_CHANGE_NAME_UUID]]) {
+                [peripheral setNotifyValue:YES forCharacteristic:characteristic];
+                _ChangeNameCharacteristic = characteristic;
             }
         }
         
@@ -898,12 +936,60 @@
     }
 }
 
+- (void)OnClickChangeNameBtn {
+    if (_ChangeNameCharacteristic == nil) {
+        [SVProgressHUD showInfoWithStatus:@"没有该特征"];
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"修改名称" message:@"修改温豆名称" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+        [alertView setTag:2];
+        [alertView show];
+//        [self ChangeName];
+    }
+    
+}
+
+//修改温豆的名称
+- (void)ChangeName:(NSString *)name {
+    if (name.length == 0) {
+        [SVProgressHUD showErrorWithStatus:@"请填写温豆名称"];
+        return;
+    } else {
+        const char *c = [name UTF8String];
+        if (strlen(c) > 16) {
+            [SVProgressHUD showErrorWithStatus:@"温豆昵称过长"];
+            return;
+        } else {
+            NSData *data = [name dataUsingEncoding:NSUTF8StringEncoding];
+            [_testPeripheral writeValue:data forCharacteristic:_ChangeNameCharacteristic type:CBCharacteristicWriteWithResponse];
+            [self shutDownBean];
+            return;
+        }
+    }
+    
+}
+
+//	通过命令属性(0xF4E1)写命令 0x12,0x00，温豆将自动关机
+- (void)shutDownBean {
+    Byte bt[] = {0x12,0x00};
+    NSData *data=[[NSData alloc] initWithBytes:bt length:sizeof(bt)];
+    [_testPeripheral writeValue:data forCharacteristic:_centralCharacteristic type:CBCharacteristicWriteWithResponse];
+}
+
+- (void)peripheralDidUpdateName:(CBPeripheral *)peripheral {
+    NSLog(@"修改了名称");
+}
+
 //发送触发函数
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
     if (error){
         NSLog(@"写入失败:%@,%@,%@",peripheral,characteristic,[error description]);
     }else{
         NSLog(@"写入成功:%@,%@",peripheral,characteristic);
+        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:PERIPHERAL_CHANGE_NAME_UUID]]) {
+            [SVProgressHUD showInfoWithStatus:@"名称修改成功!"];
+            [self finishTemp];
+        }
     }
 }
 
