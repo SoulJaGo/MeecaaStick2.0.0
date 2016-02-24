@@ -322,10 +322,19 @@
     if (alertView.tag == 0 && buttonIndex == 1) {
         [self finishTemp];
         [SVProgressHUD dismiss];
+        [_timer invalidate];
+        _timer = nil;
+        [searchTimer setFireDate:[NSDate distantFuture]];
+        [searchTimer invalidate];
+        searchTimer = nil;
+        searchTimeCount = 0;
+        [self cleanup];
         press = NO;
         [self removeMaskView];
     } else if (alertView.tag == 1 && buttonIndex == 1) {
         [_cbCentralManager stopScan];//关闭搜索,非常重要!
+        [self finishTemp];
+        [self cleanup];
         [SVProgressHUD dismiss];
         [_timer invalidate];
         _timer = nil;
@@ -492,6 +501,7 @@
                 
                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:[NSString stringWithFormat:@"%@",[[_peripheralArray objectAtIndex:i] name]] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                     NSLog(@"正在连接设备");
+                    _testPeripheral = [_peripheralArray objectAtIndex:i];
                     [SVProgressHUD showWithStatus:@"正在连接设备..."];
                     [_cbCentralManager connectPeripheral:_testPeripheral options:nil];//连接外围设备
                     [searchTimer setFireDate:[NSDate distantFuture]];
@@ -513,6 +523,7 @@
                 searchTimer = nil;
                 searchTimeCount = 0;
                 press = NO;
+                [self.view removeGestureRecognizer:self.recognizer];
             }];
             
             [alertView1 addAction:cancelAction];
